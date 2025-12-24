@@ -150,3 +150,43 @@ jobs:
       
       - name: Check performance budgets
         run: pnpm perf
+
+  inventory:
+    name: Generate Inventory
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+      
+      - name: Generate inventory
+        run: pnpm inventory:generate
+      
+      - name: Update architecture docs
+        run: pnpm inventory:update-docs
+      
+      - name: Upload inventory artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory
+          path: |
+            inventory/
+            docs/CLI-INVENTORY.md
+            docs/ARCHITECTURE.md
+          retention-days: 30

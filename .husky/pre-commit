@@ -10,6 +10,14 @@ npx ls-lint
 # Type check
 pnpm typecheck
 
+# Validate inventory
+echo "📦 Validating inventory..."
+pnpm inventory:validate || {
+  echo "⚠️  Inventory outdated, regenerating..."
+  pnpm inventory:generate
+  git add docs/CLI-INVENTORY.md inventory/
+}
+
 # Spell check staged files
 git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|js|md)$' | xargs npx cspell --no-progress --no-summary || true
 

@@ -31,6 +31,10 @@
     "generate:cli": "pnpm --filter generators run generate:cli",
     "generate:package": "pnpm --filter generators run generate:package",
     "install-completions": "bash scripts/install-completions.sh",
+    "inventory:generate": "node scripts/generate-inventory.js",
+    "inventory:validate": "node scripts/validate-inventory.js",
+    "inventory:update-docs": "node scripts/update-architecture-docs.js",
+    "postbuild": "pnpm inventory:generate",
     "prepare": "husky"
   },
   "devDependencies": {

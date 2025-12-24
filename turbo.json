@@ -50,6 +50,16 @@
     "perf": {
       "cache": false,
       "outputs": ["perf-results/**"]
+    },
+    "inventory": {
+      "dependsOn": ["build"],
+      "outputs": ["inventory/**", "docs/CLI-INVENTORY.md"],
+      "cache": true
+    },
+    "inventory:validate": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "outputs": []
     }
   }
 }

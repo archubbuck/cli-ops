@@ -19,6 +19,10 @@ Each CLI is an independent oclif application with its own:
 - **cli-beta** - Plugin system demonstration (will be created)
 - **cli-gamma** - Advanced patterns demonstration (will be created)
 
+## CLI Inventory
+
+For a complete inventory of all CLIs, their commands, performance metrics, and testing status, see [../docs/CLI-INVENTORY.md](../docs/CLI-INVENTORY.md).
+
 ## Creating a New CLI
 
 Use the generator:

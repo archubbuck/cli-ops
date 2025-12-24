@@ -11,6 +11,7 @@ Comprehensive documentation for the CLI workspace.
 
 ## Quick Links
 
+- [CLI Inventory](CLI-INVENTORY.md) - Complete CLI command reference
 - [Getting Started](./contributing/getting-started.md)
 - [Architecture Overview](./architecture/overview.md)
 - [Development Workflow](./guides/development-workflow.md)
