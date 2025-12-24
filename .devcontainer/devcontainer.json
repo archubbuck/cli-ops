@@ -1,57 +1,41 @@
-{{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}  }    }      "version": "9"    "ghcr.io/devcontainers-contrib/features/pnpm:2": {  "features": {    ],    "source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,consistency=cached"  "mounts": [    "remoteUser": "node",    "postCreateCommand": "pnpm install",    },    }      }        "typescript.enablePromptUseWorkspaceTsdk": true        "typescript.tsdk": "node_modules/typescript/lib",        },          "source.fixAll.eslint": "explicit"        "editor.codeActionsOnSave": {        "editor.defaultFormatter": "esbenp.prettier-vscode",        "editor.formatOnSave": true,      "settings": {      ],        "ms-playwright.playwright"        "eamodio.gitlens",        "GitHub.copilot-chat",        "GitHub.copilot",        "streetsidesoftware.code-spell-checker",        "ms-vscode.vscode-typescript-next",        "esbenp.prettier-vscode",        "dbaeumer.vscode-eslint",      "extensions": [    "vscode": {  "customizations": {    },    }      "version": "20"    "ghcr.io/devcontainers/features/node:1": {    "ghcr.io/devcontainers/features/github-cli:1": {},  "features": {    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",  "name": "CLI Workspace",  "name": "cli-workspace",
-  "version": "1.0.0",
-  "compilerOptions": {
-    "module": "Node16",
-    "target": "ES2022"
-  }
+{
+  "name": "CLI Workspace",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers-contrib/features/pnpm:2": {
+      "version": "9"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "streetsidesoftware.code-spell-checker",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "eamodio.gitlens",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true
+      }
+    }
+  },
+  "postCreateCommand": "pnpm install",
+  "remoteUser": "node",
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,consistency=cached"
+  ]
 }
