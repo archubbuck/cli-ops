@@ -16,7 +16,7 @@
     "helpers"
   ],
   "dependencies": {
-    "@oclif/test": "^4.2.2",
+    "@oclif/test": "^4.1.15",
     "shared-types": "workspace:*"
   },
   "files": [
