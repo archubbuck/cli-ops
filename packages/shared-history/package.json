@@ -1,0 +1,25 @@
+{
+  "name": "shared-history",
+  "version": "1.0.0",
+  "description": "Command history tracking with search and replay",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "history",
+    "command",
+    "cli",
+    "tracking"
+  ],
+  "dependencies": {
+    "better-sqlite3": "^11.7.0"
+  },
+  "files": [
+    "dist"
+  ]
+}

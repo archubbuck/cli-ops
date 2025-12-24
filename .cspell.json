@@ -1,0 +1,26 @@
+{
+  "version": "0.2",
+  "words": [
+    "oclif",
+    "pnpm",
+    "turborepo",
+    "changesets",
+    "tsconfig",
+    "monorepo",
+    "inquirer",
+    "listr",
+    "codespace",
+    "codespaces"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "lib/**",
+    "coverage/**",
+    ".turbo/**",
+    "pnpm-lock.yaml",
+    "*.tsbuildinfo",
+    "oclif.manifest.json"
+  ]
+}

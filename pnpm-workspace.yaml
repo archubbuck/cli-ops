@@ -1,0 +1,9 @@
+packages:
+  # CLI applications
+  - 'apps/*'
+  
+  # Shared libraries
+  - 'packages/*'
+  
+  # Development tooling
+  - 'tooling/*'

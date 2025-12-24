@@ -1,0 +1,15 @@
+{
+  "*.{ts,js}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "*.{json,yml,yaml}": [
+    "prettier --write"
+  ],
+  "*.md": [
+    "prettier --write"
+  ],
+  "src/commands/**/*.ts": [
+    "node scripts/validate-command-structure.js"
+  ]
+}

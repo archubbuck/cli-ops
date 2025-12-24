@@ -1,0 +1,21 @@
+{
+  "name": "shared-exit-codes",
+  "version": "1.0.0",
+  "description": "Standardized exit codes for CLI applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "exit-codes",
+    "cli",
+    "process"
+  ],
+  "files": [
+    "dist"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "compilerOptions": {
+    // Type Checking
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    
+    // Additional Checks
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    
+    // Module Resolution
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    
+    // Emit
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    
+    // Language and Environment
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    
+    // Interop Constraints
+    "isolatedModules": true,
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
+    
+    // Completeness
+    "skipLibCheck": true,
+    
+    // Path Mapping
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"],
+      "@/shared-core": ["packages/shared-core/src"],
+      "@/shared-types": ["packages/shared-types/src"],
+      "@/shared-commands": ["packages/shared-commands/src"],
+      "@/shared-hooks": ["packages/shared-hooks/src"],
+      "@/shared-services": ["packages/shared-services/src"],
+      "@/shared-ui": ["packages/shared-ui/src"],
+      "@/shared-formatter": ["packages/shared-formatter/src"],
+      "@/shared-prompts": ["packages/shared-prompts/src"],
+      "@/shared-config": ["packages/shared-config/src"],
+      "@/shared-logger": ["packages/shared-logger/src"],
+      "@/shared-exit-codes": ["packages/shared-exit-codes/src"],
+      "@/shared-history": ["packages/shared-history/src"],
+      "@/shared-ipc": ["packages/shared-ipc/src"],
+      "@/shared-testing": ["packages/shared-testing/src"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "lib",
+    "coverage",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

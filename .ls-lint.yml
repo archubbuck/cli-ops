@@ -1,0 +1,26 @@
+ls:
+  # Enforce kebab-case for TypeScript/JavaScript files in source directories
+  packages/**/src/**/*.{ts,js}: kebab-case
+  apps/**/src/**/*.{ts,js}: kebab-case
+  tooling/**/src/**/*.{ts,js}: kebab-case
+  
+  # Enforce kebab-case for test files
+  packages/**/test/**/*.{ts,js}: kebab-case
+  apps/**/test/**/*.{ts,js}: kebab-case
+  
+  # Enforce kebab-case for documentation
+  docs/**/*.md: kebab-case
+  
+  # Enforce kebab-case for scripts
+  scripts/*.{ts,js,sh}: kebab-case
+
+ignore:
+  - .git
+  - node_modules
+  - dist
+  - build
+  - lib
+  - coverage
+  - .turbo
+  - .changeset
+  - .husky

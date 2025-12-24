@@ -1,0 +1,15 @@
+{
+  "extends": "../../tooling/tsconfig-base/cli.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../shared-types" },
+    { "path": "../shared-core" },
+    { "path": "../shared-logger" },
+    { "path": "../shared-config" },
+    { "path": "../shared-history" }
+  ]
+}

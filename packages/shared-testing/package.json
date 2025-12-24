@@ -1,0 +1,25 @@
+{
+  "name": "shared-testing",
+  "version": "1.0.0",
+  "description": "Testing utilities and helpers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "testing",
+    "utilities",
+    "helpers"
+  ],
+  "dependencies": {
+    "@oclif/test": "^4.2.2",
+    "shared-types": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ]
+}

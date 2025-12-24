@@ -1,0 +1,29 @@
+{
+  "name": "shared-ui",
+  "version": "1.0.0",
+  "description": "CLI UI components - spinners, progress bars, task lists",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cli",
+    "ui",
+    "spinner",
+    "progress",
+    "tasks"
+  ],
+  "dependencies": {
+    "ora": "^8.1.1",
+    "cli-progress": "^3.12.0",
+    "listr2": "^8.2.5",
+    "chalk": "^5.4.1"
+  },
+  "files": [
+    "dist"
+  ]
+}

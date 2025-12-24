@@ -1,0 +1,26 @@
+{
+  "name": "shared-config",
+  "version": "1.0.0",
+  "description": "Configuration management with cosmiconfig and Zod validation",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "config",
+    "configuration",
+    "cosmiconfig",
+    "validation"
+  ],
+  "dependencies": {
+    "cosmiconfig": "^9.0.0",
+    "zod": "^3.23.8"
+  },
+  "files": [
+    "dist"
+  ]
+}

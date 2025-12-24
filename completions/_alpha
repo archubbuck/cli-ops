@@ -1,0 +1,76 @@
+#compdef alpha
+
+# Zsh completion for alpha CLI
+
+_alpha() {
+  local -a commands
+  commands=(
+    'tasks:create:Create a new task'
+    'tasks:list:List all tasks'
+    'tasks:show:Show task details'
+    'tasks:update:Update a task'
+    'tasks:delete:Delete a task'
+    'help:Display help'
+    'version:Display version'
+  )
+  
+  local -a global_flags
+  global_flags=(
+    '--help[Show help]'
+    '--version[Show version]'
+    '--format[Output format]:format:(json yaml table csv markdown text)'
+    '--verbose[Verbose output]'
+    '--quiet[Suppress output]'
+    '--no-color[Disable colors]'
+  )
+  
+  _arguments -C \
+    '1: :->command' \
+    '*::arg:->args' \
+    $global_flags
+  
+  case $state in
+    command)
+      _describe 'command' commands
+      ;;
+    args)
+      case $words[1] in
+        tasks:create)
+          _arguments \
+            '--title[Task title]:title:' \
+            '--description[Task description]:description:' \
+            '--priority[Task priority]:priority:(low medium high urgent)' \
+            '--tags[Task tags]:tags:' \
+            '--interactive[Interactive mode]' \
+            $global_flags
+          ;;
+        tasks:list)
+          _arguments \
+            '--status[Filter by status]:status:(todo in-progress done cancelled)' \
+            '--priority[Filter by priority]:priority:(low medium high urgent)' \
+            '--tag[Filter by tag]:tag:' \
+            $global_flags
+          ;;
+        tasks:update)
+          _arguments \
+            '1:task_id:' \
+            '--title[New title]:title:' \
+            '--description[New description]:description:' \
+            '--status[New status]:status:(todo in-progress done cancelled)' \
+            '--priority[New priority]:priority:(low medium high urgent)' \
+            '--tags[New tags]:tags:' \
+            '--interactive[Interactive mode]' \
+            $global_flags
+          ;;
+        tasks:delete)
+          _arguments \
+            '1:task_id:' \
+            '--force[Skip confirmation]' \
+            $global_flags
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_alpha "$@"

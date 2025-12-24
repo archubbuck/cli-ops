@@ -1,0 +1,25 @@
+{
+  "name": "shared-hooks",
+  "version": "1.0.0",
+  "description": "Lifecycle hooks for CLI applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "hooks",
+    "lifecycle",
+    "cli"
+  ],
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "shared-logger": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ]
+}

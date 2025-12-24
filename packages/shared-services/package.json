@@ -1,0 +1,26 @@
+{
+  "name": "shared-services",
+  "version": "1.0.0",
+  "description": "Service layer abstractions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "services",
+    "abstractions",
+    "patterns"
+  ],
+  "dependencies": {
+    "shared-types": "workspace:*",
+    "shared-core": "workspace:*",
+    "shared-ipc": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ]
+}

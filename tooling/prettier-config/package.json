@@ -1,0 +1,11 @@
+{
+  "name": "prettier-config",
+  "version": "1.0.0",
+  "description": "Shared Prettier configuration for CLI workspace",
+  "main": "index.js",
+  "private": true,
+  "keywords": [
+    "prettier",
+    "config"
+  ]
+}

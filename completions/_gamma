@@ -1,0 +1,50 @@
+#compdef gamma
+
+_gamma() {
+  local -a commands
+  commands=(
+    'git:status:Show Git status'
+    'git:log:Show Git log'
+    'pr:list:List pull requests'
+    'help:Display help'
+    'version:Display version'
+  )
+  
+  local -a global_flags
+  global_flags=(
+    '--help[Show help]'
+    '--version[Show version]'
+    '--format[Output format]:format:(json yaml table csv markdown text)'
+    '--verbose[Verbose output]'
+    '--quiet[Suppress output]'
+    '--no-color[Disable colors]'
+  )
+  
+  _arguments -C \
+    '1: :->command' \
+    '*::arg:->args' \
+    $global_flags
+  
+  case $state in
+    command)
+      _describe 'command' commands
+      ;;
+    args)
+      case $words[1] in
+        git:log)
+          _arguments \
+            '--limit[Number of commits]:limit:' \
+            $global_flags
+          ;;
+        pr:list)
+          _arguments \
+            '--state[PR state]:state:(open closed all)' \
+            '--token[GitHub token]:token:' \
+            $global_flags
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_gamma "$@"

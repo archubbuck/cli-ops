@@ -1,0 +1,74 @@
+{
+  "name": "cli-alpha",
+  "version": "1.0.0",
+  "description": "Task management CLI with CRUD operations",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "alpha": "./bin/run.js"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "dev": "node --loader ts-node/esm ./bin/dev.js",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit",
+    "perf": "node scripts/perf-check.js"
+  },
+  "keywords": [
+    "cli",
+    "tasks",
+    "todo",
+    "productivity"
+  ],
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "@oclif/plugin-help": "^6.2.18",
+    "@oclif/plugin-version": "^2.2.19",
+    "shared-commands": "workspace:*",
+    "shared-config": "workspace:*",
+    "shared-core": "workspace:*",
+    "shared-exit-codes": "workspace:*",
+    "shared-formatter": "workspace:*",
+    "shared-history": "workspace:*",
+    "shared-hooks": "workspace:*",
+    "shared-logger": "workspace:*",
+    "shared-prompts": "workspace:*",
+    "shared-types": "workspace:*",
+    "shared-ui": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "oclif": {
+    "bin": "alpha",
+    "dirname": "alpha",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-version"
+    ],
+    "topicSeparator": ":",
+    "topics": {
+      "tasks": {
+        "description": "Manage tasks"
+      }
+    },
+    "hooks": {
+      "init": "./dist/hooks/init",
+      "prerun": "./dist/hooks/prerun",
+      "postrun": "./dist/hooks/postrun",
+      "command_not_found": "./dist/hooks/command-not-found"
+    }
+  },
+  "files": [
+    "bin",
+    "dist",
+    "oclif.manifest.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "shared-commands",
+  "version": "1.0.0",
+  "description": "Base command classes with enhanced functionality",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "commands",
+    "cli",
+    "oclif"
+  ],
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "shared-types": "workspace:*",
+    "shared-core": "workspace:*",
+    "shared-logger": "workspace:*",
+    "shared-config": "workspace:*",
+    "shared-history": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ]
+}

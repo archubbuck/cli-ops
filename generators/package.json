@@ -1,0 +1,15 @@
+{
+  "name": "generators",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Code generators for the workspace",
+  "type": "module",
+  "scripts": {
+    "generate:cli": "plop cli",
+    "generate:package": "plop package",
+    "generate:command": "plop command"
+  },
+  "dependencies": {
+    "plop": "^4.0.1"
+  }
+}

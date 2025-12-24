@@ -1,0 +1,26 @@
+{
+  "name": "shared-core",
+  "version": "1.0.0",
+  "description": "Core utilities and base classes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "core",
+    "utilities",
+    "base"
+  ],
+  "dependencies": {
+    "shared-types": "workspace:*",
+    "shared-exit-codes": "workspace:*",
+    "shared-logger": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ]
+}

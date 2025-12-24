@@ -1,0 +1,26 @@
+{
+  "name": "shared-prompts",
+  "version": "1.0.0",
+  "description": "Interactive prompts with validation and history",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "prompts",
+    "cli",
+    "interactive",
+    "inquirer"
+  ],
+  "dependencies": {
+    "inquirer": "^12.2.0",
+    "zod": "^3.23.8"
+  },
+  "files": [
+    "dist"
+  ]
+}

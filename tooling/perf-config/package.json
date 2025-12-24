@@ -1,0 +1,11 @@
+{
+  "name": "perf-config",
+  "version": "1.0.0",
+  "description": "Performance budgets and benchmarking configuration",
+  "main": "index.js",
+  "private": true,
+  "keywords": [
+    "performance",
+    "benchmarks"
+  ]
+}

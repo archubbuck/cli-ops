@@ -1,0 +1,27 @@
+{
+  "name": "shared-logger",
+  "version": "1.0.0",
+  "description": "Structured logging with debug and pino",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "logger",
+    "logging",
+    "debug",
+    "pino"
+  ],
+  "dependencies": {
+    "debug": "^4.3.7",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.2.2"
+  },
+  "files": [
+    "dist"
+  ]
+}

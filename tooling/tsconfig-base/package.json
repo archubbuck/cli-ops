@@ -1,0 +1,10 @@
+{
+  "name": "tsconfig-base",
+  "version": "1.0.0",
+  "description": "Shared TypeScript configurations for CLI workspace",
+  "private": true,
+  "keywords": [
+    "typescript",
+    "tsconfig"
+  ]
+}

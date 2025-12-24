@@ -1,0 +1,11 @@
+{
+  "name": "eslint-config",
+  "version": "1.0.0",
+  "description": "Shared ESLint configuration for CLI workspace",
+  "main": "index.js",
+  "private": true,
+  "keywords": [
+    "eslint",
+    "config"
+  ]
+}

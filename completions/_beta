@@ -1,0 +1,53 @@
+#compdef beta
+
+_beta() {
+  local -a commands
+  commands=(
+    'request:get:Make GET request'
+    'request:post:Make POST request'
+    'help:Display help'
+    'version:Display version'
+  )
+  
+  local -a global_flags
+  global_flags=(
+    '--help[Show help]'
+    '--version[Show version]'
+    '--format[Output format]:format:(json yaml table csv markdown text)'
+    '--verbose[Verbose output]'
+    '--quiet[Suppress output]'
+    '--no-color[Disable colors]'
+  )
+  
+  _arguments -C \
+    '1: :->command' \
+    '*::arg:->args' \
+    $global_flags
+  
+  case $state in
+    command)
+      _describe 'command' commands
+      ;;
+    args)
+      case $words[1] in
+        request:get)
+          _arguments \
+            '1:url:' \
+            '--header[HTTP header]:header:' \
+            '--cache[Enable caching]' \
+            '--cache-ttl[Cache TTL]:seconds:' \
+            $global_flags
+          ;;
+        request:post)
+          _arguments \
+            '1:url:' \
+            '--data[Request data]:data:' \
+            '--header[HTTP header]:header:' \
+            $global_flags
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_beta "$@"

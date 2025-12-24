@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged on staged files
+npx lint-staged
+
+# Validate file naming conventions
+npx ls-lint
+
+# Type check
+pnpm typecheck
+
+# Spell check staged files
+git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|js|md)$' | xargs npx cspell --no-progress --no-summary || true
+
+# Check for console.log statements (except in shared-logger)
+if git diff --cached --name-only | grep -E '\.(ts|js)$' | grep -v 'shared-logger' | xargs grep -n 'console\.\(log\|debug\|info\)' 2>/dev/null; then
+  echo "❌ Error: console.log/debug/info found. Use shared-logger instead."
+  exit 1
+fi
+
+# Check for TODO/FIXME without issue references
+if git diff --cached --diff-filter=ACM | grep -E '^\+.*\b(TODO|FIXME)\b' | grep -v '#[0-9]'; then
+  echo "⚠️  Warning: TODO/FIXME found without issue reference. Please add issue number."
+  # Don't fail, just warn
+fi
+
+# Check for merge conflict markers
+if git diff --cached | grep -E '^(<<<<<<<|=======|>>>>>>>)'; then
+  echo "❌ Error: Merge conflict markers found."
+  exit 1
+fi
