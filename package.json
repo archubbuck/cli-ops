@@ -34,7 +34,6 @@
     "inventory:generate": "node scripts/generate-inventory.js",
     "inventory:validate": "node scripts/validate-inventory.js",
     "inventory:update-docs": "node scripts/update-architecture-docs.js",
-    "postbuild": "pnpm inventory:generate",
     "prepare": "husky"
   },
   "devDependencies": {

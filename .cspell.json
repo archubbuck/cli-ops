@@ -10,7 +10,13 @@
     "inquirer",
     "listr",
     "codespace",
-    "codespaces"
+    "codespaces",
+    "devprod",
+    "archub",
+    "hubuck",
+    "perf",
+    "clis",
+    "asciicast"
   ],
   "ignorePaths": [
     "node_modules/**",
@@ -21,6 +27,7 @@
     ".turbo/**",
     "pnpm-lock.yaml",
     "*.tsbuildinfo",
-    "oclif.manifest.json"
+    "oclif.manifest.json",
+    "inventory/**"
   ]
 }

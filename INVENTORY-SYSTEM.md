@@ -66,11 +66,12 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 
 The inventory is automatically maintained through:
 
-#### 1. Post-Build Hook
-After running `pnpm build`, the inventory regenerates automatically:
-```json
-"postbuild": "pnpm inventory:generate"
-```
+#### 1. CI Workflow (`.github/workflows/ci.yml`)
+After successful build in CI:
+- Regenerates inventory from built artifacts
+- Updates architecture documentation
+- Uploads inventory artifacts
+- Ensures committed inventory matches reality
 
 #### 2. Pre-Commit Hook (`.husky/pre-commit`)
 Before each commit:
@@ -85,12 +86,7 @@ pnpm inventory:validate || {
 }
 ```
 
-#### 3. CI Workflow (`.github/workflows/ci.yml`)
-After successful build in CI:
-- Regenerates inventory from built artifacts
-- Updates architecture documentation
-- Uploads inventory artifacts
-- Ensures committed inventory matches reality
+The inventory is primarily regenerated in CI workflows to ensure accuracy with built artifacts. For local development, run `pnpm inventory:generate` manually after building.
 
 ### Integration Points
 
@@ -116,8 +112,7 @@ After successful build in CI:
 {
   "inventory:generate": "node scripts/generate-inventory.js",
   "inventory:validate": "node scripts/validate-inventory.js",
-  "inventory:update-docs": "node scripts/update-architecture-docs.js",
-  "postbuild": "pnpm inventory:generate"
+  "inventory:update-docs": "node scripts/update-architecture-docs.js"
 }
 ```
 
@@ -202,7 +197,7 @@ The inventory regenerates automatically when:
 ✅ Changing CLI versions or descriptions  
 ✅ Updating package.json oclif configuration  
 ✅ Changing shared package dependencies  
-✅ After every build via postbuild hook  
+✅ In CI workflows after successful build  
 
 ### Manual Regeneration
 
@@ -268,7 +263,7 @@ This allows:
 
 3. **Let automation handle updates**
    - Don't manually edit `CLI-INVENTORY.md`
-   - Rely on postbuild hook
+   - Rely on CI workflows for generation
    - Trust pre-commit validation
 
 4. **Review inventory in PRs**
