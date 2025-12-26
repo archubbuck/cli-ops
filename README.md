@@ -65,9 +65,8 @@ import { BaseCommand } from '@/shared-commands'
 ## Documentation
 
 See [`docs/`](./docs/) for detailed documentation:
-- [Architecture Overview](./docs/architecture/overview.md)
-- [Contributing Guide](./docs/contributing/getting-started.md)
-- [Development Workflow](./docs/guides/development-workflow.md)
+- [Architecture Overview](./docs/ARCHITECTURE.md)
+- [Contributing Guide](./docs/CONTRIBUTING.md)
 
 ## License
 

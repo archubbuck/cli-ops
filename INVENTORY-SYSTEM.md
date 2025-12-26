@@ -292,7 +292,7 @@ Potential improvements:
 
 ## Related Documentation
 
-- [docs/CLI-INVENTORY.md](../docs/CLI-INVENTORY.md) - Generated inventory
-- [docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md) - System architecture (includes inventory tree)
-- [apps/README.md](../apps/README.md) - CLI applications overview
-- [scripts/README.md](./README.md) - Scripts documentation
+- [docs/CLI-INVENTORY.md](./docs/CLI-INVENTORY.md) - Generated inventory
+- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) - System architecture (includes inventory tree)
+- [apps/README.md](./apps/README.md) - CLI applications overview
+- [scripts/README.md](./scripts/README.md) - Scripts documentation

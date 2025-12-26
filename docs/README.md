@@ -4,22 +4,17 @@ Comprehensive documentation for the CLI workspace.
 
 ## Structure
 
-- **[architecture/](./architecture/)** - System architecture and design patterns
-- **[contributing/](./contributing/)** - Contribution guidelines and workflows  
-- **[guides/](./guides/)** - How-to guides and tutorials
-- **[adr/](./adr/)** - Architectural Decision Records
+Documentation is organized in this directory with the following files:
+
+- **ARCHITECTURE.md** - System architecture and design patterns
+- **CONTRIBUTING.md** - Contribution guidelines and workflows
 
 ## Quick Links
 
-- [CLI Inventory](CLI-INVENTORY.md) - Complete CLI command reference
-- [Getting Started](./contributing/getting-started.md)
-- [Architecture Overview](./architecture/overview.md)
-- [Development Workflow](./guides/development-workflow.md)
-- [Creating a New CLI](./contributing/creating-new-cli.md)
+- [Architecture Overview](./ARCHITECTURE.md)
+- [Contributing Guide](./CONTRIBUTING.md)
 
 ## For New Contributors
 
-1. Read [Getting Started](./contributing/getting-started.md)
-2. Understand [Architecture Overview](./architecture/overview.md)
-3. Follow [Development Workflow](./guides/development-workflow.md)
-4. Review [ADHD/OCD Guidelines](./contributing/adhd-ocd-guidelines.md)
+1. Understand [Architecture Overview](./ARCHITECTURE.md)
+2. Follow [Contributing Guide](./CONTRIBUTING.md)
