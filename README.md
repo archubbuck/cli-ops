@@ -40,6 +40,15 @@ pnpm test
 
 # Lint
 pnpm lint
+
+# Format code
+pnpm format
+
+# Type check
+pnpm typecheck
+
+# Clean build artifacts
+pnpm clean
 ```
 
 ## Package Naming

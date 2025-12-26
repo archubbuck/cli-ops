@@ -40,6 +40,29 @@ This project uses **internal issue tracking** via [.github/ISSUES.md](../.github
 - pnpm >= 9.0.0
 - Git
 
+### Why pnpm?
+
+⚠️ **Important: Use pnpm, NOT npm!**
+
+This workspace uses pnpm for several reasons:
+- **Workspace protocol** (`workspace:*`) for internal dependencies
+- **pnpm workspaces** for monorepo management
+- **Efficient disk space** usage with content-addressable storage
+- **Strict dependency management** to prevent phantom dependencies
+
+**If you accidentally ran `npm install`:**
+
+```bash
+# Remove npm artifacts
+rm -rf node_modules package-lock.json
+rm -rf apps/*/node_modules
+rm -rf packages/*/node_modules
+rm -rf tooling/*/node_modules
+
+# Install with pnpm
+pnpm install
+```
+
 ### Setup
 ```bash
 # Clone repository
