@@ -1,5 +1,5 @@
 {
-  "name": "shared-services",
+  "name": "@cli-ops/shared-services",
   "version": "1.0.0",
   "description": "Service layer abstractions",
   "main": "dist/index.js",
@@ -16,11 +16,14 @@
     "patterns"
   ],
   "dependencies": {
-    "shared-types": "workspace:*",
-    "shared-core": "workspace:*",
-    "shared-ipc": "workspace:*"
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-core": "workspace:*",
+    "@cli-ops/shared-ipc": "workspace:*"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,0 +1,112 @@
+#compdef clio
+
+# Zsh completion for clio CLI
+
+_clio() {
+  local -a core_commands tasks_commands
+  
+  # Core commands
+  core_commands=(
+    'config\:get:Get configuration value'
+    'config\:set:Set configuration value'
+    'config\:list:List all configuration'
+    'history\:list:Show command history'
+    'doctor:Check installation health'
+    'plugins:Manage plugins'
+    'plugins\:install:Install a plugin'
+    'plugins\:uninstall:Uninstall a plugin'
+    'plugins\:list:List installed plugins'
+    'plugins\:update:Update all plugins'
+    'plugins\:link:Link local plugin'
+    'help:Display help'
+    'version:Show version'
+  )
+  
+  # Tasks commands (bundled plugin)
+  tasks_commands=(
+    'tasks\:create:Create a new task'
+    'tasks\:list:List all tasks'
+    'tasks\:show:Show task details'
+    'tasks\:update:Update a task'
+    'tasks\:delete:Delete a task'
+  )
+  
+  local -a all_commands
+  all_commands=($core_commands $tasks_commands)
+  
+  _arguments -C \
+    '1: :->command' \
+    '*::arg:->args' \
+    '(- *)--help[Show help]' \
+    '(- *)--version[Show version]' \
+    '--format[Output format]:format:(json yaml table)' \
+    '--verbose[Verbose output]' \
+    '--quiet[Quiet mode]' \
+    '--no-color[Disable colors]'
+  
+  case "$state" in
+    command)
+      _describe 'clio command' all_commands
+      ;;
+    args)
+      case "${words[1]}" in
+        config:get|config:set)
+          _arguments \
+            '--global[Global configuration]' \
+            '--plugin[Plugin configuration]:plugin:'
+          ;;
+        config:list)
+          _arguments \
+            '--global[Show global config only]' \
+            '--json[Output as JSON]'
+          ;;
+        history:list)
+          _arguments \
+            '--limit[Limit results]:limit:' \
+            '--since[Show since date]:date:' \
+            '--command[Filter by command]:command:'
+          ;;
+        doctor)
+          _arguments \
+            '--check[Check specific]:check:' \
+            '--fix[Auto-fix issues]'
+          ;;
+        plugins:install)
+          _arguments \
+            '--force[Force installation]' \
+            '--tag[Install specific version]:tag:'
+          ;;
+        tasks:create)
+          _arguments \
+            '--title[Task title]:title:' \
+            '--description[Task description]:description:' \
+            '--priority[Priority]:priority:(low medium high)' \
+            '--tags[Tags]:tags:' \
+            '--interactive[Interactive mode]'
+          ;;
+        tasks:list)
+          _arguments \
+            '--status[Filter by status]:status:(todo in-progress done)' \
+            '--priority[Filter by priority]:priority:(low medium high)' \
+            '--tag[Filter by tag]:tag:' \
+            '--format[Output format]:format:(json yaml table)'
+          ;;
+        tasks:update)
+          _arguments \
+            '--title[Task title]:title:' \
+            '--description[Task description]:description:' \
+            '--status[Status]:status:(todo in-progress done)' \
+            '--priority[Priority]:priority:(low medium high)' \
+            '--tags[Tags]:tags:' \
+            '--interactive[Interactive mode]'
+          ;;
+        tasks:delete)
+          _arguments \
+            '--force[Skip confirmation]'
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_clio "$@"

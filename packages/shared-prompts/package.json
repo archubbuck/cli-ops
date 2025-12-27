@@ -1,5 +1,5 @@
 {
-  "name": "shared-prompts",
+  "name": "@cli-ops/shared-prompts",
   "version": "1.0.0",
   "description": "Interactive prompts with validation and history",
   "main": "dist/index.js",
@@ -22,5 +22,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

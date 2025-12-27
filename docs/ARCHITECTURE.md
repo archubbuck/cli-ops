@@ -1,123 +1,225 @@
 # Architecture
 
-This document describes the architecture of the CLI workspace monorepo.
+This document describes the architecture of the CLI Ops plugin-first monorepo.
 
 ## Overview
 
-The workspace is a **monorepo** containing multiple CLI applications that share common packages. It uses:
+The workspace is a **monorepo** with a unified CLI (`clio`) as a plugin manager. It uses:
+
+- **oclif v4** - CLI framework with plugin system
 - **pnpm workspaces** for package management
 - **Turborepo** for build orchestration
 - **Changesets** for versioning
 - **TypeScript** with strict mode
+- **@cli-ops scope** for npm packages
 
 ## Directory Structure
 
 ```
 .
-├── apps/                    # CLI applications
-│   ├── cli-alpha/          # Task manager CLI
-│   ├── cli-beta/           # API client CLI
-│   └── cli-gamma/          # Dev tools CLI
-├── packages/               # Shared packages
-│   ├── shared-commands/    # Base command classes
-│   ├── shared-config/      # Configuration management
-│   ├── shared-core/        # Core utilities
-│   ├── shared-exit-codes/  # Standard exit codes
-│   ├── shared-formatter/   # Output formatters
-│   ├── shared-history/     # Command history
-│   ├── shared-hooks/       # Lifecycle hooks
-│   ├── shared-ipc/         # Inter-process communication
-│   ├── shared-logger/      # Logging utilities
-│   ├── shared-prompts/     # Interactive prompts
-│   ├── shared-services/    # Service abstractions
-│   ├── shared-testing/     # Testing utilities
-│   ├── shared-types/       # TypeScript types
-│   └── shared-ui/          # CLI UI components
-├── tooling/                # Shared tooling configs
-│   ├── eslint-config/      # ESLint configuration
-│   ├── prettier-config/    # Prettier configuration
-│   ├── tsconfig-base/      # TypeScript configurations
-│   └── perf-config/        # Performance budgets
-├── docs/                   # Documentation
-├── scripts/                # Build and utility scripts
-└── completions/            # Shell completion scripts
+├── plugins/
+│   └── clio/                      # Core CLI manager (@cli-ops/clio)
+├── packages/
+│   ├── clio-plugin-tasks/         # Task management plugin (bundled)
+│   ├── clio-plugin-fetch/         # HTTP API client plugin
+│   ├── clio-plugin-repo/          # Developer tools plugin
+│   ├── clio-meta-developer/       # Dev persona bundle
+│   ├── clio-meta-complete/        # Complete bundle
+│   ├── shared-commands/           # Base command classes
+│   ├── shared-config/             # Configuration management
+│   ├── shared-core/               # Core utilities
+│   ├── shared-exit-codes/         # Standard exit codes
+│   ├── shared-formatter/          # Output formatters
+│   ├── shared-history/            # Command history
+│   ├── shared-hooks/              # Lifecycle hooks
+│   ├── shared-ipc/                # Inter-process communication
+│   ├── shared-logger/             # Logging utilities
+│   ├── shared-plugins/            # Plugin system infrastructure
+│   ├── shared-prompts/            # Interactive prompts
+│   ├── shared-services/           # Service abstractions
+│   ├── shared-testing/            # Testing utilities
+│   ├── shared-types/              # TypeScript types
+│   └── shared-ui/                 # CLI UI components
+├── tooling/                       # Shared tooling configs
+│   ├── eslint-config/             # ESLint configuration
+│   ├── prettier-config/           # Prettier configuration
+│   ├── tsconfig-base/             # TypeScript configurations
+│   └── perf-config/               # Performance budgets
+├── extensions/                    # Extension plugin examples
+├── docs/                          # Documentation
+├── scripts/                       # Build and utility scripts
+└── completions/                   # Shell completion scripts
 ```
 
 ## Architecture Layers
 
+### Layer 0: Core CLI (clio)
+
+- **Purpose**: Plugin manager and foundational CLI
+- **Package**: `@cli-ops/clio`
+- **Contents**: Core commands (config, history, doctor), plugin management
+- **Bundles**: `@oclif/plugin-plugins`, `@oclif/plugin-help`, `@cli-ops/clio-plugin-tasks`
+
 ### Layer 1: Foundation (Tooling)
+
 - **Purpose**: Workspace-wide consistency
 - **Packages**: `tooling/*`
 - **Contents**: ESLint, Prettier, TypeScript configs
 
 ### Layer 2: Types
+
 - **Purpose**: Shared type definitions
-- **Packages**: `shared-types`
+- **Package**: `@cli-ops/shared-types`
 - **Contents**: TypeScript types and interfaces
 
 ### Layer 3: Infrastructure
+
 - **Purpose**: Low-level utilities
-- **Packages**: 
-  - `shared-exit-codes` - Standard exit codes
-  - `shared-logger` - Logging
-  - `shared-config` - Configuration
-  - `shared-ipc` - Inter-process communication
-  - `shared-history` - Command history
+- **Packages**:
+  - `@cli-ops/shared-exit-codes` - Standard exit codes
+  - `@cli-ops/shared-logger` - Logging
+  - `@cli-ops/shared-config` - Configuration
+  - `@cli-ops/shared-ipc` - Inter-process communication
+  - `@cli-ops/shared-history` - Command history
 - **Dependencies**: Types only
 
 ### Layer 4: UI & Formatting
+
 - **Purpose**: User interaction and output
 - **Packages**:
-  - `shared-ui` - Spinners, progress bars, tasks
-  - `shared-formatter` - JSON, YAML, table, Markdown, CSV
-  - `shared-prompts` - Interactive prompts
+  - `@cli-ops/shared-ui` - Spinners, progress bars, tasks
+  - `@cli-ops/shared-formatter` - JSON, YAML, table, Markdown, CSV
+  - `@cli-ops/shared-prompts` - Interactive prompts
 - **Dependencies**: Infrastructure + Types
 
 ### Layer 5: Core
+
 - **Purpose**: Business logic abstractions
 - **Packages**:
-  - `shared-core` - Error classes, context
-  - `shared-services` - Service patterns
-  - `shared-testing` - Test utilities
+  - `@cli-ops/shared-core` - Error classes, context
+  - `@cli-ops/shared-services` - Service patterns
+  - `@cli-ops/shared-testing` - Test utilities
 - **Dependencies**: All lower layers
 
 ### Layer 6: Commands
+
 - **Purpose**: CLI framework integration
-- **Packages**: `shared-commands`, `shared-hooks`
+- **Packages**: `@cli-ops/shared-commands`, `@cli-ops/shared-hooks`
 - **Dependencies**: All lower layers + oclif
 - **Contents**: Base command classes, hooks
 
-### Layer 7: Applications
-- **Purpose**: End-user CLIs
-- **Packages**: `apps/*`
+### Layer 6.5: Plugins
+
+- **Purpose**: Plugin system infrastructure
+- **Package**: `@cli-ops/shared-plugins`
+- **Dependencies**: Commands + IPC + Logger + Types
+- **Contents**: Plugin manager, base plugin classes, plugin hooks
+- **Note**: Plugins register with clio's plugin system
+
+### Layer 7: Plugin Implementations
+
+- **Purpose**: Feature-specific functionality
+- **Packages**:
+  - `@cli-ops/clio-plugin-tasks` - Task management (bundled)
+  - `@cli-ops/clio-plugin-fetch` - HTTP API client (installable)
+  - `@cli-ops/clio-plugin-repo` - Developer tools (installable)
 - **Dependencies**: All shared packages
-- **Contents**: Commands, business logic
+- **Contents**: Commands, business logic, plugin-specific utilities
+
+### Layer 8: Meta-Packages
+
+- **Purpose**: Persona-based installation bundles
+- **Packages**:
+  - `@cli-ops/clio-meta-developer` - clio + fetch + repo
+  - `@cli-ops/clio-meta-complete` - All plugins
+- **Contents**: postinstall scripts auto-installing plugins
+
+## Plugin Architecture
+
+### Plugin Discovery
+
+```
+User executes: clio tasks:create "Task"
+  ↓
+clio plugin loader
+  ↓
+Check bundled plugins (tasks)
+  ↓
+Check installed plugins (fetch, repo)
+  ↓
+Load plugin commands
+  ↓
+Execute command
+```
+
+### Plugin Structure
+
+```typescript
+// @cli-ops/clio-plugin-tasks/package.json
+{
+  "name": "@cli-ops/clio-plugin-tasks",
+  "version": "2.0.0",
+  "oclif": {
+    "bin": "clio",
+    "commands": "./dist/commands"
+  },
+  "peerDependencies": {
+    "@cli-ops/clio": "^1.0.0"
+  }
+}
+```
+
+### Plugin Installation
+
+```bash
+# Via meta-package postinstall
+npm install -g @cli-ops/clio-meta-developer
+# → Auto-installs: clio, fetch, repo plugins
+
+# Manual installation
+clio plugins:install @cli-ops/clio-plugin-fetch
+clio plugins:list
+```
 
 ## Design Principles
 
-### 1. Dependency Direction
+### 1. Plugin-First Design
+
+All functionality beyond core management is delivered as plugins:
+
+- **Bundled**: Tasks plugin included by default
+- **Installable**: Fetch, repo, and community plugins on-demand
+- **Composable**: Mix and match plugins per user needs
+
+### 2. Dependency Direction
+
 Dependencies flow **upward only**:
+
 ```
-Applications → Commands → Core → UI/Formatting → Infrastructure → Types → Tooling
+Meta-Packages → Plugins → clio Core → Commands → Core → UI/Formatting → Infrastructure → Types → Tooling
 ```
 
-### 2. Separation of Concerns
+### 3. Separation of Concerns
+
 - **UI**: Visual components (spinners, tables)
-- **Logic**: Business rules in apps
+- **Logic**: Business rules in plugins
 - **Data**: Storage and caching in services
 - **Framework**: oclif integration in commands
 
-### 3. Composition over Inheritance
+### 4. Composition over Inheritance
+
 - Small, focused packages
 - Compose functionality via imports
 - Minimal inheritance hierarchies
 
-### 4. Type Safety
+### 5. Type Safety
+
 - Strict TypeScript everywhere
 - Zod for runtime validation
 - No `any` types
 
-### 5. ADHD/OCD Optimization
+### 6. ADHD/OCD Optimization
+
 - **Predictability**: Consistent patterns
 - **Organization**: Clear structure
 - **Simplicity**: Minimal complexity
@@ -126,22 +228,34 @@ Applications → Commands → Core → UI/Formatting → Infrastructure → Type
 ## Package Dependencies
 
 ### No External Dependencies
-- `shared-exit-codes`
-- `shared-types`
+
+- `@cli-ops/shared-exit-codes`
+- `@cli-ops/shared-types`
 
 ### Minimal Dependencies
-- `shared-logger`: debug, pino
-- `shared-ui`: ora, cli-progress, listr2, chalk
-- `shared-formatter`: cli-table3, chalk
-- `shared-prompts`: inquirer, zod
+
+- `@cli-ops/shared-logger`: debug, pino
+- `@cli-ops/shared-ui`: ora, cli-progress, listr2, chalk
+- `@cli-ops/shared-formatter`: cli-table3, chalk
+- `@cli-ops/shared-prompts`: inquirer, zod
 
 ### Framework Integration
-- `shared-commands`: @oclif/core
-- `shared-hooks`: @oclif/core
+
+- `@cli-ops/shared-commands`: @oclif/core
+- `@cli-ops/shared-hooks`: @oclif/core
+- `@cli-ops/clio`: @oclif/core, @oclif/plugin-plugins, @oclif/plugin-help
+
+### Plugin Dependencies
+
+All plugins (`@cli-ops/clio-plugin-*`) have:
+
+- **peerDependencies**: `@cli-ops/clio` (ensures core CLI is installed)
+- **dependencies**: Shared packages (`@cli-ops/shared-*`)
 
 ## Build Pipeline
 
 ### Turborepo Configuration
+
 ```json
 {
   "pipeline": {
@@ -157,25 +271,33 @@ Applications → Commands → Core → UI/Formatting → Infrastructure → Type
 ```
 
 ### Build Order
+
 1. **Tooling packages** (configs)
-2. **Types** (`shared-types`)
+2. **Types** (`@cli-ops/shared-types`)
 3. **Infrastructure** (logger, config, etc.)
 4. **UI/Formatting** (ui, formatter, prompts)
 5. **Core** (core, services, testing)
 6. **Commands** (commands, hooks)
-7. **Applications** (all CLIs)
+7. **Core CLI** (`@cli-ops/clio`)
+8. **Plugins** (`@cli-ops/clio-plugin-*`)
+9. **Meta-packages** (`@cli-ops/clio-meta-*`)
 
 ## Data Flow
 
-### Command Execution
+### Command Execution (Plugin-based)
+
 ```
-User Input
+User Input: clio tasks:create "Task"
   ↓
 oclif Parser
   ↓
-BaseCommand
+Plugin Loader (clio)
   ↓
-Command Logic
+Load tasks plugin
+  ↓
+BaseCommand (from shared-commands)
+  ↓
+Task Command Logic
   ↓
 Services/Storage
   ↓
@@ -185,31 +307,53 @@ Output
 ```
 
 ### Configuration Loading
+
 ```
-CLI Start
+CLI Start (clio)
   ↓
 Context Creation
   ↓
-Config Loader
+Config Loader (~/.config/clio/config.json)
+  ↓
+Plugin Configs (~/.config/clio/plugins/*.json)
   ↓
 Validation (Zod)
   ↓
 Merged Config
 ```
 
+### Plugin Installation Flow
+
+```
+User: clio plugins:install @cli-ops/clio-plugin-fetch
+  ↓
+@oclif/plugin-plugins
+  ↓
+npm install -g @cli-ops/clio-plugin-fetch
+  ↓
+Register plugin with clio
+  ↓
+Cache plugin commands
+  ↓
+Available: clio fetch:get URL
+```
+
 ## Testing Strategy
 
 ### Unit Tests
+
 - Each package has its own tests
 - Run with: `pnpm test`
 - Coverage target: 80%
 
 ### E2E Tests
+
 - Test full CLI workflows
 - Run with: `pnpm test:e2e`
 - Use `@oclif/test` helpers
 
 ### Performance Tests
+
 - Validate startup times
 - Run with: `pnpm perf`
 - Budgets defined in `perf-config`
@@ -219,6 +363,7 @@ Merged Config
 ### GitHub Actions Workflows
 
 #### CI (on push/PR)
+
 1. Lint
 2. Type check
 3. Build
@@ -226,6 +371,7 @@ Merged Config
 5. Performance check
 
 #### Release (on main)
+
 1. Build
 2. Changesets version
 3. Publish to npm
@@ -234,6 +380,7 @@ Merged Config
 ## Error Handling
 
 ### Error Hierarchy
+
 ```
 Error
   └── CLIError (with exit codes)
@@ -245,6 +392,7 @@ Error
 ```
 
 ### Error Display
+
 1. Error message
 2. Suggestions (if available)
 3. Cause chain (if available)
@@ -253,12 +401,14 @@ Error
 ## Performance Optimization
 
 ### Strategies
+
 - **Lazy loading**: Import heavy modules only when needed
 - **Caching**: Cache API responses and config
 - **Parallelization**: Use Turborepo's parallel builds
 - **Tree shaking**: ESM modules for better bundling
 
 ### Budgets
+
 - Help command: < 500ms
 - Version command: < 200ms
 - List commands: < 1000ms
@@ -267,6 +417,7 @@ Error
 ## Security
 
 ### Best Practices
+
 - No secrets in code
 - Environment variable validation
 - Input sanitization
@@ -275,34 +426,71 @@ Error
 
 ## Extensibility
 
-### Adding New CLI
-1. Use generator: `pnpm generate:cli`
-2. Add commands
-3. Update workspace config
-4. Add to CI/CD
+### Adding New Plugin
 
-### Adding New Package
+1. Use generator: `pnpm generate:cli` (generates plugin structure)
+2. Update package.json:
+   - Name: `@cli-ops/clio-plugin-{name}`
+   - Add `peerDependencies`: `@cli-ops/clio`
+   - Add oclif config with `"bin": "clio"`
+3. Add commands to `/src/commands/`
+4. Update workspace config
+5. Publish to npm under `@cli-ops` scope
+
+### Adding New Shared Package
+
 1. Use generator: `pnpm generate:package`
 2. Implement functionality
 3. Add tests
 4. Update dependencies
+5. Publish as `@cli-ops/shared-{name}`
 
-### Adding New Command
+### Adding Command to Plugin
+
 1. Use generator: `pnpm generate:command`
-2. Extend BaseCommand
-3. Add to CLI's oclif config
+2. Extend BaseCommand from `@cli-ops/shared-commands`
+3. Add to plugin's `/src/commands/` directory
 4. Document usage
+5. Plugin commands automatically available after install
+
+### Creating Meta-Package
+
+1. Create `@cli-ops/clio-meta-{persona}` package
+2. Add dependencies (clio + plugins)
+3. Create postinstall.js:
+   ```javascript
+   const { execSync } = require('child_process')
+   const plugins = ['@cli-ops/clio-plugin-fetch', '@cli-ops/clio-plugin-repo']
+   plugins.forEach((plugin) => {
+     try {
+       execSync(`clio plugins:install ${plugin}`, { stdio: 'inherit' })
+     } catch (e) {
+       console.warn(`Failed to install ${plugin}`)
+     }
+   })
+   ```
+4. Document persona use case
 
 ## Future Enhancements
 
+### Implemented
+
+- ✅ Plugin system - Dynamic extension via npm packages
+- ✅ Plugin manager - Core clio CLI manages plugins
+- ✅ Scoped packages - `@cli-ops` namespace
+- ✅ Meta-packages - Persona-based bundles
+
 ### Planned
-- Plugin system
+
 - API documentation generation
 - Interactive tutorials
 - Update notifications
 - Telemetry (opt-in)
+- Community plugin registry
+- Plugin marketplace
 
 ### Experimental
+
 - WebAssembly modules
 - GUI wrapper
 - VS Code extension

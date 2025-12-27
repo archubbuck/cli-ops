@@ -1,5 +1,5 @@
 {
-  "name": "shared-history",
+  "name": "@cli-ops/shared-history",
   "version": "1.0.0",
   "description": "Command history tracking with search and replay",
   "main": "dist/index.js",
@@ -19,7 +19,13 @@
   "dependencies": {
     "better-sqlite3": "^11.7.0"
   },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12"
+  },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -6,7 +6,7 @@
 
 ## Context
 
-In a monorepo with 14 shared packages and 3 CLIs, we needed a versioning and release management system that could:
+In a monorepo with 14 shared packages, clio CLI, and 3 plugins, we needed a versioning and release management system that could:
 
 - Support independent versioning (packages can have different versions)
 - Generate meaningful changelogs automatically

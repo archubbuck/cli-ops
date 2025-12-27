@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/shared-commands" },
+    { "path": "../../packages/shared-logger" },
+    { "path": "../../packages/shared-plugins" },
+    { "path": "../../packages/shared-types" },
+    { "path": "../../packages/shared-ui" },
+    { "path": "../../packages/shared-prompts" }
+  ]
+}

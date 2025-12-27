@@ -1,28 +1,28 @@
 # ADR-008: Cross-CLI Communication and IPC
 
-**Status:** Accepted  
-**Date:** 2025-12-26  
+**Status:** Accepted (Updated for plugin architecture)  
+**Date:** 2025-12-26 (Updated: 2025-01)  
 **Deciders:** Team  
 
 ## Context
 
-This monorepo contains three independent CLIs (`cli-alpha`, `cli-beta`, `cli-gamma`) that sometimes need to:
+The CLI Ops workspace uses a unified plugin-first architecture where `clio` manages multiple plugins. Plugins sometimes need to:
 
-- **Coordinate actions**: One CLI triggering another CLI
+- **Coordinate actions**: One plugin triggering functionality in another
 - **Share state**: Access to common data or configuration
 - **Prevent conflicts**: Avoid simultaneous execution that could corrupt data
-- **Discover each other**: Know which CLIs are installed and running
-- **Event notification**: One CLI notifying others of state changes
+- **Discover each other**: Know which plugins are installed and active
+- **Event notification**: Plugins notifying each other of state changes
 
 Use cases:
-- `cli-alpha` needs to know if `cli-beta` is currently running
-- `cli-beta` wants to trigger a task in `cli-alpha`
-- `cli-gamma` needs exclusive access to a shared resource
-- All CLIs should respond to system-wide events (e.g., config changes)
+- `clio-plugin-tasks` needs to know if background processes are running
+- `clio-plugin-fetch` wants to trigger caching in another plugin
+- `clio-plugin-repo` needs exclusive access to Git operations
+- All plugins should respond to system-wide events (e.g., config changes)
 
 Challenges:
-- CLIs are separate processes (can't share memory directly)
-- Users may have different versions installed
+- Plugins run in the same clio process but may spawn child processes
+- Users may have different plugin versions installed
 - Must work on Linux, macOS, Windows
 - Should be fast (minimal latency)
 - Need to handle crashed processes (stale locks)
@@ -32,17 +32,17 @@ Alternative approaches:
 - **HTTP server**: Requires running daemon, port conflicts
 - **Named pipes**: Platform-specific, complex API
 - **Message queue**: Too heavy for CLI use case
-- **No communication**: CLIs remain completely independent
+- **No communication**: Plugins remain completely independent
 
 ## Decision
 
-We will implement **Inter-Process Communication (IPC)** in the `shared-ipc` package.
+We implement **Inter-Process Communication (IPC)** in the `@cli-ops/shared-ipc` package for plugin coordination.
 
 ### Architecture
 
 **Discovery Mechanism:** File-based process registry
-- Location: `~/.local/share/cli-ops/processes/`
-- Each running CLI writes PID file with metadata
+- Location: `~/.local/share/clio/processes/`
+- Each running plugin writes PID file with metadata
 - Stale PID files cleaned up automatically
 
 **Locking:** File-based advisory locks
@@ -51,20 +51,20 @@ We will implement **Inter-Process Communication (IPC)** in the `shared-ipc` pack
 - Automatic timeout and stale lock detection
 
 **Event Bus:** File-based event notification
-- Publishers write events to `~/.local/share/cli-ops/events/`
+- Publishers write events to `~/.local/share/clio/events/`
 - Subscribers poll for new events (or use filesystem watchers)
 - Events are JSON files with timestamp and payload
 - Automatic cleanup of old events
 
 **Message Passing:** Simple file-based queues
-- Each CLI has an inbox: `~/.local/share/cli-ops/messages/{cli-name}/`
+- Plugin message queue: `~/.local/share/clio/messages/{plugin-name}/`
 - Messages are JSON files with unique IDs
 - Polling-based delivery (lightweight, no daemon needed)
 
 ### Design Principles
 
 1. **No daemon required**: Avoid long-running background processes
-2. **Graceful degradation**: CLIs work fine if IPC unavailable
+2. **Graceful degradation**: Plugins work fine if IPC unavailable
 3. **Simple implementation**: File-based over complex IPC primitives
 4. **Cross-platform**: Works on Linux, macOS, Windows
 5. **Testable**: Easy to mock in tests
@@ -73,9 +73,9 @@ We will implement **Inter-Process Communication (IPC)** in the `shared-ipc` pack
 
 ### Positive
 
-- **Coordination**: CLIs can discover and communicate with each other
+- **Coordination**: Plugins can discover and communicate with each other
 - **Safety**: Locks prevent data corruption from concurrent access
-- **Event-driven**: CLIs can react to system-wide changes
+- **Event-driven**: Plugins can react to system-wide changes
 - **No daemon**: Simpler deployment, no port conflicts
 - **Cross-platform**: File operations work everywhere
 - **Debuggable**: Can inspect IPC state by looking at files
@@ -89,8 +89,8 @@ We will implement **Inter-Process Communication (IPC)** in the `shared-ipc` pack
 
 ### Neutral
 
-- **Scalability**: Fine for 3 CLIs, wouldn't scale to 100s
-- **Reliability**: Less reliable than dedicated message queue (acceptable for CLIs)
+- **Scalability**: Fine for typical plugin ecosystem, wouldn't scale to 100s
+- **Reliability**: Less reliable than dedicated message queue (acceptable for plugins)
 
 ## Implementation
 
@@ -102,25 +102,27 @@ IPC system is implemented in:
 - [packages/shared-ipc/src/events.ts](../../packages/shared-ipc/src/events.ts) - Event bus
 - [packages/shared-ipc/src/messages.ts](../../packages/shared-ipc/src/messages.ts) - Message passing
 
+All imported from `@cli-ops/shared-ipc` scoped package.
+
 ### Process Discovery
 ```typescript
 import { ProcessRegistry } from '@cli-ops/shared-ipc'
 
-// Register current process
-const registry = new ProcessRegistry('cli-alpha')
+// Register current plugin process
+const registry = new ProcessRegistry('clio-plugin-tasks')
 await registry.register({
   pid: process.pid,
-  version: '1.0.0',
+  version: '2.0.0',
   startTime: Date.now()
 })
 
-// Discover other CLIs
+// Discover other plugin processes
 const processes = await registry.discover()
-console.log('Running CLIs:', processes)
-// => [{ name: 'cli-beta', pid: 12345, version: '2.1.0' }]
+console.log('Running plugins:', processes)
+// => [{ name: 'clio-plugin-fetch', pid: 12345, version: '2.0.0' }]
 
-// Check if specific CLI is running
-const isBetaRunning = await registry.isRunning('cli-beta')
+// Check if specific plugin process is running
+const isFetchRunning = await registry.isRunning('clio-plugin-fetch')
 
 // Cleanup on exit
 process.on('exit', () => registry.unregister())
@@ -178,19 +180,19 @@ await bus.close()
 ```typescript
 import { MessageQueue } from '@cli-ops/shared-ipc'
 
-// Send message to cli-beta
-const queue = new MessageQueue('cli-beta')
+// Send message to fetch plugin
+const queue = new MessageQueue('clio-plugin-fetch')
 await queue.send({
-  from: 'cli-alpha',
-  type: 'trigger:task',
-  payload: { taskId: 42 }
+  from: 'clio-plugin-tasks',
+  type: 'cache:invalidate',
+  payload: { resource: 'api-data' }
 })
 
-// Receive messages in cli-beta
-const inbox = new MessageQueue('cli-beta')
+// Receive messages in fetch plugin
+const inbox = new MessageQueue('clio-plugin-fetch')
 inbox.onMessage(async (message) => {
-  if (message.type === 'trigger:task') {
-    await runTask(message.payload.taskId)
+  if (message.type === 'cache:invalidate') {
+    await invalidateCache(message.payload.resource)
   }
 })
 
@@ -201,19 +203,19 @@ await inbox.listen()
 
 ### Use Case 1: Prevent Concurrent Execution
 ```typescript
-// cli-alpha and cli-beta both access shared database
+// Multiple plugins accessing shared Git repository
 import { LockManager } from '@cli-ops/shared-ipc'
 
-export default class DatabaseCommand extends BaseCommand {
+export default class RepoCommand extends BaseCommand {
   async run() {
-    const lock = new LockManager('database')
+    const lock = new LockManager('git-operations')
     
     try {
       await lock.acquire({ timeout: 5000 })
-      await this.modifyDatabase()
+      await this.modifyRepository()
     } catch (error) {
       if (error.code === 'LOCK_TIMEOUT') {
-        this.error('Another CLI is accessing the database. Try again.')
+        this.error('Another plugin is performing Git operations. Try again.')
       }
       throw error
     } finally {
@@ -223,28 +225,28 @@ export default class DatabaseCommand extends BaseCommand {
 }
 ```
 
-### Use Case 2: Trigger Action in Another CLI
+### Use Case 2: Trigger Action in Another Plugin
 ```typescript
-// cli-alpha triggers task in cli-beta
+// Tasks plugin triggers cache refresh in fetch plugin
 import { MessageQueue } from '@cli-ops/shared-ipc'
 
-export default class TriggerTask extends BaseCommand {
+export default class TasksSync extends BaseCommand {
   async run() {
-    const queue = new MessageQueue('cli-beta')
+    const queue = new MessageQueue('clio-plugin-fetch')
     
     await queue.send({
-      type: 'run:task',
-      payload: { taskName: 'backup', args: ['--full'] }
+      type: 'cache:refresh',
+      payload: { endpoint: '/api/tasks', force: true }
     })
     
-    this.log('✓ Triggered backup task in cli-beta')
+    this.log('✓ Triggered cache refresh in fetch plugin')
   }
 }
 ```
 
 ### Use Case 3: React to System Events
 ```typescript
-// All CLIs reload config when changed
+// All plugins reload config when changed
 import { EventBus } from '@cli-ops/shared-ipc'
 
 export default class DaemonCommand extends BaseCommand {

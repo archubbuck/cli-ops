@@ -37,7 +37,7 @@ We will implement a **command history and undo system** in the `shared-history` 
 ### Architecture
 
 **Storage:** SQLite database for reliability and queryability
-- Location: `~/.local/share/cli-{name}/history.db`
+- Location: `~/.local/share/clio/history.db`
 - Schema: commands table with metadata
 
 **Tracking:** Automatic recording via base command lifecycle
@@ -60,23 +60,23 @@ We will implement a **command history and undo system** in the `shared-history` 
 
 ```bash
 # User adds a task
-$ cli-alpha tasks add "Buy groceries"
+$ clio tasks:create "Buy groceries"
 ✓ Task added: #42 "Buy groceries"
 
-# User realizes mistake (wrong CLI or task)
-$ cli-alpha tasks list
+# User realizes mistake (wrong command or task)
+$ clio tasks:list
   42: Buy groceries
 
 # User can undo
-$ cli-alpha undo
-✓ Undid: tasks add "Buy groceries"
+$ clio history:undo
+✓ Undid: tasks:create "Buy groceries"
   Removed task #42
 
 # User can see history
-$ cli-alpha history
-  3m ago  tasks add "Buy groceries"    [UNDONE]
-  5m ago  tasks list                  [SUCCESS]
-  1h ago  tasks add "Finish report"   [SUCCESS]
+$ clio history:list
+  3m ago  tasks:create "Buy groceries"    [UNDONE]
+  5m ago  tasks:list                      [SUCCESS]
+  1h ago  tasks:create "Finish report"    [SUCCESS]
 ```
 
 ## Consequences
@@ -171,7 +171,9 @@ export abstract class BaseCommand {
 
 ### Command Implementation
 ```typescript
-export default class TasksAdd extends BaseCommand {
+import { BaseCommand } from '@cli-ops/shared-core'
+
+export default class TasksCreate extends BaseCommand {
   async execute() {
     const task = await tasksService.add(this.args.description)
     this.log(`✓ Task added: #${task.id} "${task.description}"`)
@@ -196,8 +198,8 @@ export default class TasksAdd extends BaseCommand {
 
 ### History Commands
 ```typescript
-// cli-alpha history
-export default class History extends BaseCommand {
+// clio history:list
+export default class HistoryList extends BaseCommand {
   async execute() {
     const commands = await historyManager.list({ limit: 20 })
     

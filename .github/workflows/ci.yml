@@ -20,28 +20,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Lint
         run: pnpm lint
-      
+
       - name: Format check
         run: pnpm format:check
-      
+
       - name: Spell check
         run: pnpm exec cspell "**/*.{ts,js,md,json}"
-      
+
       - name: Validate file structure
         run: pnpm exec ls-lint
 
@@ -50,19 +50,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Type check
         run: pnpm typecheck
 
@@ -71,28 +71,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Build
         run: pnpm build
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build
           path: |
-            apps/*/dist
+            plugins/*/dist
+            extensions/*/dist
             packages/*/dist
           retention-days: 1
 
@@ -101,22 +102,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Run tests
         run: pnpm test
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
@@ -130,24 +131,24 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build
-      
+
       - name: Check performance budgets
         run: pnpm perf
 
@@ -157,30 +158,30 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build
-      
+
       - name: Generate inventory
         run: pnpm inventory:generate
-      
+
       - name: Update architecture docs
         run: pnpm inventory:update-docs
-      
+
       - name: Upload inventory artifacts
         uses: actions/upload-artifact@v4
         with:

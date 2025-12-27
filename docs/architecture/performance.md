@@ -8,14 +8,14 @@ Performance is a critical aspect of CLI user experience. This document outlines 
 
 ### Target Metrics
 
-| Operation Type | Target | Rationale |
-|---------------|--------|-----------|
-| Version command | <200ms | Trivial operation, must be instant |
-| Help command | <500ms | Frequently used, must feel responsive |
-| List operations | <1000ms | User-facing reads, must feel fast |
-| Create operations | <2000ms | Write operations, acceptable delay |
-| Full build | <30s | Developer workflow, cached builds critical |
-| Cached build | <5s | Incremental development, must be instant |
+| Operation Type    | Target  | Rationale                                  |
+| ----------------- | ------- | ------------------------------------------ |
+| Version command   | <200ms  | Trivial operation, must be instant         |
+| Help command      | <500ms  | Frequently used, must feel responsive      |
+| List operations   | <1000ms | User-facing reads, must feel fast          |
+| Create operations | <2000ms | Write operations, acceptable delay         |
+| Full build        | <30s    | Developer workflow, cached builds critical |
+| Cached build      | <5s     | Incremental development, must be instant   |
 
 ### Monitoring
 
@@ -24,11 +24,11 @@ Performance budgets are enforced via [`scripts/perf-budget.js`](../../scripts/pe
 ```javascript
 module.exports = {
   budgets: {
-    'version': { max: 200, unit: 'ms' },
-    'help': { max: 500, unit: 'ms' },
-    'list': { max: 1000, unit: 'ms' },
-    'create': { max: 2000, unit: 'ms' }
-  }
+    version: { max: 200, unit: 'ms' },
+    help: { max: 500, unit: 'ms' },
+    list: { max: 1000, unit: 'ms' },
+    create: { max: 2000, unit: 'ms' },
+  },
 }
 ```
 
@@ -54,7 +54,7 @@ export function analyze(data) {
 }
 ```
 
-Example in [`apps/cli-gamma/src/commands/analyze.ts`](../../apps/cli-gamma/src/commands/analyze.ts):
+Example in [plugins/cli-gamma/src/commands/analyze.ts](../../plugins/cli-gamma/src/commands/analyze.ts):
 
 ```typescript
 async run() {
@@ -81,6 +81,7 @@ async function getConfig(): Promise<Config> {
 ```
 
 Cache strategies:
+
 - **In-memory**: For process lifetime (config, metadata)
 - **Filesystem**: For across-process (HTTP responses, computed data)
 - **Time-based**: Expire after duration
@@ -93,11 +94,7 @@ Run independent operations concurrently:
 
 ```typescript
 // ✓ Good - parallel execution
-const [config, tasks, projects] = await Promise.all([
-  loadConfig(),
-  fetchTasks(),
-  fetchProjects()
-])
+const [config, tasks, projects] = await Promise.all([loadConfig(), fetchTasks(), fetchProjects()])
 
 // ✗ Avoid - sequential execution
 const config = await loadConfig()
@@ -114,11 +111,7 @@ import { createReadStream } from 'fs'
 import { pipeline } from 'stream/promises'
 
 async function processLargeFile(filePath: string) {
-  await pipeline(
-    createReadStream(filePath),
-    transformStream(),
-    outputStream()
-  )
+  await pipeline(createReadStream(filePath), transformStream(), outputStream())
 }
 ```
 
@@ -142,7 +135,7 @@ export class CLI {
     // Only essential initialization
     this.name = 'cli-alpha'
   }
-  
+
   async run() {
     // Load config only when needed
     const config = await loadConfig()
@@ -153,7 +146,7 @@ export class CLI {
 // ✗ Avoid - heavy startup work
 export class CLI {
   constructor() {
-    this.config = loadConfigSync()  // Blocks startup
+    this.config = loadConfigSync() // Blocks startup
     this.plugins = loadPluginsSync() // Blocks startup
   }
 }
@@ -165,12 +158,12 @@ export class CLI {
 async function run() {
   // Execute command immediately
   const result = await command.run()
-  
+
   // Defer telemetry/analytics
   setImmediate(() => {
     trackCommand(command.id).catch(() => {})
   })
-  
+
   return result
 }
 ```
@@ -194,6 +187,7 @@ Configured in [`turbo.json`](../../turbo.json):
 ```
 
 Benefits:
+
 - Local cache: Rebuilds only changed packages
 - Remote cache: Share builds across team/CI
 - Parallel builds: Independent packages build simultaneously
@@ -213,6 +207,7 @@ Optimize TypeScript compilation in [`tsconfig.json`](../../tsconfig.json):
 ```
 
 Project references in [`tsconfig.base.json`](../../tsconfig.base.json) enable:
+
 - Incremental compilation
 - Parallel type checking
 - Faster IDE experience
@@ -253,10 +248,13 @@ Cache expensive computations:
 ```typescript
 import memoize from 'memoizee'
 
-const expensiveCalculation = memoize((input: string) => {
-  // Expensive operation
-  return complexTransform(input)
-}, { maxAge: 60000 }) // Cache for 1 minute
+const expensiveCalculation = memoize(
+  (input: string) => {
+    // Expensive operation
+    return complexTransform(input)
+  },
+  { maxAge: 60000 },
+) // Cache for 1 minute
 ```
 
 ## Monitoring & Profiling
@@ -345,6 +343,7 @@ hyperfine 'alpha tasks list'
 ### 2. Optimize Hot Paths
 
 Focus on frequently-executed code:
+
 - Command initialization (runs every time)
 - List operations (users run frequently)
 - Configuration loading (happens on startup)
@@ -355,7 +354,7 @@ Don't sacrifice readability for marginal gains:
 
 ```typescript
 // ✓ Good - clear and fast enough
-const filtered = items.filter(item => item.active)
+const filtered = items.filter((item) => item.active)
 
 // ✗ Avoid - premature optimization
 const filtered = []
@@ -367,6 +366,7 @@ for (let i = 0; i < items.length; i++) {
 ### 4. Monitor in Production
 
 Track real-world performance:
+
 - Log command execution times
 - Track slow operations
 - Monitor memory usage

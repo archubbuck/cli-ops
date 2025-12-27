@@ -1,5 +1,5 @@
 {
-  "name": "shared-ipc",
+  "name": "@cli-ops/shared-ipc",
   "version": "1.0.0",
   "description": "IPC for plugin communication and event bus",
   "main": "dist/index.js",
@@ -18,5 +18,8 @@
   ],
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

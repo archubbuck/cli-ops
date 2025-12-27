@@ -1,5 +1,5 @@
 {
-  "name": "shared-config",
+  "name": "@cli-ops/shared-config",
   "version": "1.0.0",
   "description": "Configuration management with cosmiconfig and Zod validation",
   "main": "dist/index.js",
@@ -22,5 +22,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

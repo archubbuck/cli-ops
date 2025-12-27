@@ -1,0 +1,57 @@
+{
+  "name": "@cli-ops/clio-plugin-fetch-oauth",
+  "version": "2.0.0",
+  "description": "OAuth 2.0 authentication plugin for clio fetch",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "clio",
+    "plugin",
+    "fetch",
+    "oauth",
+    "authentication",
+    "oclif-plugin"
+  ],
+  "oclif": {
+    "commands": "./dist/commands",
+    "bin": "clio",
+    "topicSeparator": ":",
+    "topics": {
+      "fetch:oauth": {
+        "description": "OAuth 2.0 authentication for HTTP requests"
+      }
+    }
+  },
+  "peerDependencies": {
+    "@cli-ops/clio": "^1.0.0",
+    "@cli-ops/clio-plugin-fetch": "^2.0.0"
+  },
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "@cli-ops/shared-commands": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*",
+    "@cli-ops/shared-plugins": "workspace:*",
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-ui": "workspace:*",
+    "@cli-ops/shared-prompts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "dist",
+    "oclif.manifest.json"
+  ]
+}

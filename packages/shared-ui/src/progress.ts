@@ -1,14 +1,11 @@
 import cliProgress from 'cli-progress'
-import type { SingleBar, MultiBar, Options } from 'cli-progress'
 
 /**
  * Detect if running in CI or non-TTY environment
  */
 function shouldDisableProgress(): boolean {
   return Boolean(
-    !process.stdout.isTTY ||
-    process.env.CI ||
-    process.env.CONTINUOUS_INTEGRATION
+    !process.stdout.isTTY || process.env['CI'] || process.env['CONTINUOUS_INTEGRATION'],
   )
 }
 
@@ -83,9 +80,7 @@ export interface ProgressBar {
 /**
  * Create a progress bar for long-running operations
  */
-export function createProgressBar(
-  options: ProgressBarOptions
-): ProgressBar {
+export function createProgressBar(options: ProgressBarOptions): ProgressBar {
   const {
     total,
     start = 0,
@@ -104,7 +99,7 @@ export function createProgressBar(
       update: (value: number) => {
         currentValue = value
         const percentage = Math.floor((value / total) * 100)
-        
+
         // Log every 10%
         if (percentage >= lastLoggedPercentage + 10) {
           console.log(`Progress: ${percentage}%`)
@@ -134,7 +129,7 @@ export function createProgressBar(
       clearOnComplete,
       stopOnComplete: false,
     },
-    cliProgress.Presets.shades_classic
+    cliProgress.Presets.shades_classic,
   )
 
   bar.start(total, start)
@@ -149,9 +144,9 @@ export function createProgressBar(
     stop: () => {
       bar.stop()
     },
-    getValue: () => bar.value ?? start,
-    getTotal: () => bar.total ?? total,
-    isComplete: () => (bar.value ?? start) >= (bar.total ?? total),
+    getValue: () => (bar as any).value ?? start,
+    getTotal: () => (bar as any).total ?? total,
+    isComplete: () => ((bar as any).value ?? start) >= ((bar as any).total ?? total),
   }
 }
 
@@ -161,7 +156,7 @@ export function createProgressBar(
 export async function withProgressBar<T>(
   total: number,
   fn: (bar: ProgressBar) => Promise<T>,
-  options: Omit<ProgressBarOptions, 'total'> = {}
+  options: Omit<ProgressBarOptions, 'total'> = {},
 ): Promise<T> {
   const bar = createProgressBar({ total, ...options })
 
@@ -181,19 +176,19 @@ export async function withProgressBar<T>(
 export async function processWithProgress<T, R>(
   items: T[],
   processor: (item: T, index: number) => Promise<R>,
-  options: Omit<ProgressBarOptions, 'total'> = {}
+  options: Omit<ProgressBarOptions, 'total'> = {},
 ): Promise<R[]> {
   const results: R[] = []
-  
+
   await withProgressBar(
     items.length,
-    async bar => {
+    async (bar) => {
       for (let i = 0; i < items.length; i++) {
-        results.push(await processor(items[i], i))
+        results.push(await processor(items[i]!, i))
         bar.update(i + 1)
       }
     },
-    options
+    options,
   )
 
   return results

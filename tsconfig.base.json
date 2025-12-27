@@ -9,7 +9,7 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    
+
     // Additional Checks
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -18,60 +18,52 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    
+
     // Module Resolution
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    
+
     // Emit
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "composite": true,
     "incremental": true,
-    
+
     // Language and Environment
     "target": "ES2022",
     "lib": ["ES2022"],
-    
+
     // Interop Constraints
     "isolatedModules": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-    
+
     // Completeness
     "skipLibCheck": true,
-    
+
     // Path Mapping
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"],
-      "@/shared-core": ["packages/shared-core/src"],
-      "@/shared-types": ["packages/shared-types/src"],
-      "@/shared-commands": ["packages/shared-commands/src"],
-      "@/shared-hooks": ["packages/shared-hooks/src"],
-      "@/shared-services": ["packages/shared-services/src"],
-      "@/shared-ui": ["packages/shared-ui/src"],
-      "@/shared-formatter": ["packages/shared-formatter/src"],
-      "@/shared-prompts": ["packages/shared-prompts/src"],
-      "@/shared-config": ["packages/shared-config/src"],
-      "@/shared-logger": ["packages/shared-logger/src"],
-      "@/shared-exit-codes": ["packages/shared-exit-codes/src"],
-      "@/shared-history": ["packages/shared-history/src"],
-      "@/shared-ipc": ["packages/shared-ipc/src"],
-      "@/shared-testing": ["packages/shared-testing/src"]
+      "@cli-ops/shared-core": ["packages/shared-core/src"],
+      "@cli-ops/shared-types": ["packages/shared-types/src"],
+      "@cli-ops/shared-commands": ["packages/shared-commands/src"],
+      "@cli-ops/shared-hooks": ["packages/shared-hooks/src"],
+      "@cli-ops/shared-services": ["packages/shared-services/src"],
+      "@cli-ops/shared-ui": ["packages/shared-ui/src"],
+      "@cli-ops/shared-formatter": ["packages/shared-formatter/src"],
+      "@cli-ops/shared-prompts": ["packages/shared-prompts/src"],
+      "@cli-ops/shared-config": ["packages/shared-config/src"],
+      "@cli-ops/shared-logger": ["packages/shared-logger/src"],
+      "@cli-ops/shared-exit-codes": ["packages/shared-exit-codes/src"],
+      "@cli-ops/shared-history": ["packages/shared-history/src"],
+      "@cli-ops/shared-ipc": ["packages/shared-ipc/src"],
+      "@cli-ops/shared-plugins": ["packages/shared-plugins/src"],
+      "@cli-ops/shared-testing": ["packages/shared-testing/src"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "lib",
-    "coverage",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["node_modules", "dist", "build", "lib", "coverage", "**/*.test.ts", "**/*.spec.ts"]
 }

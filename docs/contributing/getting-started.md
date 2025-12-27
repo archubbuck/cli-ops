@@ -101,7 +101,7 @@ See [Monorepo Structure](../architecture/monorepo-structure.md) for detailed exp
 pnpm --filter @cli-ops/cli-alpha build
 
 # Run CLI
-./apps/cli-alpha/bin/run.js tasks list
+./plugins/cli-alpha/bin/run.js tasks list
 ```
 
 ### Development Mode (with watch)
@@ -115,7 +115,7 @@ In another terminal:
 
 ```bash
 # Run the CLI
-./apps/cli-alpha/bin/run.js tasks add "Test task"
+./plugins/cli-alpha/bin/run.js tasks add "Test task"
 ```
 
 ### Testing CLIs
@@ -156,6 +156,7 @@ pnpm changeset
 ```
 
 Follow prompts to:
+
 1. Select affected packages
 2. Choose version bump type (major/minor/patch)
 3. Write description of changes
@@ -232,7 +233,7 @@ pnpm test --filter "config"
 
 ```bash
 # Run with Node debugger
-node --inspect ./apps/cli-alpha/bin/run.js tasks list
+node --inspect ./plugins/cli-alpha/bin/run.js tasks list
 
 # With VS Code debugger
 # Add breakpoint in VS Code, then F5
@@ -261,6 +262,7 @@ pnpm build
 ### "Type error" in IDE
 
 Restart TypeScript server:
+
 - VS Code: `Cmd/Ctrl + Shift + P` → "TypeScript: Restart TS Server"
 
 ### Tests Failing
@@ -335,7 +337,7 @@ Watch mode provides instant feedback:
 # Tests re-run on save
 pnpm test:watch
 
-# Builds re-run on save  
+# Builds re-run on save
 pnpm dev
 ```
 

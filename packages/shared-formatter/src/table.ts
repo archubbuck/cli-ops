@@ -54,7 +54,7 @@ export interface TableFormatOptions {
  */
 export function formatTable<T extends Record<string, unknown>>(
   data: T[],
-  options: TableFormatOptions = {}
+  options: TableFormatOptions = {},
 ): string {
   const {
     columns,
@@ -72,7 +72,7 @@ export function formatTable<T extends Record<string, unknown>>(
   // Auto-detect columns if not provided
   const cols =
     columns ||
-    Object.keys(data[0]).map(key => ({
+    Object.keys(data[0] as Record<string, any>).map((key) => ({
       key,
       label: key.charAt(0).toUpperCase() + key.slice(1),
     }))
@@ -83,10 +83,10 @@ export function formatTable<T extends Record<string, unknown>>(
     sortedData.sort((a, b) => {
       const aVal = a[sortBy]
       const bVal = b[sortBy]
-      
+
       if (aVal === bVal) return 0
-      
-      const comparison = aVal < bVal ? -1 : 1
+
+      const comparison = (aVal as any) < (bVal as any) ? -1 : 1
       return sortDirection === 'asc' ? comparison : -comparison
     })
   }
@@ -95,25 +95,23 @@ export function formatTable<T extends Record<string, unknown>>(
   const tableConfig = getTableStyle(style)
 
   // Add row number column if requested
-  const headers = showRowNumbers
-    ? ['#', ...cols.map(c => c.label)]
-    : cols.map(c => c.label)
+  const headers = showRowNumbers ? ['#', ...cols.map((c) => c.label)] : cols.map((c) => c.label)
 
   // Create table
   const table = new Table({
     ...tableConfig,
-    head: colors ? headers.map(h => chalk.bold.cyan(h)) : headers,
+    head: colors ? headers.map((h) => chalk.bold.cyan(h)) : headers,
     colWidths: showRowNumbers
-      ? [5, ...cols.map(c => c.width)]
-      : cols.map(c => c.width),
+      ? [5, ...cols.map((c) => (c as any).width)]
+      : cols.map((c) => (c as any).width),
     colAligns: showRowNumbers
-      ? ['right', ...cols.map(c => c.align || 'left')]
-      : cols.map(c => c.align || 'left'),
+      ? ['right', ...cols.map((c) => (c as any).align || 'left')]
+      : cols.map((c) => (c as any).align || 'left'),
   })
 
   // Add rows
   sortedData.forEach((row, index) => {
-    const cells = cols.map(col => {
+    const cells = cols.map((col) => {
       const value = row[col.key]
       return formatCellValue(value, colors)
     })
@@ -138,11 +136,7 @@ function formatCellValue(value: unknown, colors: boolean): string {
   }
 
   if (typeof value === 'boolean') {
-    return colors
-      ? value
-        ? chalk.green('true')
-        : chalk.red('false')
-      : String(value)
+    return colors ? (value ? chalk.green('true') : chalk.red('false')) : String(value)
   }
 
   if (typeof value === 'number') {
@@ -259,7 +253,7 @@ function getTableStyle(style: string): Partial<TableConstructorOptions> {
  */
 export function formatKeyValueTable(
   data: Record<string, unknown>,
-  options: Pick<TableFormatOptions, 'style' | 'colors'> = {}
+  options: Pick<TableFormatOptions, 'style' | 'colors'> = {},
 ): string {
   const { style = 'simple', colors = true } = options
 

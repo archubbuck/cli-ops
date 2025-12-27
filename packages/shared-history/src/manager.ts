@@ -99,12 +99,7 @@ export class HistoryManager {
   private readonly enabled: boolean
 
   constructor(options: HistoryManagerOptions = {}) {
-    const {
-      dbPath,
-      cliName = 'cli',
-      maxEntries = 10000,
-      enabled = true,
-    } = options
+    const { dbPath, cliName = 'cli', maxEntries = 10000, enabled = true } = options
 
     this.enabled = enabled
 
@@ -117,11 +112,7 @@ export class HistoryManager {
     // Default: ~/.config/<cliName>/history.db
     this.dbPath =
       dbPath ||
-      join(
-        process.env.XDG_CONFIG_HOME || join(homedir(), '.config'),
-        cliName,
-        'history.db'
-      )
+      join(process.env['XDG_CONFIG_HOME'] || join(homedir(), '.config'), cliName, 'history.db')
 
     this.maxEntries = maxEntries
 
@@ -188,7 +179,7 @@ export class HistoryManager {
       entry.exitCode,
       entry.cwd,
       entry.user,
-      entry.success ? 1 : 0
+      entry.success ? 1 : 0,
     )
 
     // Cleanup old entries if over limit
@@ -205,16 +196,7 @@ export class HistoryManager {
   search(options: HistorySearchOptions = {}): HistoryEntry[] {
     if (!this.enabled || !this.db) return []
 
-    const {
-      command,
-      exitCode,
-      success,
-      cwd,
-      after,
-      before,
-      limit = 100,
-      order = 'desc',
-    } = options
+    const { command, exitCode, success, cwd, after, before, limit = 100, order = 'desc' } = options
 
     let query = 'SELECT * FROM history WHERE 1=1'
     const params: unknown[] = []
@@ -267,7 +249,7 @@ export class HistoryManager {
       success: number
     }>
 
-    return rows.map(row => ({
+    return rows.map((row) => ({
       id: row.id,
       command: row.command,
       args: JSON.parse(row.args),
@@ -319,9 +301,7 @@ export class HistoryManager {
     const totalStmt = this.db.prepare('SELECT COUNT(*) as count FROM history')
     const total = (totalStmt.get() as { count: number }).count
 
-    const successStmt = this.db.prepare(
-      'SELECT COUNT(*) as count FROM history WHERE success = 1'
-    )
+    const successStmt = this.db.prepare('SELECT COUNT(*) as count FROM history WHERE success = 1')
     const successful = (successStmt.get() as { count: number }).count
 
     const avgStmt = this.db.prepare('SELECT AVG(duration) as avg FROM history')
@@ -386,8 +366,6 @@ export class HistoryManager {
 /**
  * Create a history manager instance
  */
-export function createHistoryManager(
-  options?: HistoryManagerOptions
-): HistoryManager {
+export function createHistoryManager(options?: HistoryManagerOptions): HistoryManager {
   return new HistoryManager(options)
 }

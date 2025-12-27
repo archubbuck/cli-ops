@@ -5,7 +5,7 @@
   "description": "Code generators for the workspace",
   "type": "module",
   "scripts": {
-    "generate:cli": "plop cli",
+    "generate:plugin": "plop plugin",
     "generate:package": "plop package",
     "generate:command": "plop command"
   },

@@ -1,4 +1,4 @@
-import ora, { type Ora, type Options as OraOptions } from 'ora'
+import ora, { type Options as OraOptions } from 'ora'
 
 /**
  * Detect if running in CI or non-TTY environment
@@ -6,11 +6,11 @@ import ora, { type Ora, type Options as OraOptions } from 'ora'
 function shouldDisableSpinner(): boolean {
   return Boolean(
     !process.stdout.isTTY ||
-    process.env.CI ||
-    process.env.CONTINUOUS_INTEGRATION ||
-    process.env.GITHUB_ACTIONS ||
-    process.env.GITLAB_CI ||
-    process.env.CIRCLECI
+    process.env['CI'] ||
+    process.env['CONTINUOUS_INTEGRATION'] ||
+    process.env['GITHUB_ACTIONS'] ||
+    process.env['GITLAB_CI'] ||
+    process.env['CIRCLECI'],
   )
 }
 
@@ -145,7 +145,7 @@ export function createSpinner(options: SpinnerOptions = {}): Spinner {
     suffixText,
   })
 
-  return spinner as Spinner
+  return spinner as unknown as Spinner
 }
 
 /**
@@ -154,7 +154,7 @@ export function createSpinner(options: SpinnerOptions = {}): Spinner {
 export async function withSpinner<T>(
   text: string,
   fn: (spinner: Spinner) => Promise<T>,
-  options: Omit<SpinnerOptions, 'text'> = {}
+  options: Omit<SpinnerOptions, 'text'> = {},
 ): Promise<T> {
   const spinner = createSpinner({ text, ...options })
   spinner.start()
@@ -178,11 +178,11 @@ export async function spinnerTask<T>(
     succeed?: string
     fail?: string
   } & Omit<SpinnerOptions, 'text'>,
-  fn: (spinner: Spinner) => Promise<T>
+  fn: (spinner: Spinner) => Promise<T>,
 ): Promise<T> {
   const { start, succeed, fail, ...spinnerOptions } = options
   const spinner = createSpinner({ text: start, ...spinnerOptions })
-  
+
   spinner.start()
 
   try {

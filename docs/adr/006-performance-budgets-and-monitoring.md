@@ -27,7 +27,7 @@ Without performance budgets, CLIs can gradually become slower through:
 
 ## Decision
 
-We will enforce **performance budgets** for all CLI operations with automated monitoring.
+We will enforce **performance budgets** for all clio and plugin operations with automated monitoring.
 
 ### Performance Targets
 
@@ -47,7 +47,7 @@ We will enforce **performance budgets** for all CLI operations with automated mo
    - Track trends over time
 
 2. **Bundle Size Monitoring**
-   - Measure total bundle size for each CLI
+   - Measure total bundle size for clio and each plugin
    - Alert on unexpected increases (>10% change)
    - Review dependency additions in PRs
 

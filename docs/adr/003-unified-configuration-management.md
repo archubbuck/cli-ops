@@ -6,7 +6,7 @@
 
 ## Context
 
-Three independent CLIs (`cli-alpha`, `cli-beta`, `cli-gamma`) need to:
+The clio CLI and its plugins (`clio-plugin-tasks`, `clio-plugin-fetch`, `clio-plugin-repo`) need to:
 
 - Store user preferences and settings
 - Support configuration hierarchies (defaults → user config → CLI args)
@@ -34,7 +34,7 @@ We will implement a **unified configuration system** in the `shared-config` pack
 Architecture:
 - **ConfigManager class**: Core abstraction for loading, saving, validating config
 - **JSON-based storage**: Human-readable, easy to debug
-- **XDG Base Directory compliance**: Stores configs in `~/.config/cli-{name}/config.json`
+- **XDG Base Directory compliance**: Stores configs in `~/.config/clio/config.json`
 - **Schema validation**: Uses Zod or similar for runtime type checking
 - **Migration system**: Supports schema evolution with version migrations
 - **Debug mode**: Can dump active config for troubleshooting
@@ -53,7 +53,7 @@ Key design principles:
 - **Consistency**: Users experience identical config behavior across CLIs
 - **Type safety**: TypeScript interfaces ensure config values are correct
 - **Testability**: Easy to test config logic in isolation
-- **Debuggability**: Users can inspect config with `cli-name config get`
+- **Debuggability**: Users can inspect config with `clio config:get`
 - **Migration support**: Can evolve config schema without breaking existing users
 - **XDG compliance**: Follows Linux/Unix conventions for config storage
 

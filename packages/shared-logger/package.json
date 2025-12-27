@@ -1,5 +1,5 @@
 {
-  "name": "shared-logger",
+  "name": "@cli-ops/shared-logger",
   "version": "1.0.0",
   "description": "Structured logging with debug and pino",
   "main": "dist/index.js",
@@ -21,7 +21,13 @@
     "pino": "^9.5.0",
     "pino-pretty": "^11.2.2"
   },
+  "devDependencies": {
+    "@types/debug": "^4.1.12"
+  },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

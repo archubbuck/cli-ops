@@ -1,6 +1,6 @@
 import { homedir } from 'node:os'
 import { join } from 'node:path'
-import type { CLIContext } from '@/shared-types'
+import type { CLIContext } from '@cli-ops/shared-types'
 
 /**
  * Create CLI context
@@ -14,9 +14,9 @@ export function createContext(options: {
   const home = homedir()
 
   // XDG Base Directory specification
-  const configHome = process.env.XDG_CONFIG_HOME || join(home, '.config')
-  const cacheHome = process.env.XDG_CACHE_HOME || join(home, '.cache')
-  const dataHome = process.env.XDG_DATA_HOME || join(home, '.local', 'share')
+  const configHome = process.env['XDG_CONFIG_HOME'] || join(home, '.config')
+  const cacheHome = process.env['XDG_CACHE_HOME'] || join(home, '.cache')
+  const dataHome = process.env['XDG_DATA_HOME'] || join(home, '.local', 'share')
 
   return {
     name,
@@ -37,16 +37,16 @@ export function createContext(options: {
  */
 function isCI(): boolean {
   return (
-    process.env.CI === 'true' ||
+    process.env['CI'] === 'true' ||
     Boolean(
-      process.env.CI ||
-        process.env.CONTINUOUS_INTEGRATION ||
-        process.env.BUILD_NUMBER ||
-        process.env.GITHUB_ACTIONS ||
-        process.env.GITLAB_CI ||
-        process.env.CIRCLECI ||
-        process.env.TRAVIS ||
-        process.env.JENKINS_URL
+      process.env['CI'] ||
+      process.env['CONTINUOUS_INTEGRATION'] ||
+      process.env['BUILD_NUMBER'] ||
+      process.env['GITHUB_ACTIONS'] ||
+      process.env['GITLAB_CI'] ||
+      process.env['CIRCLECI'] ||
+      process.env['TRAVIS'] ||
+      process.env['JENKINS_URL'],
     )
   )
 }

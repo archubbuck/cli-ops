@@ -123,9 +123,7 @@ export interface PasswordPromptOptions extends BasePromptOptions {
 /**
  * Prompt for text input
  */
-export async function promptText(
-  options: TextPromptOptions
-): Promise<string> {
+export async function promptText(options: TextPromptOptions): Promise<string> {
   const { message, default: defaultValue, schema, validate, transform, when } = options
 
   const answer = await inquirer.prompt<{ value: string }>([
@@ -166,9 +164,7 @@ export async function promptText(
 /**
  * Prompt for confirmation
  */
-export async function promptConfirm(
-  options: ConfirmPromptOptions
-): Promise<boolean> {
+export async function promptConfirm(options: ConfirmPromptOptions): Promise<boolean> {
   const { message, default: defaultValue = false, when } = options
 
   const answer = await inquirer.prompt<{ value: boolean }>([
@@ -187,9 +183,7 @@ export async function promptConfirm(
 /**
  * Prompt for list selection
  */
-export async function promptList<T = string>(
-  options: ListPromptOptions<T>
-): Promise<T> {
+export async function promptList<T = string>(options: ListPromptOptions<T>): Promise<T> {
   const { message, choices, default: defaultValue, when, searchable = false } = options
 
   const answer = await inquirer.prompt<{ value: T }>([
@@ -210,7 +204,7 @@ export async function promptList<T = string>(
  * Prompt for multiple selections
  */
 export async function promptMultiSelect<T = string>(
-  options: MultiSelectPromptOptions<T>
+  options: MultiSelectPromptOptions<T>,
 ): Promise<T[]> {
   const { message, choices, min, max, when, validate } = options
 
@@ -245,10 +239,8 @@ export async function promptMultiSelect<T = string>(
 /**
  * Prompt for number input
  */
-export async function promptNumber(
-  options: NumberPromptOptions
-): Promise<number> {
-  const { message, default: defaultValue, min, max, step, when } = options
+export async function promptNumber(options: NumberPromptOptions): Promise<number> {
+  const { message, default: defaultValue, min, max, when } = options
 
   const answer = await inquirer.prompt<{ value: number }>([
     {
@@ -281,9 +273,7 @@ export async function promptNumber(
 /**
  * Prompt for password input
  */
-export async function promptPassword(
-  options: PasswordPromptOptions
-): Promise<string> {
+export async function promptPassword(options: PasswordPromptOptions): Promise<string> {
   const { message, mask = '*', validate, schema, when } = options
 
   const answer = await inquirer.prompt<{ value: string }>([
@@ -316,9 +306,7 @@ export async function promptPassword(
 /**
  * Prompt for editor input (multi-line)
  */
-export async function promptEditor(
-  options: TextPromptOptions
-): Promise<string> {
+export async function promptEditor(options: TextPromptOptions): Promise<string> {
   const { message, default: defaultValue, validate, when } = options
 
   const answer = await inquirer.prompt<{ value: string }>([

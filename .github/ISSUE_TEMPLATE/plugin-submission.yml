@@ -1,0 +1,134 @@
+name: Plugin Submission
+description: Submit your clio plugin to the community registry
+title: '[Plugin] '
+labels: ['plugin', 'community']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit Your Plugin to the Clio Registry
+
+        Thank you for contributing to the Clio ecosystem! Please provide the following information about your plugin.
+
+  - type: input
+    id: plugin-name
+    attributes:
+      label: Plugin Name
+      description: Full npm package name (must include "clio-plugin" in the name)
+      placeholder: '@your-org/clio-plugin-awesome'
+    validations:
+      required: true
+
+  - type: input
+    id: npm-url
+    attributes:
+      label: npm Package URL
+      description: Link to your plugin on npm
+      placeholder: 'https://www.npmjs.com/package/@your-org/clio-plugin-awesome'
+    validations:
+      required: true
+
+  - type: input
+    id: github-url
+    attributes:
+      label: GitHub Repository URL
+      description: Link to your plugin's source code
+      placeholder: 'https://github.com/your-org/clio-plugin-awesome'
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Plugin Description
+      description: Brief description of what your plugin does (1-2 sentences)
+      placeholder: 'A clio plugin that integrates with Awesome API for doing awesome things.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: features
+    attributes:
+      label: Key Features
+      description: List the main features of your plugin (bullet points)
+      placeholder: |
+        - Feature 1
+        - Feature 2
+        - Feature 3
+    validations:
+      required: true
+
+  - type: input
+    id: maintainer
+    attributes:
+      label: Maintainer
+      description: Your name or organization name
+      placeholder: 'Your Name'
+    validations:
+      required: true
+
+  - type: input
+    id: docs-url
+    attributes:
+      label: Documentation URL
+      description: Link to plugin documentation (optional)
+      placeholder: 'https://your-org.github.io/clio-plugin-awesome'
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Plugin Requirements
+      description: Please confirm your plugin meets these requirements
+      options:
+        - label: Plugin is published to npm
+          required: true
+        - label: Plugin name includes "clio-plugin"
+          required: true
+        - label: Plugin has a README with installation and usage instructions
+          required: true
+        - label: Plugin includes LICENSE file
+          required: true
+        - label: Plugin has oclif configuration in package.json
+          required: true
+        - label: Plugin specifies @cli-ops/clio as a peerDependency
+          required: true
+        - label: Plugin has tests
+          required: true
+        - label: Plugin follows semantic versioning
+          required: true
+
+  - type: checkboxes
+    id: quality
+    attributes:
+      label: Quality Standards (Optional but Recommended)
+      options:
+        - label: Plugin has TypeScript types
+        - label: Plugin has CI/CD setup
+        - label: Plugin has >80% test coverage
+        - label: Plugin includes examples
+        - label: Plugin has comprehensive documentation
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Any additional information about your plugin
+      placeholder: 'Special considerations, dependencies, etc.'
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## What Happens Next?
+
+        1. **Automated Verification**: Our bot will verify your plugin meets the requirements
+        2. **Manual Review**: A maintainer will review your submission
+        3. **Approval**: If approved, your plugin will be added to the registry
+        4. **Listing**: Your plugin will appear on https://cli-ops.dev/plugins
+
+        Thank you for contributing to Clio!

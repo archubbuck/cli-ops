@@ -8,7 +8,8 @@ The CLI Ops monorepo follows a **well-defined directory structure** that separat
 
 ```
 cli-ops/
-├── apps/                      # User-facing applications
+├── plugins/                   # Base plugins
+├── extensions/                # Extension plugins (examples)
 ├── packages/                  # Shared libraries
 ├── tooling/                   # Development tooling
 ├── docs/                      # Documentation
@@ -26,13 +27,13 @@ cli-ops/
 └── tsconfig.json              # Root TypeScript config
 ```
 
-## Apps Directory
+## Plugins Directory
 
-User-facing CLI applications live in `apps/`:
+Base plugins live in `plugins/`:
 
 ```
-apps/
-├── README.md                  # Overview of all CLIs
+plugins/
+├── README.md                  # Overview of all plugins
 ├── cli-alpha/                 # First CLI application
 │   ├── bin/                   # Executable entry points
 │   │   ├── dev.js             # Development entry point
@@ -62,15 +63,12 @@ Each CLI follows consistent patterns:
 - **`bin/`**: Executable scripts that launch the CLI
   - `dev.js`: Used during development (no build step)
   - `run.js`: Used in production (requires build)
-  
 - **`src/commands/`**: All commands for this CLI
   - Nested directories for command groups
   - Each command extends `BaseCommand` from `shared-commands`
-  
 - **`src/services/`**: Business logic separate from commands
   - Testable in isolation
   - Can be shared between commands
-  
 - **`test/`**: Tests specific to this CLI
   - Unit tests for services
   - Integration tests for commands
@@ -253,22 +251,27 @@ generators/
 ## Naming Conventions
 
 ### Package Names
+
 - **Apps**: `cli-{name}` (e.g., `cli-alpha`)
 - **Shared packages**: `shared-{purpose}` (e.g., `shared-logger`)
 - **Tooling**: `{tool}-config` (e.g., `eslint-config`)
 
 ### NPM Scope
+
 All packages published to npm use the `@cli-ops` scope:
+
 - `@cli-ops/cli-alpha`
 - `@cli-ops/shared-logger`
 - `@cli-ops/eslint-config`
 
 ### File Names
+
 - **TypeScript files**: `kebab-case.ts` (e.g., `base-command.ts`)
 - **Test files**: `*.test.ts` or `*.spec.ts`
 - **Config files**: `lowercase.json` or `.rc` format
 
 ### Directory Names
+
 - **Lowercase with hyphens**: `shared-commands`, `cli-alpha`
 - **Plural for collections**: `commands/`, `services/`, `packages/`
 - **Singular for types**: `src/`, `test/`, `docs/`
@@ -299,7 +302,8 @@ packages/shared-commands/
 
 ```yaml
 packages:
-  - 'apps/*'
+  - 'plugins/*'
+  - 'extensions/*'
   - 'packages/*'
   - 'tooling/*'
   - 'generators'

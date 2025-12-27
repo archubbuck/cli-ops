@@ -1,5 +1,5 @@
 import pino from 'pino'
-import type { Logger as PinoLogger, LoggerOptions } from 'pino'
+import type { LoggerOptions } from 'pino'
 
 /**
  * Log levels (lower number = higher priority)
@@ -114,13 +114,13 @@ export interface StructuredLogger {
  */
 function isCI(): boolean {
   return Boolean(
-    process.env.CI ||
-    process.env.CONTINUOUS_INTEGRATION ||
-    process.env.GITHUB_ACTIONS ||
-    process.env.GITLAB_CI ||
-    process.env.CIRCLECI ||
-    process.env.TRAVIS ||
-    process.env.JENKINS_URL
+    process.env['CI'] ||
+    process.env['CONTINUOUS_INTEGRATION'] ||
+    process.env['GITHUB_ACTIONS'] ||
+    process.env['GITLAB_CI'] ||
+    process.env['CIRCLECI'] ||
+    process.env['TRAVIS'] ||
+    process.env['JENKINS_URL'],
   )
 }
 
@@ -128,15 +128,13 @@ function isCI(): boolean {
  * Detect if running in production
  */
 function isProduction(): boolean {
-  return process.env.NODE_ENV === 'production'
+  return process.env['NODE_ENV'] === 'production'
 }
 
 /**
  * Create a structured logger with pino
  */
-export function createStructuredLogger(
-  options: StructuredLoggerOptions
-): StructuredLogger {
+export function createStructuredLogger(options: StructuredLoggerOptions): StructuredLogger {
   const {
     name,
     level = 'info',
@@ -173,9 +171,10 @@ export function createStructuredLogger(
 
   // Set numeric level if provided
   if (typeof level === 'number') {
-    logger.level = Object.entries(LogLevel)
-      .find(([, value]) => value === level)?.[0]
-      ?.toLowerCase() ?? 'info'
+    logger.level =
+      Object.entries(LogLevel)
+        .find(([, value]) => value === level)?.[0]
+        ?.toLowerCase() ?? 'info'
   }
 
   return logger as unknown as StructuredLogger

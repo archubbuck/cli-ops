@@ -9,7 +9,7 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 ### Components
 
 1. **`scripts/generate-inventory.js`** - Main generator
-   - Discovers CLIs by scanning `apps/` directory
+   - Discovers CLIs by scanning `plugins/` directory
    - Extracts metadata from `package.json` files
    - Traverses command directories and parses TypeScript files
    - Measures `--help` and `--version` performance
@@ -40,11 +40,13 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 ### Initial Setup
 
 1. **Install dependencies:**
+
    ```bash
    pnpm install
    ```
 
 2. **Build all CLIs:**
+
    ```bash
    pnpm build
    ```
@@ -56,10 +58,10 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 
 ### Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm inventory:generate` | Generate inventory files (markdown + JSON) |
-| `pnpm inventory:validate` | Validate inventory is up-to-date |
+| Command                      | Description                                  |
+| ---------------------------- | -------------------------------------------- |
+| `pnpm inventory:generate`    | Generate inventory files (markdown + JSON)   |
+| `pnpm inventory:validate`    | Validate inventory is up-to-date             |
 | `pnpm inventory:update-docs` | Update `ARCHITECTURE.md` with inventory tree |
 
 ### Automatic Updates
@@ -67,14 +69,18 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 The inventory is automatically maintained through:
 
 #### 1. CI Workflow (`.github/workflows/ci.yml`)
+
 After successful build in CI:
+
 - Regenerates inventory from built artifacts
 - Updates architecture documentation
 - Uploads inventory artifacts
 - Ensures committed inventory matches reality
 
 #### 2. Pre-Commit Hook (`.husky/pre-commit`)
+
 Before each commit:
+
 - Validates inventory is current
 - Auto-regenerates if outdated
 - Stages updated files
@@ -152,12 +158,13 @@ The inventory is primarily regenerated in CI workflows to ensure accuracy with b
 ```markdown
 ## Overview
 
-| CLI | Version | Commands | Performance | Tests | Shared Packages |
-|-----|---------|----------|-------------|-------|------------------|
-| alpha | 1.0.0 | 5 | ✅ 245ms / ✅ 120ms | ❌ No tests | 11 |
-| beta | 1.0.0 | 2 | ✅ 290ms / ✅ 150ms | ❌ No tests | 9 |
+| CLI   | Version | Commands | Performance         | Tests       | Shared Packages |
+| ----- | ------- | -------- | ------------------- | ----------- | --------------- |
+| alpha | 1.0.0   | 5        | ✅ 245ms / ✅ 120ms | ❌ No tests | 11              |
+| beta  | 1.0.0   | 2        | ✅ 290ms / ✅ 150ms | ❌ No tests | 9               |
 
 ## alpha
+
 ...detailed CLI documentation...
 ```
 
@@ -197,7 +204,7 @@ The inventory regenerates automatically when:
 ✅ Changing CLI versions or descriptions  
 ✅ Updating package.json oclif configuration  
 ✅ Changing shared package dependencies  
-✅ In CI workflows after successful build  
+✅ In CI workflows after successful build
 
 ### Manual Regeneration
 
@@ -219,6 +226,7 @@ pnpm inventory:update-docs
 **Problem:** `inventory:validate` fails
 
 **Solution:**
+
 ```bash
 pnpm build
 pnpm inventory:generate
@@ -230,7 +238,7 @@ pnpm inventory:generate
 
 **Problem:** Commands not discovered
 
-**Solution:** Ensure commands are in `apps/cli-*/src/commands/` and follow oclif structure.
+**Solution:** Ensure commands are in `plugins/cli-*/src/commands/` and follow oclif structure.
 
 ## Version History
 
@@ -244,6 +252,7 @@ inventory/
 ```
 
 This allows:
+
 - Historical tracking of CLI evolution
 - Version comparison
 - Rollback reference
@@ -252,6 +261,7 @@ This allows:
 ## Best Practices
 
 1. **Always build before generating inventory**
+
    ```bash
    pnpm build && pnpm inventory:generate
    ```
@@ -294,5 +304,6 @@ Potential improvements:
 
 - [docs/CLI-INVENTORY.md](./docs/CLI-INVENTORY.md) - Generated inventory
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) - System architecture (includes inventory tree)
-- [apps/README.md](./apps/README.md) - CLI applications overview
+- [plugins/README.md](./plugins/README.md) - Base plugins overview
+- [extensions/README.md](./extensions/README.md) - Extension plugins (examples)
 - [scripts/README.md](./scripts/README.md) - Scripts documentation

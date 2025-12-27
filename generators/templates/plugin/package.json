@@ -1,0 +1,77 @@
+{
+  "name": "@cli-ops/clio-plugin-{{name}}",
+  "version": "1.0.0",
+  "description": "{{description}}",
+  "author": "{{author}}",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "dev": "node --loader ts-node/esm ./bin/dev.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "keywords": [
+    "clio",
+    "clio-plugin",
+    "cli",
+    "{{name}}"
+  ],
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "@cli-ops/shared-commands": "workspace:*",
+    "@cli-ops/shared-config": "workspace:*",
+    "@cli-ops/shared-core": "workspace:*",
+    "@cli-ops/shared-exit-codes": "workspace:*",
+    "@cli-ops/shared-formatter": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*",
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-ui": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "@cli-ops/clio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@cli-ops/shared-testing": "workspace:*",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.0.0"
+  },
+  "oclif": {
+    "bin": "clio",
+    "dirname": "clio",
+    "commands": "./dist/commands",
+    "topicSeparator": ":",
+    "topics": {
+      "{{name}}": {
+        "description": "{{description}}"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "oclif.manifest.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/archubbuck/cli-ops.git",
+    "directory": "packages/clio-plugin-{{name}}"
+  },
+  "bugs": {
+    "url": "https://github.com/archubbuck/cli-ops/issues"
+  },
+  "homepage": "https://cli-ops.dev/plugins/{{name}}",
+  "license": "MIT"
+}

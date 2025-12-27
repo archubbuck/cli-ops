@@ -41,7 +41,7 @@ export class CacheService extends BaseService {
     this.defaultTTL = options.ttl ?? 3600000 // 1 hour
   }
 
-  async init(): Promise<void> {
+  override async init(): Promise<void> {
     // Create cache directory
     if (!existsSync(this.cacheDir)) {
       await mkdir(this.cacheDir, { recursive: true })
@@ -60,7 +60,7 @@ export class CacheService extends BaseService {
 
     // Check file cache
     const filePath = join(this.cacheDir, `${this.sanitizeKey(key)}.json`)
-    
+
     if (!existsSync(filePath)) {
       return null
     }
@@ -121,19 +121,15 @@ export class CacheService extends BaseService {
     const files = await readdir(this.cacheDir)
     await Promise.all(
       files
-        .filter(file => file.endsWith('.json'))
-        .map(file => unlink(join(this.cacheDir, file)))
+        .filter((file) => file.endsWith('.json'))
+        .map((file) => unlink(join(this.cacheDir, file))),
     )
   }
 
   /**
    * Get or compute value
    */
-  async getOrSet<T>(
-    key: string,
-    compute: () => Promise<T>,
-    ttl?: number
-  ): Promise<T> {
+  async getOrSet<T>(key: string, compute: () => Promise<T>, ttl?: number): Promise<T> {
     const cached = await this.get<T>(key)
     if (cached !== null) {
       return cached

@@ -56,12 +56,12 @@ case "$SHELL_TYPE" in
     COMPLETION_DIR="$HOME/.local/share/bash-completion/completions"
     mkdir -p "$COMPLETION_DIR"
     
-    for cli in alpha beta gamma; do
-      if [ -f "$ROOT_DIR/completions/${cli}.bash" ]; then
-        cp "$ROOT_DIR/completions/${cli}.bash" "$COMPLETION_DIR/$cli"
-        echo -e "${GREEN}✓ Installed $cli completion${NC}"
-      fi
-    done
+    if [ -f "$ROOT_DIR/completions/clio.bash" ]; then
+      cp "$ROOT_DIR/completions/clio.bash" "$COMPLETION_DIR/clio"
+      echo -e "${GREEN}✓ Installed clio completion${NC}"
+    else
+      echo -e "${YELLOW}⚠ clio.bash not found in completions/${NC}"
+    fi
     
     echo ""
     echo "Add this to your ~/.bashrc:"
@@ -80,12 +80,12 @@ case "$SHELL_TYPE" in
     fi
     mkdir -p "$COMPLETION_DIR"
     
-    for cli in alpha beta gamma; do
-      if [ -f "$ROOT_DIR/completions/_${cli}" ]; then
-        cp "$ROOT_DIR/completions/_${cli}" "$COMPLETION_DIR/_${cli}"
-        echo -e "${GREEN}✓ Installed $cli completion${NC}"
-      fi
-    done
+    if [ -f "$ROOT_DIR/completions/_clio" ]; then
+      cp "$ROOT_DIR/completions/_clio" "$COMPLETION_DIR/_clio"
+      echo -e "${GREEN}✓ Installed clio completion${NC}"
+    else
+      echo -e "${YELLOW}⚠ _clio not found in completions/${NC}"
+    fi
     
     echo ""
     echo "Add this to your ~/.zshrc:"
@@ -99,12 +99,12 @@ case "$SHELL_TYPE" in
     COMPLETION_DIR="$HOME/.config/fish/completions"
     mkdir -p "$COMPLETION_DIR"
     
-    for cli in alpha beta gamma; do
-      if [ -f "$ROOT_DIR/completions/${cli}.fish" ]; then
-        cp "$ROOT_DIR/completions/${cli}.fish" "$COMPLETION_DIR/${cli}.fish"
-        echo -e "${GREEN}✓ Installed $cli completion${NC}"
-      fi
-    done
+    if [ -f "$ROOT_DIR/completions/clio.fish" ]; then
+      cp "$ROOT_DIR/completions/clio.fish" "$COMPLETION_DIR/clio.fish"
+      echo -e "${GREEN}✓ Installed clio completion${NC}"
+    else
+      echo -e "${YELLOW}⚠ clio.fish not found in completions/${NC}"
+    fi
     
     echo ""
     echo "Fish completions are automatically loaded."

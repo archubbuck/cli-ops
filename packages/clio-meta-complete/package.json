@@ -1,0 +1,25 @@
+{
+  "name": "@cli-ops/clio-meta-complete",
+  "version": "1.0.0",
+  "description": "Meta-package for complete installation - installs clio with all plugins",
+  "keywords": [
+    "clio",
+    "meta-package",
+    "complete",
+    "all-plugins"
+  ],
+  "dependencies": {
+    "@cli-ops/clio": "workspace:*",
+    "@cli-ops/clio-plugin-fetch": "workspace:*",
+    "@cli-ops/clio-plugin-repo": "workspace:*"
+  },
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "shared-exit-codes",
+  "name": "@cli-ops/shared-exit-codes",
   "version": "1.0.0",
   "description": "Standardized exit codes for CLI applications",
   "main": "dist/index.js",
@@ -17,5 +17,8 @@
   ],
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "shared-core",
+  "name": "@cli-ops/shared-core",
   "version": "1.0.0",
   "description": "Core utilities and base classes",
   "main": "dist/index.js",
@@ -16,11 +16,14 @@
     "base"
   ],
   "dependencies": {
-    "shared-types": "workspace:*",
-    "shared-exit-codes": "workspace:*",
-    "shared-logger": "workspace:*"
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-exit-codes": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

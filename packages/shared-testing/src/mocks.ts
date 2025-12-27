@@ -2,9 +2,9 @@
  * Mock console methods
  */
 export function mockConsole(): {
-  log: jest.Mock | typeof console.log
-  error: jest.Mock | typeof console.error
-  warn: jest.Mock | typeof console.warn
+  log: any
+  error: any
+  warn: any
   restore: () => void
 } {
   const original = {
@@ -14,9 +14,9 @@ export function mockConsole(): {
   }
 
   const mocks = {
-    log: jest.fn ? jest.fn() : (() => {}) as typeof console.log,
-    error: jest.fn ? jest.fn() : (() => {}) as typeof console.error,
-    warn: jest.fn ? jest.fn() : (() => {}) as typeof console.warn,
+    log: (() => {}) as any,
+    error: (() => {}) as any,
+    warn: (() => {}) as any,
   }
 
   console.log = mocks.log
@@ -60,18 +60,14 @@ export function mockEnv(vars: Record<string, string | undefined>): {
  * Mock process.exit
  */
 export function mockExit(): {
-  exit: jest.Mock | typeof process.exit
+  exit: any
   restore: () => void
 } {
   const original = process.exit
 
-  const mock = jest.fn
-    ? jest.fn((code?: number) => {
-        throw new Error(`process.exit(${code})`)
-      })
-    : ((code?: number) => {
-        throw new Error(`process.exit(${code})`)
-      }) as typeof process.exit
+  const mock = ((code?: number) => {
+    throw new Error(`process.exit(${code})`)
+  }) as any
 
   process.exit = mock
 

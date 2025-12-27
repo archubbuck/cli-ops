@@ -1,9 +1,15 @@
 packages:
-  # CLI applications
-  - 'apps/*'
-  
+  # Base plugins
+  - 'plugins/*'
+
+  # Extension plugins
+  - 'extensions/*'
+
   # Shared libraries
   - 'packages/*'
-  
+
   # Development tooling
   - 'tooling/*'
+
+  # Documentation website
+  - 'website'

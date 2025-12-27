@@ -1,0 +1,56 @@
+{
+  "name": "@cli-ops/clio-plugin-tasks-jira",
+  "version": "2.0.0",
+  "description": "Jira integration plugin for clio tasks",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "clio",
+    "plugin",
+    "tasks",
+    "jira",
+    "oclif-plugin"
+  ],
+  "oclif": {
+    "commands": "./dist/commands",
+    "bin": "clio",
+    "topicSeparator": ":",
+    "topics": {
+      "tasks:jira": {
+        "description": "Jira integration for task management"
+      }
+    }
+  },
+  "peerDependencies": {
+    "@cli-ops/clio": "^1.0.0",
+    "@cli-ops/clio-plugin-tasks": "^2.0.0"
+  },
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "@cli-ops/shared-commands": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*",
+    "@cli-ops/shared-plugins": "workspace:*",
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-ui": "workspace:*",
+    "@cli-ops/shared-prompts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "dist",
+    "oclif.manifest.json"
+  ]
+}

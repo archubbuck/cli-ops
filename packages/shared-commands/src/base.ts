@@ -1,24 +1,23 @@
 import { Command, Flags } from '@oclif/core'
-import { createContext } from '@/shared-core'
-import { createDebugLogger, createStructuredLogger } from '@/shared-logger'
-import { loadConfig } from '@/shared-config'
-import { createHistoryManager } from '@/shared-history'
-import type { CLIContext, ConfigSchema, OutputFormat } from '@/shared-types'
+import { createContext } from '@cli-ops/shared-core'
+import { createDebugLogger, createStructuredLogger } from '@cli-ops/shared-logger'
+import { createHistoryManager } from '@cli-ops/shared-history'
+import type { CLIContext, OutputFormat } from '@cli-ops/shared-types'
 
 /**
  * Enhanced base command with common functionality
  */
 export abstract class BaseCommand extends Command {
   protected context!: CLIContext
-  protected debug = createDebugLogger('command')
-  protected logger = createStructuredLogger({ level: 'info' })
+  protected override debug = createDebugLogger('command')
+  protected logger = createStructuredLogger({ name: 'cli', level: 'INFO' })
   protected history = createHistoryManager({ cliName: 'cli' })
   protected startTime = Date.now()
 
   /**
    * Global flags available to all commands
    */
-  static baseFlags = {
+  static override baseFlags = {
     format: Flags.string({
       description: 'Output format',
       options: ['json', 'yaml', 'table', 'csv', 'markdown', 'text'],
@@ -43,7 +42,7 @@ export abstract class BaseCommand extends Command {
   /**
    * Initialize command
    */
-  async init(): Promise<void> {
+  override async init(): Promise<void> {
     await super.init()
 
     // Create context
@@ -53,19 +52,6 @@ export abstract class BaseCommand extends Command {
     })
 
     this.debug('Context created: %O', this.context)
-  }
-
-  /**
-   * Load configuration
-   */
-  protected async loadConfig<T extends ConfigSchema = ConfigSchema>(): Promise<T> {
-    const config = await loadConfig<T>({
-      name: this.context.name,
-      cwd: this.context.cwd,
-    })
-
-    this.debug('Config loaded: %O', config)
-    return config
   }
 
   /**
@@ -106,7 +92,7 @@ export abstract class BaseCommand extends Command {
       duration,
       exitCode,
       cwd: this.context.cwd,
-      user: process.env.USER || 'unknown',
+      user: process.env['USER'] || 'unknown',
       success,
     })
   }
@@ -139,8 +125,8 @@ export abstract class BaseCommand extends Command {
   /**
    * Cleanup on exit
    */
-  async finally(): Promise<void> {
+  override async finally(error: Error | undefined): Promise<void> {
     this.history.close()
-    await super.finally()
+    await super.finally(error)
   }
 }

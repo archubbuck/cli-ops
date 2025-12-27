@@ -18,8 +18,8 @@ Consider creating a new CLI when:
 ### 1. Create CLI Directory
 
 ```bash
-mkdir -p apps/cli-delta
-cd apps/cli-delta
+mkdir -p plugins/cli-delta
+cd plugins/cli-delta
 ```
 
 ### 2. Create package.json
@@ -89,7 +89,8 @@ const project = path.join(__dirname, '..', 'tsconfig.json')
 require('ts-node').register({ project })
 
 // Run CLI
-oclif.run(process.argv.slice(2), import.meta.url)
+oclif
+  .run(process.argv.slice(2), import.meta.url)
   .then(require('@oclif/core/flush'))
   .catch(require('@oclif/core/handle'))
 ```
@@ -164,7 +165,7 @@ export class Storage {
     const newItem: Item = {
       id: `item-${Date.now()}`,
       ...item,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     }
     this.data.items.push(newItem)
     this.save()
@@ -172,9 +173,9 @@ export class Storage {
   }
 
   deleteItem(id: string): boolean {
-    const index = this.data.items.findIndex(i => i.id === id)
+    const index = this.data.items.findIndex((i) => i.id === id)
     if (index === -1) return false
-    
+
     this.data.items.splice(index, 1)
     this.save()
     return true
@@ -196,9 +197,7 @@ import { table } from '@cli-ops/shared-ui'
 export default class ItemsList extends BaseCommand {
   static description = 'List all items'
 
-  static examples = [
-    '<%= config.bin %> <%= command.id %>'
-  ]
+  static examples = ['<%= config.bin %> <%= command.id %>']
 
   async run(): Promise<void> {
     const items = storage.getItems()
@@ -209,16 +208,18 @@ export default class ItemsList extends BaseCommand {
     }
 
     // Display as table
-    const rows = items.map(item => [
+    const rows = items.map((item) => [
       item.id,
       item.name,
-      new Date(item.createdAt).toLocaleString()
+      new Date(item.createdAt).toLocaleString(),
     ])
 
-    console.log(table({
-      head: ['ID', 'Name', 'Created'],
-      rows
-    }))
+    console.log(
+      table({
+        head: ['ID', 'Name', 'Created'],
+        rows,
+      }),
+    )
 
     this.log(`\nTotal: ${items.length} items`)
   }
@@ -235,15 +236,13 @@ import { storage } from '../../storage'
 export default class ItemsAdd extends BaseCommand {
   static description = 'Add a new item'
 
-  static examples = [
-    '<%= config.bin %> <%= command.id %> "New item"'
-  ]
+  static examples = ['<%= config.bin %> <%= command.id %> "New item"']
 
   static args = {
     name: Args.string({
       description: 'Item name',
-      required: true
-    })
+      required: true,
+    }),
   }
 
   async run(): Promise<void> {
@@ -280,7 +279,7 @@ describe('items:list', () => {
 
   it('lists all items', async () => {
     const { stdout } = await runCommand('items:list')
-    
+
     expect(stdout).toContain('Test Item 1')
     expect(stdout).toContain('Test Item 2')
     expect(stdout).toContain('Total: 2 items')
@@ -288,10 +287,10 @@ describe('items:list', () => {
 
   it('shows message when no items', async () => {
     // Clear items
-    storage.getItems().forEach(item => storage.deleteItem(item.id))
-    
+    storage.getItems().forEach((item) => storage.deleteItem(item.id))
+
     const { stdout } = await runCommand('items:list')
-    
+
     expect(stdout).toContain('No items found')
   })
 })
@@ -324,8 +323,8 @@ pnpm install
 pnpm --filter @cli-ops/cli-delta build
 
 # Run CLI
-./apps/cli-delta/bin/run.js items add "First item"
-./apps/cli-delta/bin/run.js items list
+./plugins/cli-delta/bin/run.js items add "First item"
+./plugins/cli-delta/bin/run.js items list
 
 # Run tests
 pnpm --filter @cli-ops/cli-delta test
@@ -342,14 +341,14 @@ Create completion scripts in [`completions/`](../../completions/):
 _delta_completion() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local commands="items help version"
-  
+
   COMPREPLY=( $(compgen -W "${commands}" -- ${cur}) )
 }
 
 complete -F _delta_completion delta
 ```
 
-#### completions/_delta (Zsh)
+#### completions/\_delta (Zsh)
 
 ```zsh
 #compdef delta
@@ -361,7 +360,7 @@ _delta() {
     'help:Display help'
     'version:Display version'
   )
-  
+
   _describe 'command' commands
 }
 
@@ -378,7 +377,7 @@ Update [`README.md`](../../README.md):
 This monorepo contains four command-line tools:
 
 - **cli-alpha** - Task management
-- **cli-beta** - Item management  
+- **cli-beta** - Item management
 - **cli-gamma** - Project management
 - **cli-delta** - Delta management (NEW!)
 ```
@@ -392,6 +391,7 @@ pnpm changeset
 ```
 
 Select:
+
 - `@cli-ops/cli-delta` (major - new package)
 - Write: "Initial release of cli-delta"
 
@@ -405,8 +405,8 @@ import { ConfigManager } from '@cli-ops/shared-config'
 const config = new ConfigManager('cli-delta', {
   defaults: {
     theme: 'auto',
-    defaultPriority: 'medium'
-  }
+    defaultPriority: 'medium',
+  },
 })
 
 // In command
@@ -446,7 +446,7 @@ await history.record({
   metadata: { item },
   undo: async ({ item }) => {
     await storage.addItem(item)
-  }
+  },
 })
 ```
 

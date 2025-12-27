@@ -1,5 +1,5 @@
 {
-  "name": "shared-formatter",
+  "name": "@cli-ops/shared-formatter",
   "version": "1.0.0",
   "description": "Output formatters for JSON, YAML, tables, Markdown, CSV",
   "main": "dist/index.js",
@@ -25,5 +25,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

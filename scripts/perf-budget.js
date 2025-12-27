@@ -33,7 +33,7 @@ for (const cli of CLIS) {
   // Check help command
   const helpStart = performance.now()
   try {
-    execSync(`node apps/cli-${cli}/bin/dev.js --help`, {
+    execSync(`node plugins/cli-${cli}/bin/dev.js --help`, {
       stdio: 'pipe',
       timeout: 5000,
     })
@@ -44,13 +44,17 @@ for (const cli of CLIS) {
     if (helpDuration <= helpBudget) {
       passedChecks++
       console.log(`  ✓ help: ${helpDuration}ms (budget: ${helpBudget}ms)`)
-      
+
       if (helpDuration > helpBudget * WARN_THRESHOLD) {
         warnings++
-        console.log(`    ⚠️  Warning: Close to budget (${Math.round(helpDuration / helpBudget * 100)}%)`)
+        console.log(
+          `    ⚠️  Warning: Close to budget (${Math.round((helpDuration / helpBudget) * 100)}%)`,
+        )
       }
     } else {
-      console.log(`  ✗ help: ${helpDuration}ms (budget: ${helpBudget}ms) - EXCEEDED by ${helpDuration - helpBudget}ms`)
+      console.log(
+        `  ✗ help: ${helpDuration}ms (budget: ${helpBudget}ms) - EXCEEDED by ${helpDuration - helpBudget}ms`,
+      )
     }
   } catch (error) {
     console.log(`  ⚠️  help: Could not measure (${error.message})`)
@@ -59,7 +63,7 @@ for (const cli of CLIS) {
   // Check version command
   const versionStart = performance.now()
   try {
-    execSync(`node apps/cli-${cli}/bin/dev.js --version`, {
+    execSync(`node plugins/cli-${cli}/bin/dev.js --version`, {
       stdio: 'pipe',
       timeout: 5000,
     })
@@ -70,13 +74,17 @@ for (const cli of CLIS) {
     if (versionDuration <= versionBudget) {
       passedChecks++
       console.log(`  ✓ version: ${versionDuration}ms (budget: ${versionBudget}ms)`)
-      
+
       if (versionDuration > versionBudget * WARN_THRESHOLD) {
         warnings++
-        console.log(`    ⚠️  Warning: Close to budget (${Math.round(versionDuration / versionBudget * 100)}%)`)
+        console.log(
+          `    ⚠️  Warning: Close to budget (${Math.round((versionDuration / versionBudget) * 100)}%)`,
+        )
       }
     } else {
-      console.log(`  ✗ version: ${versionDuration}ms (budget: ${versionBudget}ms) - EXCEEDED by ${versionDuration - versionBudget}ms`)
+      console.log(
+        `  ✗ version: ${versionDuration}ms (budget: ${versionBudget}ms) - EXCEEDED by ${versionDuration - versionBudget}ms`,
+      )
     }
   } catch (error) {
     console.log(`  ⚠️  version: Could not measure (${error.message})`)
@@ -87,7 +95,7 @@ for (const cli of CLIS) {
 console.log('\n' + '='.repeat(60))
 console.log('\n📊 Summary\n')
 console.log(`  Total checks: ${totalChecks}`)
-console.log(`  Passed: ${passedChecks} (${Math.round(passedChecks / totalChecks * 100)}%)`)
+console.log(`  Passed: ${passedChecks} (${Math.round((passedChecks / totalChecks) * 100)}%)`)
 console.log(`  Failed: ${totalChecks - passedChecks}`)
 console.log(`  Warnings: ${warnings}`)
 

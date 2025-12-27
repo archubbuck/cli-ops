@@ -44,7 +44,7 @@ export interface CSVFormatOptions {
  */
 export function formatCSV<T extends Record<string, unknown>>(
   data: T[],
-  options: CSVFormatOptions = {}
+  options: CSVFormatOptions = {},
 ): string {
   const {
     delimiter = ',',
@@ -60,7 +60,7 @@ export function formatCSV<T extends Record<string, unknown>>(
   }
 
   // Determine columns
-  const cols = columns || Object.keys(data[0])
+  const cols = columns || Object.keys(data[0] as Record<string, any>)
 
   const rows: string[] = []
 
@@ -70,8 +70,8 @@ export function formatCSV<T extends Record<string, unknown>>(
   }
 
   // Add data rows
-  data.forEach(row => {
-    const values = cols.map(col => row[col])
+  data.forEach((row) => {
+    const values = cols.map((col) => row[col])
     rows.push(formatCSVRow(values, { delimiter, quote, escapeQuotes }))
   })
 
@@ -83,13 +83,11 @@ export function formatCSV<T extends Record<string, unknown>>(
  */
 function formatCSVRow(
   values: unknown[],
-  options: Pick<CSVFormatOptions, 'delimiter' | 'quote' | 'escapeQuotes'>
+  options: Pick<CSVFormatOptions, 'delimiter' | 'quote' | 'escapeQuotes'>,
 ): string {
   const { delimiter = ',', quote = '"', escapeQuotes = true } = options
 
-  return values
-    .map(value => formatCSVCell(value, { quote, escapeQuotes }))
-    .join(delimiter)
+  return values.map((value) => formatCSVCell(value, { quote, escapeQuotes })).join(delimiter)
 }
 
 /**
@@ -97,7 +95,7 @@ function formatCSVRow(
  */
 function formatCSVCell(
   value: unknown,
-  options: Pick<CSVFormatOptions, 'quote' | 'escapeQuotes'>
+  options: Pick<CSVFormatOptions, 'quote' | 'escapeQuotes'>,
 ): string {
   const { quote = '"', escapeQuotes = true } = options
 
@@ -130,16 +128,11 @@ function formatCSVCell(
  */
 export function parseCSV<T extends Record<string, unknown>>(
   csv: string,
-  options: CSVFormatOptions = {}
+  options: CSVFormatOptions = {},
 ): T[] {
-  const {
-    delimiter = ',',
-    quote = '"',
-    lineEnding = '\n',
-    header = true,
-  } = options
+  const { delimiter = ',', quote = '"', lineEnding = '\n', header = true } = options
 
-  const lines = csv.split(lineEnding).filter(line => line.trim())
+  const lines = csv.split(lineEnding).filter((line) => line.trim())
 
   if (lines.length === 0) {
     return []
@@ -150,22 +143,25 @@ export function parseCSV<T extends Record<string, unknown>>(
   let dataLines: string[]
 
   if (header) {
-    headers = parseCSVRow(lines[0], { delimiter, quote })
+    headers = parseCSVRow(lines[0] as string, { delimiter, quote })
     dataLines = lines.slice(1)
   } else {
     // Generate column names
-    const firstRow = parseCSVRow(lines[0], { delimiter, quote })
+    const firstRow = parseCSVRow(lines[0] as string, { delimiter, quote })
     headers = firstRow.map((_, i) => `column${i}`)
     dataLines = lines
   }
 
   // Parse data rows
-  return dataLines.map(line => {
+  return dataLines.map((line) => {
     const values = parseCSVRow(line, { delimiter, quote })
-    return headers.reduce((obj, header, index) => {
-      obj[header] = values[index] || ''
-      return obj
-    }, {} as Record<string, unknown>) as T
+    return headers.reduce(
+      (obj, header, index) => {
+        obj[header] = values[index] || ''
+        return obj
+      },
+      {} as Record<string, unknown>,
+    ) as T
   })
 }
 
@@ -174,7 +170,7 @@ export function parseCSV<T extends Record<string, unknown>>(
  */
 function parseCSVRow(
   row: string,
-  options: Pick<CSVFormatOptions, 'delimiter' | 'quote'>
+  options: Pick<CSVFormatOptions, 'delimiter' | 'quote'>,
 ): string[] {
   const { delimiter = ',', quote = '"' } = options
 
@@ -213,18 +209,8 @@ function parseCSVRow(
 /**
  * Convert array of arrays to CSV
  */
-export function arrayToCSV(
-  data: unknown[][],
-  options: CSVFormatOptions = {}
-): string {
-  const {
-    delimiter = ',',
-    quote = '"',
-    lineEnding = '\n',
-    escapeQuotes = true,
-  } = options
+export function arrayToCSV(data: unknown[][], options: CSVFormatOptions = {}): string {
+  const { delimiter = ',', quote = '"', lineEnding = '\n', escapeQuotes = true } = options
 
-  return data
-    .map(row => formatCSVRow(row, { delimiter, quote, escapeQuotes }))
-    .join(lineEnding)
+  return data.map((row) => formatCSVRow(row, { delimiter, quote, escapeQuotes })).join(lineEnding)
 }

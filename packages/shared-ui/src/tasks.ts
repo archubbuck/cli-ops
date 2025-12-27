@@ -1,14 +1,12 @@
 import { Listr } from 'listr2'
-import type { ListrTask, ListrRendererFactory, ListrDefaultRendererOptions } from 'listr2'
+import type { ListrTask, ListrRendererFactory } from 'listr2'
 
 /**
  * Detect if running in CI or non-TTY environment
  */
 function shouldUseSimpleRenderer(): boolean {
   return Boolean(
-    !process.stdout.isTTY ||
-    process.env.CI ||
-    process.env.CONTINUOUS_INTEGRATION
+    !process.stdout.isTTY || process.env['CI'] || process.env['CONTINUOUS_INTEGRATION'],
   )
 }
 
@@ -60,7 +58,7 @@ export interface TaskInstance {
    */
   newListr<TSubContext = unknown>(
     tasks: Task<TSubContext>[],
-    options?: TaskListOptions
+    options?: TaskListOptions,
   ): TaskList<TSubContext>
 }
 
@@ -105,7 +103,7 @@ export interface TaskList<TContext = unknown> {
  */
 export function createTaskList<TContext = unknown>(
   tasks: Task<TContext>[],
-  options: TaskListOptions = {}
+  options: TaskListOptions = {},
 ): TaskList<TContext> {
   const {
     concurrent = false,
@@ -115,23 +113,20 @@ export function createTaskList<TContext = unknown>(
   } = options
 
   // Choose renderer based on environment
-  let renderer: ListrRendererFactory<ListrDefaultRendererOptions> = 'default' as any
-  
+  let renderer: ListrRendererFactory = 'default' as any
+
   if (forcedRenderer === 'simple' || shouldUseSimpleRenderer()) {
     renderer = 'simple' as any
   } else if (forcedRenderer === 'verbose') {
     renderer = 'verbose' as any
   }
 
-  const listr = new Listr<TContext>(
-    tasks as ListrTask<TContext, any>[],
-    {
-      concurrent,
-      exitOnError,
-      renderer,
-      ctx: context,
-    }
-  )
+  const listr = new Listr<TContext>(tasks as ListrTask<TContext, any>[], {
+    concurrent,
+    exitOnError,
+    renderer: renderer as any,
+    ctx: context as TContext,
+  })
 
   return {
     run: async (ctx?: TContext) => {
@@ -148,7 +143,7 @@ export function createTaskList<TContext = unknown>(
  */
 export function createSequentialTasks<TContext = unknown>(
   tasks: Task<TContext>[],
-  options: Omit<TaskListOptions, 'concurrent'> = {}
+  options: Omit<TaskListOptions, 'concurrent'> = {},
 ): TaskList<TContext> {
   return createTaskList(tasks, { ...options, concurrent: false })
 }
@@ -158,7 +153,7 @@ export function createSequentialTasks<TContext = unknown>(
  */
 export function createConcurrentTasks<TContext = unknown>(
   tasks: Task<TContext>[],
-  options: Omit<TaskListOptions, 'concurrent'> = {}
+  options: Omit<TaskListOptions, 'concurrent'> = {},
 ): TaskList<TContext> {
   return createTaskList(tasks, { ...options, concurrent: true })
 }
@@ -169,7 +164,7 @@ export function createConcurrentTasks<TContext = unknown>(
 export async function runTask<T>(
   title: string,
   fn: () => Promise<T>,
-  options: TaskListOptions = {}
+  options: TaskListOptions = {},
 ): Promise<T> {
   let result: T
 
@@ -177,13 +172,13 @@ export async function runTask<T>(
     [
       {
         title,
-        task: async ctx => {
+        task: async (ctx) => {
           result = await fn()
           ctx.result = result
         },
       },
     ],
-    options
+    options,
   )
 
   await tasks.run()

@@ -217,19 +217,12 @@ export interface CommandResult {
 /**
  * Hook types
  */
-export type HookType =
-  | 'init'
-  | 'prerun'
-  | 'postrun'
-  | 'command_not_found'
-  | 'error'
+export type HookType = 'init' | 'prerun' | 'postrun' | 'command_not_found' | 'error'
 
 /**
  * Hook function
  */
-export type HookFunction<T = unknown> = (
-  context: T
-) => void | Promise<void>
+export type HookFunction<T = unknown> = (context: T) => void | Promise<void>
 
 /**
  * Plugin metadata
@@ -309,9 +302,4 @@ export interface ConfigSchema {
    * Plugin-specific settings
    */
   plugins?: Record<string, JSONValue>
-
-  /**
-   * User-defined settings
-   */
-  [key: string]: JSONValue
 }

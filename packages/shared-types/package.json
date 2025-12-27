@@ -1,5 +1,5 @@
 {
-  "name": "shared-types",
+  "name": "@cli-ops/shared-types",
   "version": "1.0.0",
   "description": "Shared TypeScript types and interfaces",
   "main": "dist/index.js",
@@ -17,5 +17,8 @@
   ],
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

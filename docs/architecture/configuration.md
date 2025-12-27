@@ -98,28 +98,28 @@ import { z } from 'zod'
 export const BaseConfigSchema = z.object({
   // Schema version for migrations
   version: z.number().default(1),
-  
+
   // Debug mode
   debug: z.boolean().default(false),
-  
+
   // Log level
   logLevel: z.enum(['trace', 'debug', 'info', 'warn', 'error']).default('info'),
-  
+
   // Theme
   theme: z.enum(['auto', 'light', 'dark']).default('auto'),
-  
+
   // History settings
   historyEnabled: z.boolean().default(true),
   historyRetention: z.number().min(1).max(365).default(90),
-  
+
   // Notifications
   notifications: z.object({
     enabled: z.boolean().default(true),
-    sound: z.boolean().default(false)
+    sound: z.boolean().default(false),
   }),
-  
+
   // Editor preference
-  editor: z.string().default(process.env.EDITOR || 'vim')
+  editor: z.string().default(process.env.EDITOR || 'vim'),
 })
 
 export type BaseConfig = z.infer<typeof BaseConfigSchema>
@@ -130,7 +130,7 @@ export type BaseConfig = z.infer<typeof BaseConfigSchema>
 Each CLI can extend the base schema:
 
 ```typescript
-// apps/cli-alpha/src/config-schema.ts
+// plugins/cli-alpha/src/config-schema.ts
 import { BaseConfigSchema } from '@cli-ops/shared-config'
 import { z } from 'zod'
 
@@ -139,15 +139,15 @@ export const CliAlphaConfigSchema = BaseConfigSchema.extend({
   tasks: z.object({
     defaultPriority: z.enum(['low', 'medium', 'high']).default('medium'),
     autoSave: z.boolean().default(true),
-    sortBy: z.enum(['created', 'priority', 'due']).default('created')
+    sortBy: z.enum(['created', 'priority', 'due']).default('created'),
   }),
-  
+
   integrations: z.object({
     github: z.object({
       enabled: z.boolean().default(false),
-      token: z.string().optional()
-    })
-  })
+      token: z.string().optional(),
+    }),
+  }),
 })
 
 export type CliAlphaConfig = z.infer<typeof CliAlphaConfigSchema>
@@ -164,7 +164,7 @@ import { CliAlphaConfigSchema } from './config-schema'
 const config = new ConfigManager('cli-alpha', CliAlphaConfigSchema, {
   // Default values (merged with schema defaults)
   debug: false,
-  theme: 'auto'
+  theme: 'auto',
 })
 ```
 
@@ -175,7 +175,7 @@ const config = new ConfigManager('cli-alpha', CliAlphaConfigSchema, {
 await config.load()
 
 // Get specific value
-const theme = config.get('theme')  // 'auto' | 'light' | 'dark'
+const theme = config.get('theme') // 'auto' | 'light' | 'dark'
 
 // Get with fallback
 const logLevel = config.get('logLevel', 'info')
@@ -197,7 +197,7 @@ await config.set('tasks.defaultPriority', 'high')
 await config.setMany({
   debug: true,
   logLevel: 'debug',
-  'tasks.autoSave': false
+  'tasks.autoSave': false,
 })
 
 // Automatically saves to disk
@@ -361,13 +361,13 @@ export const migrations = {
     return {
       version: 2,
       appearance: {
-        theme: config.theme
+        theme: config.theme,
       },
       // Preserve other fields
-      ...omit(config, ['theme', 'version'])
+      ...omit(config, ['theme', 'version']),
     }
   },
-  
+
   // Migrate from v2 to v3
   2: (config: any) => {
     // Add new field with default
@@ -376,10 +376,10 @@ export const migrations = {
       ...config,
       notifications: {
         enabled: true,
-        sound: false
-      }
+        sound: false,
+      },
     }
-  }
+  },
 }
 ```
 
@@ -390,7 +390,7 @@ Migrations run automatically on load:
 ```typescript
 // User has v1 config
 // ConfigManager loads it and runs migrations 1 → 2 → 3
-await config.load()  // Transparent migration to v3
+await config.load() // Transparent migration to v3
 
 // User's config file updated to v3
 ```
@@ -432,10 +432,10 @@ Configuration is cached in memory:
 
 ```typescript
 // First call: loads from disk
-const theme1 = await config.get('theme')  // ~5ms
+const theme1 = await config.get('theme') // ~5ms
 
 // Subsequent calls: cached
-const theme2 = await config.get('theme')  // <1ms
+const theme2 = await config.get('theme') // <1ms
 ```
 
 ### Atomic Writes
@@ -498,21 +498,21 @@ import { createFixtureManager } from '@cli-ops/shared-testing'
 
 describe('MyCommand', () => {
   const fixtures = createFixtureManager()
-  
+
   it('should use custom config', async () => {
     // Create temp config file
     const configPath = await fixtures.create({
-      'config.json': JSON.stringify({ theme: 'dark' })
+      'config.json': JSON.stringify({ theme: 'dark' }),
     })
-    
+
     const config = new ConfigManager('test', schema, {
-      configDir: configPath
+      configDir: configPath,
     })
-    
+
     await config.load()
     expect(config.get('theme')).toBe('dark')
   })
-  
+
   afterEach(async () => {
     await fixtures.cleanup()
   })

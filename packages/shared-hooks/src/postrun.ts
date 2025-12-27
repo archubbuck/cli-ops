@@ -1,5 +1,5 @@
 import { Hook } from '@oclif/core'
-import { createDebugLogger } from '@/shared-logger'
+import { createDebugLogger } from '@cli-ops/shared-logger'
 
 const debug = createDebugLogger('hooks:postrun')
 

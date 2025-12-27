@@ -22,7 +22,7 @@ Requirements:
 - Integration with UI components (spinners, progress bars)
 
 Challenges:
-- Three independent CLIs need consistent logging behavior
+- Clio and its plugins need consistent logging behavior
 - Console.log/console.error are too simple
 - Need to suppress logs during tests
 - Debug logs should not spam users by default
@@ -55,7 +55,7 @@ Key design principles:
 
 ### Positive
 
-- **Consistency**: All CLIs log in the same format with same conventions
+- **Consistency**: Clio and all plugins log in the same format with same conventions
 - **Debuggability**: Developers can enable detailed logs with `--debug` flag
 - **Structure**: Logs are queryable/filterable (e.g., grep for specific keys)
 - **Testability**: Tests can assert on log messages and metadata
@@ -67,7 +67,7 @@ Key design principles:
 
 - **Abstraction cost**: Simple logging requires importing Logger class
 - **Learning curve**: Contributors must learn logger API vs console.log
-- **Dependency**: All CLIs depend on `shared-logger` package
+- **Dependency**: Clio and all plugins depend on `shared-logger` package
 
 ### Neutral
 

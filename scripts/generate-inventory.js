@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const ROOT_DIR = join(__dirname, '..')
-const APPS_DIR = join(ROOT_DIR, 'apps')
+const PLUGINS_DIR = join(ROOT_DIR, 'plugins')
 const INVENTORY_DIR = join(ROOT_DIR, 'inventory')
 const PERF_BUDGETS = {
   help: 500,
@@ -23,26 +23,40 @@ const PERF_BUDGETS = {
 }
 
 /**
- * Discover all CLI applications in the apps/ directory
+ * Discover all CLI applications and plugins in the workspace
  */
 function discoverCLIs() {
-  if (!existsSync(APPS_DIR)) {
-    console.error('❌ apps/ directory not found')
-    process.exit(1)
+  const clis = []
+
+  // Add core clio CLI
+  const clioPath = join(ROOT_DIR, 'plugins', 'clio')
+  if (existsSync(clioPath)) {
+    clis.push({
+      name: 'clio',
+      path: clioPath,
+      type: 'core',
+    })
   }
 
-  const clis = readdirSync(APPS_DIR)
-    .filter(name => {
-      const path = join(APPS_DIR, name)
-      return statSync(path).isDirectory() && name.startsWith('cli-')
-    })
-    .map(name => ({
-      name,
-      path: join(APPS_DIR, name),
-    }))
+  // Add plugins from packages/
+  const packagesDir = join(ROOT_DIR, 'packages')
+  if (existsSync(packagesDir)) {
+    readdirSync(packagesDir)
+      .filter((name) => {
+        const path = join(packagesDir, name)
+        return statSync(path).isDirectory() && name.startsWith('clio-plugin-')
+      })
+      .forEach((name) => {
+        clis.push({
+          name,
+          path: join(packagesDir, name),
+          type: 'plugin',
+        })
+      })
+  }
 
   if (clis.length === 0) {
-    console.error('❌ No CLI applications found in apps/')
+    console.error('❌ No CLI applications or plugins found')
     process.exit(1)
   }
 
@@ -54,7 +68,7 @@ function discoverCLIs() {
  */
 function extractCLIMetadata(cliPath, cliName) {
   const pkgPath = join(cliPath, 'package.json')
-  
+
   if (!existsSync(pkgPath)) {
     console.warn(`⚠️  No package.json found for ${cliName}`)
     return null
@@ -62,13 +76,14 @@ function extractCLIMetadata(cliPath, cliName) {
 
   try {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
-    const binName = pkg.oclif?.bin || (pkg.bin ? Object.keys(pkg.bin)[0] : cliName.replace('cli-', ''))
-    
+    const binName =
+      pkg.oclif?.bin || (pkg.bin ? Object.keys(pkg.bin)[0] : cliName.replace('cli-', ''))
+
     // Extract shared package dependencies
     const sharedDeps = Object.keys(pkg.dependencies || {})
-      .filter(dep => dep.startsWith('shared-'))
+      .filter((dep) => dep.startsWith('shared-'))
       .sort()
-    
+
     return {
       name: pkg.name,
       version: pkg.version,
@@ -110,14 +125,16 @@ function discoverCommands(cliPath) {
         // Extract description via regex
         try {
           const content = readFileSync(fullPath, 'utf-8')
-          const descMatch = /static\s+(?:override\s+)?description\s*=\s*['"`]([^'"`]+)['"`]/s.exec(content)
+          const descMatch = /static\s+(?:override\s+)?description\s*=\s*['"`]([^'"`]+)['"`]/s.exec(
+            content,
+          )
           const aliasMatch = /static\s+(?:override\s+)?aliases\s*=\s*\[(.*?)\]/s.exec(content)
-          
+
           let aliases = []
           if (aliasMatch) {
             aliases = aliasMatch[1]
               .split(',')
-              .map(a => a.trim().replace(/['"]/g, ''))
+              .map((a) => a.trim().replace(/['"]/g, ''))
               .filter(Boolean)
           }
 
@@ -149,7 +166,7 @@ function discoverCommands(cliPath) {
  */
 function checkPerformance(cliName) {
   const devScript = join(APPS_DIR, cliName, 'bin', 'dev.js')
-  
+
   if (!existsSync(devScript)) {
     return {
       help: { duration: -1, budget: PERF_BUDGETS.help, status: 'unavailable' },
@@ -211,7 +228,7 @@ function checkPerformance(cliName) {
  */
 function checkTests(cliPath) {
   const srcDir = join(cliPath, 'src')
-  
+
   if (!existsSync(srcDir)) {
     return { hasTests: false, testFiles: 0, testPatterns: [] }
   }
@@ -248,10 +265,10 @@ function checkTests(cliPath) {
  */
 function generateMarkdown(inventory) {
   const timestamp = new Date().toISOString()
-  const date = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  const date = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   })
 
   let md = `# CLI Inventory\n\n`
@@ -265,21 +282,21 @@ function generateMarkdown(inventory) {
   md += `|-----|---------|----------|----------------------------|-------|------------------|\n`
 
   for (const cli of inventory.clis) {
-    const perfHelp = cli.performance.help.status === 'pass' 
-      ? `✅ ${cli.performance.help.duration}ms`
-      : cli.performance.help.status === 'fail'
-      ? `⚠️ ${cli.performance.help.duration}ms`
-      : '❌'
-    
-    const perfVersion = cli.performance.version.status === 'pass'
-      ? `✅ ${cli.performance.version.duration}ms`
-      : cli.performance.version.status === 'fail'
-      ? `⚠️ ${cli.performance.version.duration}ms`
-      : '❌'
+    const perfHelp =
+      cli.performance.help.status === 'pass'
+        ? `✅ ${cli.performance.help.duration}ms`
+        : cli.performance.help.status === 'fail'
+          ? `⚠️ ${cli.performance.help.duration}ms`
+          : '❌'
 
-    const testStatus = cli.tests.hasTests
-      ? `✅ ${cli.tests.testFiles} files`
-      : `❌ No tests`
+    const perfVersion =
+      cli.performance.version.status === 'pass'
+        ? `✅ ${cli.performance.version.duration}ms`
+        : cli.performance.version.status === 'fail'
+          ? `⚠️ ${cli.performance.version.duration}ms`
+          : '❌'
+
+    const testStatus = cli.tests.hasTests ? `✅ ${cli.tests.testFiles} files` : `❌ No tests`
 
     md += `| **${cli.metadata.bin}** | ${cli.metadata.version} | ${cli.commands.length} | ${perfHelp} / ${perfVersion} | ${testStatus} | ${cli.metadata.packageCount} |\n`
   }
@@ -293,7 +310,7 @@ function generateMarkdown(inventory) {
   for (const cli of inventory.clis) {
     md += `## ${cli.metadata.bin}\n\n`
     md += `**${cli.metadata.description}**\n\n`
-    
+
     md += `- **Package:** \`${cli.metadata.name}\`\n`
     md += `- **Version:** ${cli.metadata.version}\n`
     md += `- **Binary:** \`${cli.metadata.bin}\`\n`
@@ -303,14 +320,14 @@ function generateMarkdown(inventory) {
     // Commands
     if (cli.commands.length > 0) {
       md += `### Commands\n\n`
-      
+
       for (const cmd of cli.commands) {
         md += `#### \`${cmd.id}\`\n\n`
         if (cmd.description) {
           md += `${cmd.description}\n\n`
         }
         if (cmd.aliases && cmd.aliases.length > 0) {
-          md += `**Aliases:** ${cmd.aliases.map(a => `\`${a}\``).join(', ')}\n\n`
+          md += `**Aliases:** ${cmd.aliases.map((a) => `\`${a}\``).join(', ')}\n\n`
         }
       }
     }
@@ -388,7 +405,7 @@ function main() {
   // Discover CLIs
   console.log('🔍 Discovering CLIs...')
   const clis = discoverCLIs()
-  console.log(`   Found ${clis.length} CLI(s): ${clis.map(c => c.name).join(', ')}\n`)
+  console.log(`   Found ${clis.length} CLI(s): ${clis.map((c) => c.name).join(', ')}\n`)
 
   // Build inventory
   const inventory = {
@@ -398,7 +415,7 @@ function main() {
 
   for (const cli of clis) {
     console.log(`📋 Processing ${cli.name}...`)
-    
+
     const metadata = extractCLIMetadata(cli.path, cli.name)
     if (!metadata) {
       console.log(`   ⚠️  Skipping ${cli.name} (no metadata)\n`)
@@ -406,13 +423,15 @@ function main() {
     }
 
     console.log(`   Version: ${metadata.version}`)
-    
+
     const commands = discoverCommands(cli.path)
     console.log(`   Commands: ${commands.length}`)
-    
+
     const performance = checkPerformance(cli.name)
-    console.log(`   Performance: help=${performance.help.duration}ms, version=${performance.version.duration}ms`)
-    
+    console.log(
+      `   Performance: help=${performance.help.duration}ms, version=${performance.version.duration}ms`,
+    )
+
     const tests = checkTests(cli.path)
     console.log(`   Tests: ${tests.testFiles} file(s)`)
     console.log(`   Shared Packages: ${metadata.packageCount}\n`)
@@ -443,7 +462,7 @@ function main() {
   const version = inventory.clis.length > 0 ? inventory.clis[0].metadata.version : '1.0.0'
   const versionedPath = join(INVENTORY_DIR, `inventory-v${version}.json`)
   const latestPath = join(INVENTORY_DIR, 'latest.json')
-  
+
   const json = JSON.stringify(inventory, null, 2)
   writeFileSync(versionedPath, json, 'utf-8')
   writeFileSync(latestPath, json, 'utf-8')
@@ -453,8 +472,12 @@ function main() {
   console.log('\n✨ Inventory generation complete!')
   console.log(`\n📊 Summary:`)
   console.log(`   CLIs: ${inventory.clis.length}`)
-  console.log(`   Total Commands: ${inventory.clis.reduce((sum, cli) => sum + cli.commands.length, 0)}`)
-  console.log(`   Total Test Files: ${inventory.clis.reduce((sum, cli) => sum + cli.tests.testFiles, 0)}`)
+  console.log(
+    `   Total Commands: ${inventory.clis.reduce((sum, cli) => sum + cli.commands.length, 0)}`,
+  )
+  console.log(
+    `   Total Test Files: ${inventory.clis.reduce((sum, cli) => sum + cli.tests.testFiles, 0)}`,
+  )
 }
 
 main()

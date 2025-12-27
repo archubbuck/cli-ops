@@ -4,17 +4,18 @@
     // Shared packages - Infrastructure
     { "path": "./packages/shared-core" },
     { "path": "./packages/shared-types" },
-    
+
     // Shared packages - CLI Foundations
     { "path": "./packages/shared-commands" },
     { "path": "./packages/shared-hooks" },
     { "path": "./packages/shared-services" },
-    
+    { "path": "./packages/shared-plugins" },
+
     // Shared packages - User Experience
     { "path": "./packages/shared-ui" },
     { "path": "./packages/shared-formatter" },
     { "path": "./packages/shared-prompts" },
-    
+
     // Shared packages - System
     { "path": "./packages/shared-config" },
     { "path": "./packages/shared-logger" },
@@ -22,10 +23,16 @@
     { "path": "./packages/shared-history" },
     { "path": "./packages/shared-ipc" },
     { "path": "./packages/shared-testing" },
-    
-    // CLI Applications
-    { "path": "./apps/cli-alpha" },
-    { "path": "./apps/cli-beta" },
-    { "path": "./apps/cli-gamma" }
+
+    // CLI Applications and Plugins
+    { "path": "./plugins/clio" },
+    { "path": "./plugins/cli-alpha" },
+    { "path": "./plugins/cli-beta" },
+    { "path": "./plugins/cli-gamma" },
+
+    // Extension Plugins
+    { "path": "./extensions/clio-plugin-tasks-jira" },
+    { "path": "./extensions/clio-plugin-fetch-oauth" },
+    { "path": "./extensions/clio-plugin-repo-hooks" }
   ]
 }

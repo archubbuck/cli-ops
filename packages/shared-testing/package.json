@@ -1,5 +1,5 @@
 {
-  "name": "shared-testing",
+  "name": "@cli-ops/shared-testing",
   "version": "1.0.0",
   "description": "Testing utilities and helpers",
   "main": "dist/index.js",
@@ -17,9 +17,12 @@
   ],
   "dependencies": {
     "@oclif/test": "^4.1.15",
-    "shared-types": "workspace:*"
+    "@cli-ops/shared-types": "workspace:*"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

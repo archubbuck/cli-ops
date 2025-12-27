@@ -6,7 +6,7 @@
 
 ## Context
 
-This project is a monorepo containing three independent CLIs (`cli-alpha`, `cli-beta`, `cli-gamma`) and 14 shared packages. We needed a build orchestration tool that could:
+This project is a monorepo containing the clio CLI manager, three plugins (`clio-plugin-tasks`, `clio-plugin-fetch`, `clio-plugin-repo`), and 14 shared packages. We needed a build orchestration tool that could:
 
 - Handle complex dependency graphs between packages
 - Enable efficient caching to avoid rebuilding unchanged packages
@@ -67,7 +67,7 @@ Key scripts:
 pnpm build        # Build all packages
 pnpm test         # Run all tests
 pnpm lint         # Lint all packages
-turbo run build --filter=cli-alpha  # Build only cli-alpha and its dependencies
+turbo run build --filter=clio  # Build only clio and its dependencies
 ```
 
 ## References

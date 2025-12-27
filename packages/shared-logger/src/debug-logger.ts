@@ -2,10 +2,10 @@ import debugFactory from 'debug'
 
 /**
  * Debug logger for development and troubleshooting
- * 
+ *
  * Uses the debug package for namespace-based logging.
  * Enable with DEBUG environment variable:
- * 
+ *
  * DEBUG=mycli:* node app.js          # All mycli logs
  * DEBUG=mycli:api node app.js        # Just API logs
  * DEBUG=mycli:api,mycli:db node app.js  # Multiple namespaces
@@ -54,13 +54,9 @@ export interface DebugLogger {
 /**
  * Create a debug logger with namespace
  */
-export function createDebugLogger(
-  options: string | DebugLoggerOptions
-): DebugLogger {
-  const namespace = typeof options === 'string' 
-    ? options 
-    : options.namespace
-  
+export function createDebugLogger(options: string | DebugLoggerOptions): DebugLogger {
+  const namespace = typeof options === 'string' ? options : options.namespace
+
   const logger = debugFactory(namespace)
 
   if (typeof options === 'object' && options.enabled !== undefined) {
@@ -90,8 +86,8 @@ export function enableDebug(namespaces: string): void {
 export function disableDebug(namespaces: string): void {
   debugFactory.disable()
   if (namespaces !== '*') {
-    const current = process.env.DEBUG || ''
-    const patterns = current.split(',').filter(p => p !== namespaces)
+    const current = process.env['DEBUG'] || ''
+    const patterns = current.split(',').filter((p) => p !== namespaces)
     if (patterns.length > 0) {
       debugFactory.enable(patterns.join(','))
     }

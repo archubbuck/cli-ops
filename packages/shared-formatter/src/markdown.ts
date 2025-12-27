@@ -21,21 +21,21 @@ export interface MarkdownFormatOptions {
  */
 export function formatMarkdownTable<T extends Record<string, unknown>>(
   data: T[],
-  options: { columns?: string[] } = {}
+  options: { columns?: string[] } = {},
 ): string {
   if (data.length === 0) {
     return '_No data_'
   }
 
-  const columns = options.columns || Object.keys(data[0])
+  const columns = options.columns || Object.keys(data[0] as Record<string, any>)
 
   // Header
   const header = `| ${columns.join(' | ')} |`
   const separator = `| ${columns.map(() => '---').join(' | ')} |`
 
   // Rows
-  const rows = data.map(row => {
-    const cells = columns.map(col => {
+  const rows = data.map((row) => {
+    const cells = columns.map((col) => {
       const value = row[col]
       return formatMarkdownCell(value)
     })
@@ -78,7 +78,7 @@ function formatMarkdownCell(value: unknown): string {
  */
 export function formatMarkdownList(
   items: string[],
-  options: { ordered?: boolean; indent?: number } = {}
+  options: { ordered?: boolean; indent?: number } = {},
 ): string {
   const { ordered = false, indent = 0 } = options
   const indentStr = '  '.repeat(indent)
@@ -94,10 +94,7 @@ export function formatMarkdownList(
 /**
  * Create Markdown heading
  */
-export function formatMarkdownHeading(
-  text: string,
-  level: number = 1
-): string {
+export function formatMarkdownHeading(text: string, level: number = 1): string {
   const hashes = '#'.repeat(Math.max(1, Math.min(6, level)))
   return `${hashes} ${text}`
 }
@@ -105,10 +102,7 @@ export function formatMarkdownHeading(
 /**
  * Create Markdown code block
  */
-export function formatMarkdownCode(
-  code: string,
-  language: string = ''
-): string {
+export function formatMarkdownCode(code: string, language: string = ''): string {
   return `\`\`\`${language}\n${code}\n\`\`\``
 }
 
@@ -122,11 +116,7 @@ export function formatMarkdownLink(text: string, url: string): string {
 /**
  * Create Markdown image
  */
-export function formatMarkdownImage(
-  alt: string,
-  url: string,
-  title?: string
-): string {
+export function formatMarkdownImage(alt: string, url: string, title?: string): string {
   if (title) {
     return `![${alt}](${url} "${title}")`
   }
@@ -139,7 +129,7 @@ export function formatMarkdownImage(
 export function formatMarkdownQuote(text: string): string {
   return text
     .split('\n')
-    .map(line => `> ${line}`)
+    .map((line) => `> ${line}`)
     .join('\n')
 }
 
@@ -158,7 +148,7 @@ export function formatMarkdownDocument(
   options: {
     frontmatter?: Record<string, unknown>
     toc?: boolean
-  } = {}
+  } = {},
 ): string {
   const parts: string[] = []
 
@@ -190,7 +180,7 @@ function generateTOC(markdown: string, maxDepth: number = 3): string {
   const headings = markdown.match(/^#{1,6} .+$/gm) || []
 
   return headings
-    .map(heading => {
+    .map((heading) => {
       const level = heading.match(/^#+/)?.[0].length || 1
       if (level > maxDepth) return null
 

@@ -1,0 +1,30 @@
+import { Command } from '@oclif/core'
+import { logger } from '@cli-ops/shared-logger'
+import { ExitCodes } from '@cli-ops/shared-exit-codes'
+
+export default class {{pascalCase topic}}{{pascalCase name}} extends Command {
+  static override description = '{{description}}'
+
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+  ]
+
+  static override flags = {}
+
+  static override args = {}
+
+  public async run(): Promise<void> {
+    const { args, flags } = await this.parse({{pascalCase topic}}{{pascalCase name}})
+
+    try {
+      logger.info('Executing {{topic}}:{{name}} command')
+      
+      // TODO: Implement command logic here
+      this.log('✓ Command executed successfully')
+      
+    } catch (error) {
+      logger.error('Command failed', { error })
+      this.error('Command execution failed', { exit: ExitCodes.GENERAL_ERROR })
+    }
+  }
+}

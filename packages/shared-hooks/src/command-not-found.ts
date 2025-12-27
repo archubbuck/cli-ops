@@ -1,5 +1,5 @@
 import { Hook } from '@oclif/core'
-import { createDebugLogger } from '@/shared-logger'
+import { createDebugLogger } from '@cli-ops/shared-logger'
 
 const debug = createDebugLogger('hooks:command-not-found')
 
@@ -10,14 +10,14 @@ export const commandNotFound: Hook<'command_not_found'> = async function (opts) 
   debug('Command not found: %s', opts.id)
 
   const suggestions = opts.config.commands
-    .filter(cmd => !cmd.hidden)
-    .map(cmd => cmd.id)
-    .filter(id => calculateSimilarity(opts.id, id) > 0.5)
+    .filter((cmd) => !cmd.hidden)
+    .map((cmd) => cmd.id)
+    .filter((id) => calculateSimilarity(opts.id, id) > 0.5)
     .slice(0, 5)
 
   if (suggestions.length > 0) {
     this.log(`\nDid you mean one of these?`)
-    suggestions.forEach(suggestion => {
+    suggestions.forEach((suggestion) => {
       this.log(`  ${suggestion}`)
     })
   }

@@ -13,7 +13,7 @@ const BUDGETS = {
   version: 200, // ms
 }
 
-const clis = ['cli-alpha', 'cli-beta', 'cli-gamma']
+const clis = ['clio']
 const errors = []
 
 console.log('Checking CLI performance budgets...\n')

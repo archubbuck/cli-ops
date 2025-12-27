@@ -52,16 +52,19 @@ The CLI Ops monorepo is a **multi-CLI system** built with a **shared package arc
 ### Key Concepts
 
 **Monorepo Structure:**
+
 - 3 independent CLIs (`cli-alpha`, `cli-beta`, `cli-gamma`)
 - 14 shared packages providing reusable functionality
 - Managed with pnpm workspaces + Turborepo
 
 **Layered Architecture:**
+
 1. **User-Facing CLIs**: Independent applications, each with their own commands
 2. **Shared Packages**: Reusable libraries providing common functionality
 3. **Build Tools**: Development infrastructure for building, testing, releasing
 
 **Design Philosophy:**
+
 - **DRY (Don't Repeat Yourself)**: Common logic extracted to shared packages
 - **Separation of Concerns**: Clear boundaries between packages
 - **Type Safety**: Full TypeScript coverage with strict mode
@@ -71,6 +74,7 @@ The CLI Ops monorepo is a **multi-CLI system** built with a **shared package arc
 ## Package Categories
 
 ### Core Infrastructure
+
 These packages form the foundation that all CLIs build upon:
 
 - **shared-commands**: `BaseCommand` class with lifecycle hooks
@@ -78,6 +82,7 @@ These packages form the foundation that all CLIs build upon:
 - **shared-logger**: Structured logging with multiple transports
 
 ### User Experience
+
 These packages handle all user-facing interactions:
 
 - **shared-ui**: Spinners, progress bars, color-coded output
@@ -85,6 +90,7 @@ These packages handle all user-facing interactions:
 - **shared-formatter**: Structured output (tables, JSON, YAML)
 
 ### Advanced Features
+
 These packages provide sophisticated CLI capabilities:
 
 - **shared-history**: Command tracking with undo/redo
@@ -93,6 +99,7 @@ These packages provide sophisticated CLI capabilities:
 - **shared-services**: Business logic and data management
 
 ### Development Support
+
 These packages aid in development and quality assurance:
 
 - **shared-types**: Common TypeScript types and interfaces
@@ -144,23 +151,23 @@ The architecture is shaped by several key decisions documented in ADRs:
 
 ## Technology Stack
 
-| Layer | Technologies |
-|-------|-------------|
-| **Language** | TypeScript 5.x with strict mode |
-| **Package Manager** | pnpm with workspaces |
-| **Build Tool** | Turborepo for orchestration |
-| **CLI Framework** | oclif (optional, can use custom) |
-| **Testing** | Vitest with coverage |
-| **Linting** | ESLint with custom config |
-| **Formatting** | Prettier with custom config |
+| Layer                  | Technologies                          |
+| ---------------------- | ------------------------------------- |
+| **Language**           | TypeScript 5.x with strict mode       |
+| **Package Manager**    | pnpm with workspaces                  |
+| **Build Tool**         | Turborepo for orchestration           |
+| **CLI Framework**      | oclif (optional, can use custom)      |
+| **Testing**            | Vitest with coverage                  |
+| **Linting**            | ESLint with custom config             |
+| **Formatting**         | Prettier with custom config           |
 | **Version Management** | Changesets for independent versioning |
-| **Storage** | SQLite for history, JSON for config |
+| **Storage**            | SQLite for history, JSON for config   |
 
 ## Directory Structure
 
 ```
 cli-ops/
-├── apps/                     # User-facing CLIs
+├── plugins/                  # Base plugins
 │   ├── cli-alpha/
 │   ├── cli-beta/
 │   └── cli-gamma/
@@ -187,18 +194,21 @@ See [monorepo-structure.md](./monorepo-structure.md) for detailed directory expl
 The architecture is designed for extensibility:
 
 ### For CLI Developers
+
 - Extend `BaseCommand` to create new commands
 - Use shared packages for common functionality
 - Implement command-specific undo logic
 - Add custom hooks for lifecycle events
 
 ### For Package Developers
+
 - Create new shared packages following conventions
 - Export TypeScript types for consumers
 - Provide test utilities in `__tests__` directories
 - Document APIs in README files
 
 ### For Plugin Authors (Future)
+
 - Plugin system planned (not yet implemented)
 - Will support loading external commands
 - Hook-based extension mechanism via `shared-hooks`
@@ -207,13 +217,13 @@ The architecture is designed for extensibility:
 
 Target performance metrics:
 
-| Operation | Target | Notes |
-|-----------|--------|-------|
-| CLI startup | <300ms | Module loading time |
-| `--help` | <500ms | Most common command |
-| `--version` | <200ms | Trivial operation |
-| Simple commands | <1000ms | List, show, etc. |
-| Complex commands | <2000ms | Add, delete, etc. |
+| Operation        | Target  | Notes               |
+| ---------------- | ------- | ------------------- |
+| CLI startup      | <300ms  | Module loading time |
+| `--help`         | <500ms  | Most common command |
+| `--version`      | <200ms  | Trivial operation   |
+| Simple commands  | <1000ms | List, show, etc.    |
+| Complex commands | <2000ms | Add, delete, etc.   |
 
 See [performance.md](./performance.md) for optimization strategies.
 

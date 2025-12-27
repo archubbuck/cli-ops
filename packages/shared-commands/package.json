@@ -1,5 +1,5 @@
 {
-  "name": "shared-commands",
+  "name": "@cli-ops/shared-commands",
   "version": "1.0.0",
   "description": "Base command classes with enhanced functionality",
   "main": "dist/index.js",
@@ -17,13 +17,16 @@
   ],
   "dependencies": {
     "@oclif/core": "^4.0.31",
-    "shared-types": "workspace:*",
-    "shared-core": "workspace:*",
-    "shared-logger": "workspace:*",
-    "shared-config": "workspace:*",
-    "shared-history": "workspace:*"
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-core": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*",
+    "@cli-ops/shared-config": "workspace:*",
+    "@cli-ops/shared-history": "workspace:*"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

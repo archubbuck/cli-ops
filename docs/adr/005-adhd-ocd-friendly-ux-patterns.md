@@ -26,7 +26,7 @@ This project aims to be an **exemplar of inclusive CLI design**, demonstrating p
 
 ## Decision
 
-We will implement **ADHD/OCD-friendly UX patterns** throughout all CLI packages.
+We will implement **ADHD/OCD-friendly UX patterns** throughout clio and all plugin packages.
 
 ### Core Principles
 
@@ -73,7 +73,7 @@ We will implement **ADHD/OCD-friendly UX patterns** throughout all CLI packages.
 - Clear indication of irreversible operations
 
 **Consistency:**
-- Uniform command structure across all CLIs
+- Uniform command structure across clio and all plugins
 - Standardized flag names (`--debug`, `--quiet`, `--yes`)
 - Predictable error codes ([shared-exit-codes](../../packages/shared-exit-codes/))
 - Consistent output formatting

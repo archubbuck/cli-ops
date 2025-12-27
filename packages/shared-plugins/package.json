@@ -1,0 +1,33 @@
+{
+  "name": "@cli-ops/shared-plugins",
+  "version": "1.0.0",
+  "description": "Plugin system utilities for CLI applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cli",
+    "plugins",
+    "oclif"
+  ],
+  "dependencies": {
+    "@oclif/core": "^4.0.31",
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-ipc": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*",
+    "@cli-ops/shared-core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

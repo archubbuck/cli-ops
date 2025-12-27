@@ -1,4 +1,4 @@
-import { EventBus, createEventBus } from '@/shared-ipc'
+import { EventBus, createEventBus } from '@cli-ops/shared-ipc'
 
 /**
  * Base service class
@@ -63,17 +63,13 @@ export class ServiceContainer {
    * Initialize all services
    */
   async initAll(): Promise<void> {
-    await Promise.all(
-      Array.from(this.services.values()).map(service => service.init())
-    )
+    await Promise.all(Array.from(this.services.values()).map((service) => service.init()))
   }
 
   /**
    * Destroy all services
    */
   async destroyAll(): Promise<void> {
-    await Promise.all(
-      Array.from(this.services.values()).map(service => service.destroy())
-    )
+    await Promise.all(Array.from(this.services.values()).map((service) => service.destroy()))
   }
 }

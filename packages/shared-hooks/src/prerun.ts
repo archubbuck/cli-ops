@@ -1,5 +1,5 @@
 import { Hook } from '@oclif/core'
-import { createDebugLogger } from '@/shared-logger'
+import { createDebugLogger } from '@cli-ops/shared-logger'
 
 const debug = createDebugLogger('hooks:prerun')
 
@@ -12,7 +12,7 @@ export const prerun: Hook<'prerun'> = async function (opts) {
   debug('Args: %O', opts.argv)
 
   // Log command execution in debug mode
-  if (process.env.DEBUG) {
+  if (process.env['DEBUG']) {
     this.log(`Executing: ${opts.Command.id}`)
   }
 }

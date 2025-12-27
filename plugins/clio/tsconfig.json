@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "paths": {
+      "@/*": ["../../packages/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/shared-commands" },
+    { "path": "../../packages/shared-config" },
+    { "path": "../../packages/shared-core" },
+    { "path": "../../packages/shared-exit-codes" },
+    { "path": "../../packages/shared-formatter" },
+    { "path": "../../packages/shared-history" },
+    { "path": "../../packages/shared-hooks" },
+    { "path": "../../packages/shared-logger" },
+    { "path": "../../packages/shared-plugins" },
+    { "path": "../../packages/shared-types" },
+    { "path": "../../packages/shared-ui" }
+  ]
+}

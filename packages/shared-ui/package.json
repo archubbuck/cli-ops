@@ -1,5 +1,5 @@
 {
-  "name": "shared-ui",
+  "name": "@cli-ops/shared-ui",
   "version": "1.0.0",
   "description": "CLI UI components - spinners, progress bars, task lists",
   "main": "dist/index.js",
@@ -23,7 +23,13 @@
     "listr2": "^8.2.5",
     "chalk": "^5.4.1"
   },
+  "devDependencies": {
+    "@types/cli-progress": "^3.11.6"
+  },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

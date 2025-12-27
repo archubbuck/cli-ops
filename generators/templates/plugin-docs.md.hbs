@@ -1,0 +1,38 @@
+#
+{{pascalCase name}}
+Plugin Documentation ## Overview
+
+{{description}}
+
+## Installation ```bash clio plugins:install @cli-ops/clio-plugin-{{name}}
+``` ## Configuration The plugin can be configured through clio's config system: ```bash clio
+config:set
+{{name}}.option value ``` ### Available Configuration Options | Option | Type | Default |
+Description | |--------|------|---------|-------------| | `{{name}}.example` | string | `"default"`
+| Example configuration option | ## Commands ### `{{name}}:example` Example command description.
+**Usage:** ```bash clio
+{{name}}:example [OPTIONS] ``` **Options:** - `--verbose, -v` - Show verbose output **Examples:**
+```bash # Basic usage clio
+{{name}}:example # With verbose output clio
+{{name}}:example --verbose ``` ## API Reference ### Programmatic Usage You can use this plugin
+programmatically in your own code: ```typescript import {
+{{pascalCase name}}Service } from '@cli-ops/clio-plugin-{{name}}' const service = new
+{{pascalCase name}}Service() await service.doSomething() ``` ## Development ### Setup ```bash #
+Clone the repository git clone https://github.com/archubbuck/cli-ops.git cd cli-ops # Install
+dependencies pnpm install # Build the plugin pnpm --filter @cli-ops/clio-plugin-{{name}}
+build ``` ### Testing ```bash # Run tests pnpm --filter @cli-ops/clio-plugin-{{name}}
+test # Run tests in watch mode pnpm --filter @cli-ops/clio-plugin-{{name}}
+test:watch # Generate coverage report pnpm --filter @cli-ops/clio-plugin-{{name}}
+test:coverage ``` ### Development Mode ```bash # Run plugin in development mode pnpm dev:{{name}}
+
+# Or directly pnpm --filter @cli-ops/clio-plugin-{{name}}
+run dev
+{{name}}:example ``` ## Contributing Contributions are welcome! Please read our [Contributing
+Guide](../../CONTRIBUTING.md) for details on: - Code of Conduct - Development workflow - Submitting
+pull requests - Coding standards ## Troubleshooting ### Common Issues **Issue:** Command not found
+after installation **Solution:** Ensure the plugin is properly installed: ```bash clio plugins:list
+clio plugins:install @cli-ops/clio-plugin-{{name}}
+``` ## Support - [GitHub Issues](https://github.com/archubbuck/cli-ops/issues) -
+[Discussions](https://github.com/archubbuck/cli-ops/discussions) -
+[Documentation](https://cli-ops.dev) ## License MIT ©
+{{author}}

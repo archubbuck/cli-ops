@@ -1,4 +1,4 @@
-import { GENERIC_ERROR } from '@/shared-exit-codes'
+import { GENERIC_ERROR } from '@cli-ops/shared-exit-codes'
 
 /**
  * Base error class with exit code
@@ -13,7 +13,7 @@ export class CLIError extends Error {
       exitCode?: number
       cause?: Error
       suggestions?: string[]
-    } = {}
+    } = {},
   ) {
     super(message, { cause: options.cause })
     this.name = this.constructor.name
@@ -95,7 +95,7 @@ export function formatError(error: Error): string {
   if (isCLIError(error) && error.suggestions && error.suggestions.length > 0) {
     lines.push('')
     lines.push('Suggestions:')
-    error.suggestions.forEach(suggestion => {
+    error.suggestions.forEach((suggestion) => {
       lines.push(`  • ${suggestion}`)
     })
   }
