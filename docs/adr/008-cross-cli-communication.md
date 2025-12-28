@@ -1,3 +1,10 @@
+---
+sidebar_position: 8
+sidebar_label: 'ADR-008: Cross-CLI Communication'
+title: 'ADR-008: Cross-CLI Communication and IPC'
+description: 'Decision to implement IPC mechanisms for plugin coordination, state sharing, and event notification'
+---
+
 # ADR-008: Cross-CLI Communication and IPC
 
 **Status:** Accepted (Updated for plugin architecture)  

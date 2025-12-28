@@ -1,3 +1,10 @@
+---
+sidebar_position: 6
+sidebar_label: 'Cross-CLI Communication'
+title: 'Cross-CLI Communication'
+description: 'IPC mechanisms for coordination, state sharing, and event notification between CLI plugins'
+---
+
 # Cross-CLI Communication
 
 ## Overview

@@ -1,6 +1,6 @@
-import { themes as prismThemes } from 'prism-react-renderer'
+import type * as preset from '@docusaurus/preset-classic'
 import type { Config } from '@docusaurus/types'
-import type * as Preset from '@docusaurus/preset-classic'
+import { themes as prismThemes } from 'prism-react-renderer'
 
 const config: Config = {
   title: 'Clio',
@@ -26,8 +26,9 @@ const config: Config = {
       'classic',
       {
         docs: {
+          path: '../../docs',
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/archubbuck/cli-ops/tree/main/website/',
+          editUrl: 'https://github.com/archubbuck/cli-ops/tree/main/docs/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
@@ -40,7 +41,7 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
-      } satisfies Preset.Options,
+      } satisfies preset.Options,
     ],
   ],
 
@@ -134,7 +135,8 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['bash', 'json', 'typescript'],
     },
-  } satisfies Preset.ThemeConfig,
+  } satisfies preset.ThemeConfig,
 }
 
+// eslint-disable-next-line import/no-default-export
 export default config

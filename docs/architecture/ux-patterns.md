@@ -1,3 +1,10 @@
+---
+sidebar_position: 8
+sidebar_label: 'UX Patterns'
+title: 'UX Patterns'
+description: 'User experience patterns for consistency, accessibility, and neurodivergent-friendly design'
+---
+
 # UX Patterns
 
 ## Overview
@@ -82,6 +89,7 @@ try {
 ```
 
 Output:
+
 ```
 ⠋ Loading data...
 ✓ Data loaded successfully
@@ -96,7 +104,7 @@ import { progressBar } from '@cli-ops/shared-ui'
 
 const progress = progressBar({
   total: files.length,
-  format: 'Processing files [:bar] :current/:total'
+  format: 'Processing files [:bar] :current/:total',
 })
 
 for (const file of files) {
@@ -106,6 +114,7 @@ for (const file of files) {
 ```
 
 Output:
+
 ```
 Processing files [████████░░] 8/10
 ```
@@ -129,7 +138,7 @@ import { confirm } from '@cli-ops/shared-prompts'
 
 const shouldProceed = await confirm({
   message: 'Delete 5 tasks? This cannot be undone.',
-  default: false
+  default: false,
 })
 
 if (!shouldProceed) {
@@ -145,7 +154,7 @@ import { input } from '@cli-ops/shared-prompts'
 const title = await input({
   message: 'Task title:',
   default: '',
-  validate: (value) => value.length > 0 || 'Title is required'
+  validate: (value) => value.length > 0 || 'Title is required',
 })
 ```
 
@@ -159,8 +168,8 @@ const priority = await select({
   choices: [
     { name: 'Low', value: 'low' },
     { name: 'Medium', value: 'medium' },
-    { name: 'High', value: 'high' }
-  ]
+    { name: 'High', value: 'high' },
+  ],
 })
 ```
 
@@ -171,10 +180,10 @@ import { checkbox } from '@cli-ops/shared-prompts'
 
 const selectedTasks = await checkbox({
   message: 'Select tasks to delete:',
-  choices: tasks.map(t => ({
+  choices: tasks.map((t) => ({
     name: t.title,
-    value: t.id
-  }))
+    value: t.id,
+  })),
 })
 ```
 
@@ -187,13 +196,16 @@ For structured data:
 ```typescript
 import { table } from '@cli-ops/shared-formatter'
 
-console.log(table({
-  head: ['ID', 'Title', 'Status'],
-  rows: tasks.map(t => [t.id, t.title, t.status])
-}))
+console.log(
+  table({
+    head: ['ID', 'Title', 'Status'],
+    rows: tasks.map((t) => [t.id, t.title, t.status]),
+  }),
+)
 ```
 
 Output:
+
 ```
 ┌──────────┬──────────────────┬───────────┐
 │ ID       │ Title            │ Status    │
@@ -210,10 +222,11 @@ For simple enumeration:
 ```typescript
 import { list } from '@cli-ops/shared-formatter'
 
-console.log(list(tasks.map(t => `${t.title} (${t.status})`)))
+console.log(list(tasks.map((t) => `${t.title} (${t.status})`)))
 ```
 
 Output:
+
 ```
   • Buy groceries (pending)
   • Write docs (completed)
@@ -227,18 +240,21 @@ For hierarchical data:
 ```typescript
 import { tree } from '@cli-ops/shared-formatter'
 
-console.log(tree({
-  'Project Alpha': {
-    'tasks': {
-      'task-123': 'Buy groceries',
-      'task-124': 'Write docs'
+console.log(
+  tree({
+    'Project Alpha': {
+      tasks: {
+        'task-123': 'Buy groceries',
+        'task-124': 'Write docs',
+      },
+      config: 'config.json',
     },
-    'config': 'config.json'
-  }
-}))
+  }),
+)
 ```
 
 Output:
+
 ```
 Project Alpha
 ├── tasks
@@ -257,10 +273,10 @@ Errors should be actionable:
 // ✓ Good - provides context and solution
 throw new Error(
   `Task not found: 'task-123'\n\n` +
-  `Did you mean:\n` +
-  `  • task-124 - "Similar task"\n` +
-  `  • task-125 - "Another task"\n\n` +
-  `Run 'alpha tasks list' to see all tasks.`
+    `Did you mean:\n` +
+    `  • task-124 - "Similar task"\n` +
+    `  • task-125 - "Another task"\n\n` +
+    `Run 'alpha tasks list' to see all tasks.`,
 )
 
 // ✗ Avoid - too vague
@@ -289,9 +305,9 @@ Never rely on color alone:
 
 ```typescript
 // ✓ Good - uses symbols + colors
-console.log('✓ Success')  // Green ✓
-console.log('✗ Error')    // Red ✗
-console.log('⚠ Warning')  // Yellow ⚠
+console.log('✓ Success') // Green ✓
+console.log('✗ Error') // Red ✗
+console.log('⚠ Warning') // Yellow ⚠
 
 // ✗ Avoid - color only
 console.log(chalk.green('Success'))
@@ -305,7 +321,7 @@ Provide text alternatives:
 ```typescript
 // Progress bar with text description
 const progress = progressBar({
-  format: 'Downloading [:bar] :percent :etas remaining'
+  format: 'Downloading [:bar] :percent :etas remaining',
 })
 ```
 
@@ -317,7 +333,7 @@ Respect user preferences:
 const shouldAnimate = !process.env.NO_ANIMATION
 
 const spin = spinner('Loading...', {
-  animation: shouldAnimate ? 'dots' : 'none'
+  animation: shouldAnimate ? 'dots' : 'none',
 })
 ```
 
@@ -331,7 +347,7 @@ Provide sensible defaults:
 // Default values reduce cognitive load
 const priority = await input({
   message: 'Task priority:',
-  default: 'medium' // Most common choice
+  default: 'medium', // Most common choice
 })
 ```
 
@@ -343,7 +359,7 @@ Break large outputs into digestible chunks:
 // Show 10 items at a time with pagination
 const items = await paginate(allItems, {
   pageSize: 10,
-  prompt: 'Show more? (y/N)'
+  prompt: 'Show more? (y/N)',
 })
 ```
 
@@ -387,14 +403,14 @@ All CLIs support these flags:
 
 ```typescript
 // ✓ Good - clear and descriptive
---output-format
---config-file
---max-retries
+--output - format
+--config - file
+--max - retries
 
 // ✗ Avoid - ambiguous
---format  // Output or input format?
---file    // Which file?
---max     // Maximum what?
+--format // Output or input format?
+--file // Which file?
+--max // Maximum what?
 ```
 
 ## Command Naming

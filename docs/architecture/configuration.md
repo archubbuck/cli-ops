@@ -1,3 +1,10 @@
+---
+sidebar_position: 4
+sidebar_label: 'Configuration'
+title: 'Configuration System Architecture'
+description: 'Unified configuration system for managing CLI settings, validation, migration, and persistence'
+---
+
 # Configuration System Architecture
 
 ## Overview

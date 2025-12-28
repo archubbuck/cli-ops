@@ -1,3 +1,10 @@
+---
+sidebar_position: 5
+sidebar_label: 'ADR-005: Neurodivergent-Friendly UX'
+title: 'ADR-005: ADHD/OCD-Friendly UX Patterns'
+description: 'Decision to implement UX patterns that reduce cognitive load and support users with ADHD and OCD'
+---
+
 # ADR-005: ADHD/OCD-Friendly UX Patterns
 
 **Status:** Accepted  

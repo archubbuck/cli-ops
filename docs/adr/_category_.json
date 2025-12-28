@@ -1,0 +1,10 @@
+{
+  "label": "Architecture Decision Records",
+  "position": 4,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "description": "Key architectural decisions and their rationale."
+  }
+}

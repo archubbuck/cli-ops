@@ -1,8 +1,15 @@
+---
+sidebar_position: 6
+sidebar_label: 'ADR-006: Performance Budgets'
+title: 'ADR-006: Performance Budgets and Monitoring'
+description: 'Decision to establish performance budgets and monitoring strategies for CLI responsiveness'
+---
+
 # ADR-006: Performance Budgets and Monitoring
 
 **Status:** Accepted  
 **Date:** 2025-12-26  
-**Deciders:** Team  
+**Deciders:** Team
 
 ## Context
 
@@ -14,12 +21,14 @@ CLI responsiveness is critical for user experience. Slow commands lead to:
 - Context switching while waiting (especially harmful for ADHD users)
 
 Challenges:
+
 - Node.js startup time can be slow (~50-100ms)
 - Dependencies add to bundle size and initialization time
 - Cold starts are worse than warm starts (no cache)
 - Some operations (file I/O, network) are inherently slow
 
 Without performance budgets, CLIs can gradually become slower through:
+
 - Adding heavy dependencies without consideration
 - Implementing inefficient algorithms
 - Excessive logging or computation during initialization
@@ -31,13 +40,13 @@ We will enforce **performance budgets** for all clio and plugin operations with 
 
 ### Performance Targets
 
-| Operation | Target | Maximum | Rationale |
-|-----------|--------|---------|-----------|
-| `--help` | <200ms | <500ms | Most common command, must be instant |
-| `--version` | <100ms | <200ms | Trivial operation, near-instant |
-| Simple commands (list, show) | <500ms | <1000ms | Should feel immediate |
+| Operation                      | Target  | Maximum | Rationale                                   |
+| ------------------------------ | ------- | ------- | ------------------------------------------- |
+| `--help`                       | <200ms  | <500ms  | Most common command, must be instant        |
+| `--version`                    | <100ms  | <200ms  | Trivial operation, near-instant             |
+| Simple commands (list, show)   | <500ms  | <1000ms | Should feel immediate                       |
 | Complex commands (add, delete) | <1000ms | <2000ms | Acceptable for operations with side effects |
-| CLI startup (require time) | <300ms | <500ms | Impacts all commands |
+| CLI startup (require time)     | <300ms  | <500ms  | Impacts all commands                        |
 
 ### Monitoring Strategy
 
@@ -88,19 +97,21 @@ We will enforce **performance budgets** for all clio and plugin operations with 
 Performance monitoring is implemented in:
 
 ### Performance Budget Configuration
+
 - [tooling/perf-config/index.js](../../tooling/perf-config/index.js) - Performance budget definitions
   ```javascript
   module.exports = {
     budgets: {
-      help: 500,      // ms
-      version: 200,   // ms
-      simple: 1000,   // ms
-      complex: 2000   // ms
-    }
+      help: 500, // ms
+      version: 200, // ms
+      simple: 1000, // ms
+      complex: 2000, // ms
+    },
   }
   ```
 
 ### Performance Testing
+
 - [scripts/perf-budget.js](../../scripts/perf-budget.js) - Automated performance testing script
   ```bash
   pnpm test:perf  # Run performance tests
@@ -112,6 +123,7 @@ Performance monitoring is implemented in:
   ```
 
 ### Measurement Utilities
+
 ```typescript
 // In shared-testing package
 import { measurePerformance } from '@cli-ops/shared-testing'
@@ -124,6 +136,7 @@ expect(duration).toBeLessThan(500) // ms
 ```
 
 ### Lazy Loading Pattern
+
 ```typescript
 // Bad: Load heavy dependency at module level
 import { HeavyLibrary } from 'heavy-library'
@@ -136,6 +149,7 @@ async run() {
 ```
 
 ### Bundle Analysis
+
 ```bash
 # Analyze bundle size
 pnpm bundle-size
@@ -145,11 +159,12 @@ pnpm bundle-viz
 ```
 
 ### CI/CD Integration
+
 ```yaml
 # In .github/workflows/ci.yml
 - name: Check Performance Budgets
   run: pnpm check:perf
-  
+
 - name: Report Bundle Size
   run: pnpm bundle-size --json > bundle-report.json
 ```
@@ -157,18 +172,21 @@ pnpm bundle-viz
 ## Performance Optimization Strategies
 
 ### Startup Optimization
+
 1. **Minimize require() calls**: Lazy load when possible
 2. **Avoid heavy computation**: Defer to command execution
 3. **Cache when possible**: Memoize expensive operations
 4. **Use native modules**: Avoid polyfills for Node.js built-ins
 
 ### Runtime Optimization
+
 1. **Async I/O**: Use async file operations, not sync
 2. **Parallel operations**: Use Promise.all() for concurrent tasks
 3. **Streaming**: Process large files with streams, not loading into memory
 4. **Efficient data structures**: Use Maps/Sets over objects/arrays for lookups
 
 ### Dependency Optimization
+
 1. **Audit dependencies**: Review impact of each dependency
 2. **Use lighter alternatives**: e.g., `ms` instead of `moment`
 3. **Tree-shaking**: Ensure bundler can remove unused code
@@ -183,6 +201,7 @@ pnpm bundle-viz
   - [ADR-005 (ADHD/OCD UX)](005-adhd-ocd-friendly-ux-patterns.md) - Performance impacts UX
 
 ### External Resources
+
 - [Node.js Performance Best Practices](https://nodejs.org/en/docs/guides/simple-profiling/)
 - [Web Performance Budgets](https://web.dev/performance-budgets-101/)
 

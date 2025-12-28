@@ -9,10 +9,13 @@ This document provides a comprehensive inventory of all CLI applications in this
 
 | CLI | Version | Commands | Performance (help/version) | Tests | Shared Packages |
 |-----|---------|----------|----------------------------|-------|------------------|
-| **clio** | 1.0.0 | 6 | ⚠️ 924ms / ⚠️ 889ms | ❌ No tests | 0 |
-| **clio** | 2.0.0 | 2 | ⚠️ 774ms / ⚠️ 691ms | ❌ No tests | 0 |
-| **clio** | 2.0.0 | 3 | ⚠️ 928ms / ⚠️ 764ms | ❌ No tests | 0 |
-| **clio** | 2.0.0 | 5 | ⚠️ 854ms / ⚠️ 969ms | ❌ No tests | 0 |
+| **clio** | 1.0.0 | 7 | ⚠️ 919ms / ⚠️ 886ms | ❌ No tests | 0 |
+| **clio** | 3.0.0 | 2 | ⚠️ 908ms / ⚠️ 724ms | ❌ No tests | 0 |
+| **clio** | 3.0.0 | 1 | ❌ / ❌ | ❌ No tests | 0 |
+| **clio** | 3.0.0 | 3 | ⚠️ 785ms / ⚠️ 749ms | ❌ No tests | 0 |
+| **clio** | 3.0.0 | 1 | ❌ / ❌ | ❌ No tests | 0 |
+| **clio** | 3.0.0 | 5 | ⚠️ 904ms / ⚠️ 882ms | ❌ No tests | 0 |
+| **clio** | 3.0.0 | 2 | ❌ / ❌ | ❌ No tests | 0 |
 
 **Performance Budgets:**
 - Help command: 500ms
@@ -25,7 +28,7 @@ This document provides a comprehensive inventory of all CLI applications in this
 - **Package:** `@cli-ops/clio`
 - **Version:** 1.0.0
 - **Binary:** `clio`
-- **Commands:** 6
+- **Commands:** 7
 - **Shared Dependencies:** 0 packages
 
 ### Commands
@@ -50,6 +53,10 @@ Check clio installation health
 
 View command history
 
+#### `plugins:extensions`
+
+List available extensions for a plugin
+
 #### `setup`
 
 Set up shell completions and other configuration
@@ -63,8 +70,8 @@ Set up shell completions and other configuration
 
 | Command | Duration | Budget | Status |
 |---------|----------|--------|--------|
-| `--help` | 924ms | 500ms | ⚠️ Over Budget |
-| `--version` | 889ms | 200ms | ⚠️ Over Budget |
+| `--help` | 919ms | 500ms | ⚠️ Over Budget |
+| `--version` | 886ms | 200ms | ⚠️ Over Budget |
 
 ### Testing
 
@@ -77,7 +84,7 @@ Set up shell completions and other configuration
 **HTTP API client plugin for clio**
 
 - **Package:** `@cli-ops/clio-plugin-fetch`
-- **Version:** 2.0.0
+- **Version:** 3.0.0
 - **Binary:** `clio`
 - **Commands:** 2
 - **Shared Dependencies:** 0 packages
@@ -101,8 +108,41 @@ Make a POST request
 
 | Command | Duration | Budget | Status |
 |---------|----------|--------|--------|
-| `--help` | 774ms | 500ms | ⚠️ Over Budget |
-| `--version` | 691ms | 200ms | ⚠️ Over Budget |
+| `--help` | 908ms | 500ms | ⚠️ Over Budget |
+| `--version` | 724ms | 200ms | ⚠️ Over Budget |
+
+### Testing
+
+- **Status:** ❌ No tests found
+
+---
+
+## clio
+
+**OAuth 2.0 authentication plugin for clio fetch**
+
+- **Package:** `@cli-ops/clio-plugin-fetch-oauth`
+- **Version:** 3.0.0
+- **Binary:** `clio`
+- **Commands:** 1
+- **Shared Dependencies:** 0 packages
+
+### Commands
+
+#### `oauth:login`
+
+Authenticate using OAuth 2.0
+
+### Command Topics
+
+- **fetch:oauth:** OAuth 2.0 authentication for HTTP requests
+
+### Performance
+
+| Command | Duration | Budget | Status |
+|---------|----------|--------|--------|
+| `--help` | -1ms | 500ms | ❌ Error |
+| `--version` | -1ms | 200ms | ❌ Error |
 
 ### Testing
 
@@ -115,7 +155,7 @@ Make a POST request
 **Developer tools plugin for clio with Git and GitHub integration**
 
 - **Package:** `@cli-ops/clio-plugin-repo`
-- **Version:** 2.0.0
+- **Version:** 3.0.0
 - **Binary:** `clio`
 - **Commands:** 3
 - **Shared Dependencies:** 0 packages
@@ -142,8 +182,41 @@ List pull requests
 
 | Command | Duration | Budget | Status |
 |---------|----------|--------|--------|
-| `--help` | 928ms | 500ms | ⚠️ Over Budget |
-| `--version` | 764ms | 200ms | ⚠️ Over Budget |
+| `--help` | 785ms | 500ms | ⚠️ Over Budget |
+| `--version` | 749ms | 200ms | ⚠️ Over Budget |
+
+### Testing
+
+- **Status:** ❌ No tests found
+
+---
+
+## clio
+
+**Git hooks automation plugin for clio repo**
+
+- **Package:** `@cli-ops/clio-plugin-repo-hooks`
+- **Version:** 3.0.0
+- **Binary:** `clio`
+- **Commands:** 1
+- **Shared Dependencies:** 0 packages
+
+### Commands
+
+#### `hooks:install`
+
+Install Git hooks for automated checks
+
+### Command Topics
+
+- **repo:hooks:** Git hooks management and automation
+
+### Performance
+
+| Command | Duration | Budget | Status |
+|---------|----------|--------|--------|
+| `--help` | -1ms | 500ms | ❌ Error |
+| `--version` | -1ms | 200ms | ❌ Error |
 
 ### Testing
 
@@ -156,7 +229,7 @@ List pull requests
 **Task management plugin for clio**
 
 - **Package:** `@cli-ops/clio-plugin-tasks`
-- **Version:** 2.0.0
+- **Version:** 3.0.0
 - **Binary:** `clio`
 - **Commands:** 5
 - **Shared Dependencies:** 0 packages
@@ -191,8 +264,45 @@ Update a task
 
 | Command | Duration | Budget | Status |
 |---------|----------|--------|--------|
-| `--help` | 854ms | 500ms | ⚠️ Over Budget |
-| `--version` | 969ms | 200ms | ⚠️ Over Budget |
+| `--help` | 904ms | 500ms | ⚠️ Over Budget |
+| `--version` | 882ms | 200ms | ⚠️ Over Budget |
+
+### Testing
+
+- **Status:** ❌ No tests found
+
+---
+
+## clio
+
+**Jira integration plugin for clio tasks**
+
+- **Package:** `@cli-ops/clio-plugin-tasks-jira`
+- **Version:** 3.0.0
+- **Binary:** `clio`
+- **Commands:** 2
+- **Shared Dependencies:** 0 packages
+
+### Commands
+
+#### `jira:link`
+
+Link a local task to a Jira issue
+
+#### `jira:sync`
+
+Sync tasks with Jira project
+
+### Command Topics
+
+- **tasks:jira:** Jira integration for task management
+
+### Performance
+
+| Command | Duration | Budget | Status |
+|---------|----------|--------|--------|
+| `--help` | -1ms | 500ms | ❌ Error |
+| `--version` | -1ms | 200ms | ❌ Error |
 
 ### Testing
 

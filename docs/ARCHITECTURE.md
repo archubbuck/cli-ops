@@ -1,3 +1,10 @@
+---
+sidebar_position: 1
+sidebar_label: System Architecture
+title: Architecture Overview
+description: Complete architecture documentation for the CLI Ops plugin-first monorepo
+---
+
 # Architecture
 
 This document describes the architecture of the CLI Ops plugin-first monorepo.

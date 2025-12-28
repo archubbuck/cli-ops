@@ -1,8 +1,15 @@
+---
+sidebar_position: 4
+sidebar_label: 'ADR-004: Structured Logging'
+title: 'ADR-004: Structured Logging Architecture'
+description: 'Decision to use structured logging with multiple formats, log levels, and context propagation'
+---
+
 # ADR-004: Structured Logging Architecture
 
 **Status:** Accepted  
 **Date:** 2025-12-26  
-**Deciders:** Team  
+**Deciders:** Team
 
 ## Context
 
@@ -14,6 +21,7 @@ CLIs need robust logging for:
 - **Auditing**: Recording command execution for history/undo features
 
 Requirements:
+
 - Structured logging (key-value pairs, not just strings)
 - Multiple log levels (debug, info, warn, error)
 - Configurable output formats (pretty for TTY, JSON for pipes)
@@ -22,12 +30,14 @@ Requirements:
 - Integration with UI components (spinners, progress bars)
 
 Challenges:
+
 - Clio and its plugins need consistent logging behavior
 - Console.log/console.error are too simple
 - Need to suppress logs during tests
 - Debug logs should not spam users by default
 
 Alternative approaches:
+
 - **Console methods only**: No structure, hard to filter, no log levels
 - **Third-party loggers** (e.g., `winston`, `pino`): Heavy dependencies, overkill for CLIs
 - **Custom per-CLI**: Code duplication, inconsistent behavior
@@ -38,6 +48,7 @@ Alternative approaches:
 We will implement a **structured logging system** in the `shared-logger` package.
 
 Architecture:
+
 - **Logger class**: Core logging abstraction with level-based methods
 - **Transport system**: Pluggable outputs (console, file, memory)
 - **Formatters**: JSON, pretty-print, custom formatters
@@ -46,6 +57,7 @@ Architecture:
 - **Environment-aware**: Automatically adjusts based on NODE_ENV and CI environment
 
 Key design principles:
+
 1. **Zero overhead when disabled**: Debug logs have negligible cost when not active
 2. **Type-safe contexts**: Use TypeScript for structured log fields
 3. **Test-friendly**: Easy to mock and capture logs in tests
@@ -84,13 +96,14 @@ Logging system is implemented in:
 - Each CLI creates a named logger instance in their base command
 
 Usage example:
+
 ```typescript
 import { Logger } from '@cli-ops/shared-logger'
 
 // Create logger instance
 const logger = new Logger('cli-alpha', {
   level: process.env.DEBUG ? 'debug' : 'info',
-  format: process.stdout.isTTY ? 'pretty' : 'json'
+  format: process.stdout.isTTY ? 'pretty' : 'json',
 })
 
 // Basic logging
@@ -110,11 +123,12 @@ if (logger.isLevelEnabled('debug')) {
 ```
 
 Integration with commands:
+
 ```typescript
 export default class MyCommand extends BaseCommand {
   async run() {
     this.logger.info('Starting command')
-    
+
     try {
       await this.doWork()
       this.logger.info('Command completed successfully')

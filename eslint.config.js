@@ -120,4 +120,16 @@ export default [
       ],
     },
   },
+  {
+    files: [
+      'plugins/**/src/index.ts',
+      'plugins/**/src/plugin.ts',
+      'libs/shared-plugins/src/**/*.ts',
+    ],
+    rules: {
+      // Plugin lifecycle methods often override Promise-returning methods
+      // but don't need await internally
+      'require-await': 'off',
+    },
+  },
 ]

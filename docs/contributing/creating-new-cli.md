@@ -1,3 +1,10 @@
+---
+sidebar_position: 2
+sidebar_label: 'Creating a New CLI'
+title: 'Creating a New CLI'
+description: 'Guide for creating new CLI applications in the monorepo following established patterns'
+---
+
 # Creating a New CLI
 
 ## Overview

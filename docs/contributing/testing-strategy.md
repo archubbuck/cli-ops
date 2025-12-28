@@ -1,3 +1,10 @@
+---
+sidebar_position: 5
+sidebar_label: 'Testing Strategy'
+title: 'Testing Strategy'
+description: 'Testing approach, patterns, and conventions for the CLI Ops monorepo'
+---
+
 # Testing Strategy
 
 ## Overview
@@ -206,6 +213,23 @@ it('deletes task', async () => {
 ```
 
 ### Using Fixtures
+
+The monorepo uses a **hybrid fixture approach** with three levels:
+
+1. **Shared fixtures** (`libs/shared-testing/fixtures/`) - Reusable fixtures for common scenarios
+2. **Package-local fixtures** (`{package}/test/fixtures/`) - Package-specific test data
+3. **Root fixtures** (`/fixtures/`) - Cross-package E2E integration tests (minimal use)
+
+#### When to Use Each Type
+
+| Fixture Type      | Use Case                      | Import Method             |
+| ----------------- | ----------------------------- | ------------------------- |
+| **Shared**        | Common configs, API responses | `loadSharedFixture()`     |
+| **Package-local** | Plugin commands, domain data  | `loadFixture()` + baseDir |
+| **Root**          | Multi-package E2E tests       | Node.js relative imports  |
+| **Dynamic**       | Temporary test files          | `createFixtureManager()`  |
+
+See [fixtures/README.md](../../fixtures/README.md) for complete fixture organization guidelines.
 
 #### Dynamic Fixtures
 

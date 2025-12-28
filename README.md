@@ -213,6 +213,40 @@ pnpm changeset:version
 pnpm changeset:publish
 ```
 
+## Version History
+
+### v3.0.0 (2025-12-28) - Extension Plugin Formalization
+
+**BREAKING CHANGES**: Extension plugins refactored to top-level architecture
+
+- ✨ Extensions moved from nested to top-level `plugins/` directories
+- ✨ New `BaseExtensionPlugin` class with explicit parent registration
+- ✨ Type-safe hook system for extension points (replaces event-only approach)
+- ✨ Runtime validation of parent dependencies and hook compatibility
+- ✨ `clio plugins:extensions` command for extension discovery
+- ✨ `pnpm validate:extensions` script for automated validation
+- 📚 Extension API documentation added to all base plugin READMEs
+- 🔄 Backward compatible: Event-based communication still supported
+
+**Migration Required**: See [ADR-010](./docs/adr/010-extension-plugin-formalization.md) for upgrade guide
+
+**Affected Packages**:
+
+- `@cli-ops/shared-plugins@3.0.0`
+- `@cli-ops/clio-plugin-tasks@3.0.0`
+- `@cli-ops/clio-plugin-fetch@3.0.0`
+- `@cli-ops/clio-plugin-repo@3.0.0`
+- `@cli-ops/clio-plugin-tasks-jira@3.0.0`
+- `@cli-ops/clio-plugin-fetch-oauth@3.0.0`
+- `@cli-ops/clio-plugin-repo-hooks@3.0.0`
+
+### v2.0.0 - Plugin System Foundation
+
+- Initial plugin-first architecture
+- oclif v4 with plugin management
+- Event-based inter-plugin communication
+- Nested extension support
+
 ## License
 
 MIT

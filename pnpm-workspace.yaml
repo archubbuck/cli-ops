@@ -2,11 +2,8 @@ packages:
   # Applications
   - 'apps/*'
 
-  # Base plugins
+  # Plugins (including both base and extension plugins)
   - 'plugins/*'
-
-  # Extension plugins (nested under parent plugins' src/)
-  - 'plugins/*/src/extensions/*'
 
   # Shared libraries
   - 'libs/*'

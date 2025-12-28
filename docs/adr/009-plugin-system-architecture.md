@@ -1,9 +1,18 @@
+---
+sidebar_position: 9
+sidebar_label: 'ADR-009: Plugin System'
+title: 'ADR-009: Plugin System Architecture'
+description: 'Decision to adopt a plugin-first architecture with clio as the core plugin manager and oclif-based plugins'
+---
+
 # ADR-009: Plugin System Architecture
 
 **Status**: Accepted (Updated for clio architecture)  
 **Date**: 2025-12-26 (Updated: 2025-01)  
 **Decision Makers**: Architecture Team  
 **Stakeholders**: CLI Users, Plugin Developers
+
+> **Note**: See [ADR-010: Extension Plugin Formalization](./010-extension-plugin-formalization.md) for v3.0.0 extension system enhancements (hooks, validation, top-level architecture).
 
 ## Context
 
@@ -85,15 +94,15 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 #### 4. Plugin Naming Convention
 
 **Core Plugins**: `@cli-ops/clio-plugin-{name}`  
-**Extension Plugins**: `@cli-ops/clio-plugin-{parent}-{feature}`
+**Extension Plugins**: `@cli-ops/clio-plugin-{parent}-{feature}` (see [ADR-010](./010-extension-plugin-formalization.md))
 
 **Examples**:
 
 - `@cli-ops/clio-plugin-tasks` - Task management (bundled)
 - `@cli-ops/clio-plugin-fetch` - HTTP API client
 - `@cli-ops/clio-plugin-repo` - Developer tools
-- `@cli-ops/clio-plugin-tasks-jira` - Jira integration for tasks (nested in `plugins/clio-plugin-tasks/src/extensions/`)
-- `@cli-ops/clio-plugin-fetch-oauth` - OAuth for fetch (nested in `plugins/clio-plugin-fetch/src/extensions/`)
+- `@cli-ops/clio-plugin-tasks-jira` - Jira integration for tasks (**v3.0+**: top-level package)
+- `@cli-ops/clio-plugin-fetch-oauth` - OAuth for fetch (**v3.0+**: top-level package)
 
 **Rationale**:
 
@@ -102,6 +111,8 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 - Easy discovery on npm
 - Prevents naming conflicts with community packages
 - Supports extensibility pattern (parent-feature)
+
+**v3.0.0 Change**: Extension plugins moved from nested (`plugins/{parent}/src/extensions/`) to top-level (`plugins/{extension}/`) for better monorepo integration. See [ADR-010](./010-extension-plugin-formalization.md) for details.
 
 #### 5. Plugin Management Commands
 

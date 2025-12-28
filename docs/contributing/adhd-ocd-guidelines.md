@@ -1,3 +1,10 @@
+---
+sidebar_position: 7
+sidebar_label: 'ADHD/OCD Guidelines'
+title: 'ADHD/OCD-Friendly Development Guidelines'
+description: 'Development practices that support neurodivergent developers and promote clarity and reduced cognitive load'
+---
+
 # ADHD/OCD-Friendly Development Guidelines
 
 ## Overview
@@ -11,12 +18,14 @@ This document outlines development practices that support neurodivergent develop
 **Why**: Reduces anxiety and cognitive load by creating reliable patterns.
 
 **How**:
+
 - Consistent file structure across packages
 - Standardized naming conventions
 - Uniform command patterns
 - Predictable build outputs
 
 **Examples**:
+
 ```
 Every package follows same structure:
 package/
@@ -34,12 +43,14 @@ package/
 **Why**: Clear organization reduces overwhelm and makes navigation easier.
 
 **How**:
+
 - Group related files together
 - Use descriptive directory names
 - Limit nesting depth to 3-4 levels
 - Keep related code close
 
 **Examples**:
+
 ```
 ✓ Good structure
 src/commands/tasks/
@@ -59,12 +70,14 @@ src/
 **Why**: Reduces cognitive overhead and makes code easier to reason about.
 
 **How**:
+
 - Prefer simple solutions over clever ones
 - Extract complex logic into well-named functions
 - Limit function length (aim for <50 lines)
 - One responsibility per function
 
 **Examples**:
+
 ```typescript
 // ✓ Good - simple and clear
 function formatTask(task: Task): string {
@@ -72,8 +85,7 @@ function formatTask(task: Task): string {
 }
 
 // ✗ Avoid - clever but confusing
-const formatTask = (t: Task) => 
-  [t.title, t.status].filter(Boolean).join(' (') + ')'
+const formatTask = (t: Task) => [t.title, t.status].filter(Boolean).join(' (') + ')'
 ```
 
 ### 4. Explicit Over Implicit
@@ -81,18 +93,17 @@ const formatTask = (t: Task) =>
 **Why**: Reduces guesswork and mental modeling.
 
 **How**:
+
 - Explicit return types
 - Named parameters for options
 - Descriptive variable names
 - Clear error messages
 
 **Examples**:
+
 ```typescript
 // ✓ Good - explicit
-async function loadConfig(options: {
-  path: string
-  validate: boolean
-}): Promise<Config> {
+async function loadConfig(options: { path: string; validate: boolean }): Promise<Config> {
   // ...
 }
 
@@ -112,9 +123,11 @@ async function loadConfig(p: string, v = true) {
 
 ```markdown
 Instead of:
+
 - [ ] Implement task management
 
 Break into:
+
 - [ ] Create task storage interface
 - [ ] Implement task add command
 - [ ] Implement task list command
@@ -145,6 +158,7 @@ git log --oneline
 **Solution**: Batch similar work and use tools to maintain context.
 
 **Practices**:
+
 - Keep one terminal for running CLI
 - Keep another terminal for tests in watch mode
 - Use VS Code workspace with all files open
@@ -241,9 +255,9 @@ Errors should be actionable:
 // ✓ Good - helpful
 throw new Error(
   `Task not found: '${id}'\n\n` +
-  `Try running:\n` +
-  `  alpha tasks list    # See all tasks\n` +
-  `  alpha tasks add     # Create new task`
+    `Try running:\n` +
+    `  alpha tasks list    # See all tasks\n` +
+    `  alpha tasks add     # Create new task`,
 )
 
 // ✗ Avoid - vague
@@ -278,6 +292,7 @@ Tests provide confidence to refactor without fear of breaking things.
 ### Testing Checklist
 
 For each new feature:
+
 - [ ] Unit tests for core logic
 - [ ] Integration tests for command flow
 - [ ] E2E test for user scenario
@@ -312,13 +327,13 @@ Prefer clear code over comments:
 ```typescript
 // ✓ Good - code is clear
 function getActiveTasks() {
-  return tasks.filter(task => task.status === 'active')
+  return tasks.filter((task) => task.status === 'active')
 }
 
 // ✗ Avoid - needs comment
 function getT() {
   // Get active tasks
-  return tasks.filter(t => t.s === 'a')
+  return tasks.filter((t) => t.s === 'a')
 }
 ```
 
@@ -340,6 +355,7 @@ const debouncedSearch = debounce(search, 300)
 ### README for Each Package
 
 Every package includes:
+
 - Purpose (1-2 sentences)
 - Installation
 - Basic usage example
@@ -367,7 +383,7 @@ Before destructive actions:
 ```typescript
 const confirmed = await confirm({
   message: 'Delete all tasks? This cannot be undone.',
-  default: false
+  default: false,
 })
 ```
 
@@ -377,9 +393,9 @@ Never rely on color alone (colorblind accessibility):
 
 ```typescript
 // ✓ Good - symbol + color
-console.log('✓ Success')  // Green
-console.log('✗ Error')    // Red
-console.log('⚠ Warning')  // Yellow
+console.log('✓ Success') // Green
+console.log('✗ Error') // Red
+console.log('⚠ Warning') // Yellow
 
 // ✗ Avoid - color only
 console.log(chalk.green('Success'))
@@ -391,11 +407,13 @@ console.log(chalk.green('Success'))
 
 ```markdown
 ✓ Ship good enough code
+
 - Tests pass
 - Meets requirements
 - Readable and maintainable
 
 ✗ Don't wait for perfect
+
 - Optimal performance (unless needed)
 - Perfect abstraction (YAGNI)
 - Every edge case handled
@@ -431,7 +449,7 @@ Use TODOs for future improvements:
 function loadConfig(): Config {
   const data = fs.readFileSync(CONFIG_FILE)
   return JSON.parse(data)
-  
+
   // TODO: Add validation
   // TODO: Handle missing file
   // TODO: Support multiple formats
@@ -478,6 +496,7 @@ Set time limits to prevent endless tweaking:
 
 ```markdown
 Tasks with time boxes:
+
 - [ ] Implement basic feature (2 hours)
 - [ ] Add tests (1 hour)
 - [ ] Write docs (30 minutes)
@@ -497,6 +516,7 @@ Work in focused sprints:
 ### Task Switching Buffer
 
 When switching tasks, take a moment to:
+
 1. Write down current state
 2. Commit work-in-progress
 3. Review next task
@@ -545,6 +565,7 @@ pnpm dev
 ### Clear Communication
 
 In PRs and issues:
+
 - State problem clearly
 - Provide examples
 - List what you tried
@@ -553,6 +574,7 @@ In PRs and issues:
 ### Async-First
 
 Prefer async communication:
+
 - Write detailed PR descriptions
 - Use GitHub comments
 - Document decisions in ADRs
@@ -561,6 +583,7 @@ Prefer async communication:
 ### Set Boundaries
 
 Communicate your needs:
+
 - "I need 2 hours of focused time"
 - "I work best in the morning"
 - "I prefer written communication"

@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-28T04:08:24.898Z",
+  "generated": "2025-12-28T23:39:33.968Z",
   "clis": [
     {
       "name": "clio",
@@ -51,6 +51,12 @@
           "file": "src/commands/history/list.ts"
         },
         {
+          "id": "plugins:extensions",
+          "description": "List available extensions for a plugin",
+          "aliases": [],
+          "file": "src/commands/plugins/extensions.ts"
+        },
+        {
           "id": "setup",
           "description": "Set up shell completions and other configuration",
           "aliases": [],
@@ -59,12 +65,12 @@
       ],
       "performance": {
         "help": {
-          "duration": 924,
+          "duration": 919,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 889,
+          "duration": 886,
           "budget": 200,
           "status": "fail"
         }
@@ -79,7 +85,7 @@
       "name": "clio-plugin-fetch",
       "metadata": {
         "name": "@cli-ops/clio-plugin-fetch",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "description": "HTTP API client plugin for clio",
         "bin": "clio",
         "topics": {
@@ -109,14 +115,55 @@
       ],
       "performance": {
         "help": {
-          "duration": 774,
+          "duration": 908,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 691,
+          "duration": 724,
           "budget": 200,
           "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    },
+    {
+      "name": "clio-plugin-fetch-oauth",
+      "metadata": {
+        "name": "@cli-ops/clio-plugin-fetch-oauth",
+        "version": "3.0.0",
+        "description": "OAuth 2.0 authentication plugin for clio fetch",
+        "bin": "clio",
+        "topics": {
+          "fetch:oauth": {
+            "description": "OAuth 2.0 authentication for HTTP requests"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "oauth:login",
+          "description": "Authenticate using OAuth 2.0",
+          "aliases": [],
+          "file": "src/commands/oauth/login.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": -1,
+          "budget": 500,
+          "status": "unavailable"
+        },
+        "version": {
+          "duration": -1,
+          "budget": 200,
+          "status": "unavailable"
         }
       },
       "tests": {
@@ -129,7 +176,7 @@
       "name": "clio-plugin-repo",
       "metadata": {
         "name": "@cli-ops/clio-plugin-repo",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "description": "Developer tools plugin for clio with Git and GitHub integration",
         "bin": "clio",
         "topics": {
@@ -162,14 +209,55 @@
       ],
       "performance": {
         "help": {
-          "duration": 928,
+          "duration": 785,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 764,
+          "duration": 749,
           "budget": 200,
           "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    },
+    {
+      "name": "clio-plugin-repo-hooks",
+      "metadata": {
+        "name": "@cli-ops/clio-plugin-repo-hooks",
+        "version": "3.0.0",
+        "description": "Git hooks automation plugin for clio repo",
+        "bin": "clio",
+        "topics": {
+          "repo:hooks": {
+            "description": "Git hooks management and automation"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "hooks:install",
+          "description": "Install Git hooks for automated checks",
+          "aliases": [],
+          "file": "src/commands/hooks/install.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": -1,
+          "budget": 500,
+          "status": "unavailable"
+        },
+        "version": {
+          "duration": -1,
+          "budget": 200,
+          "status": "unavailable"
         }
       },
       "tests": {
@@ -182,7 +270,7 @@
       "name": "clio-plugin-tasks",
       "metadata": {
         "name": "@cli-ops/clio-plugin-tasks",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "description": "Task management plugin for clio",
         "bin": "clio",
         "topics": {
@@ -227,14 +315,61 @@
       ],
       "performance": {
         "help": {
-          "duration": 854,
+          "duration": 904,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 969,
+          "duration": 882,
           "budget": 200,
           "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    },
+    {
+      "name": "clio-plugin-tasks-jira",
+      "metadata": {
+        "name": "@cli-ops/clio-plugin-tasks-jira",
+        "version": "3.0.0",
+        "description": "Jira integration plugin for clio tasks",
+        "bin": "clio",
+        "topics": {
+          "tasks:jira": {
+            "description": "Jira integration for task management"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "jira:link",
+          "description": "Link a local task to a Jira issue",
+          "aliases": [],
+          "file": "src/commands/jira/link.ts"
+        },
+        {
+          "id": "jira:sync",
+          "description": "Sync tasks with Jira project",
+          "aliases": [],
+          "file": "src/commands/jira/sync.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": -1,
+          "budget": 500,
+          "status": "unavailable"
+        },
+        "version": {
+          "duration": -1,
+          "budget": 200,
+          "status": "unavailable"
         }
       },
       "tests": {

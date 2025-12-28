@@ -1,3 +1,10 @@
+---
+sidebar_position: 7
+sidebar_label: 'Performance'
+title: 'Performance Architecture'
+description: 'Performance budgets, monitoring strategies, and optimization techniques for CLI responsiveness'
+---
+
 # Performance Architecture
 
 ## Overview

@@ -1,3 +1,10 @@
+---
+sidebar_position: 7
+sidebar_label: 'ADR-007: History and Undo'
+title: 'ADR-007: Command History and Undo System'
+description: 'Decision to implement command history tracking and undo capabilities for error recovery'
+---
+
 # ADR-007: Command History and Undo System
 
 **Status:** Accepted  

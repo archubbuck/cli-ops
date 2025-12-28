@@ -1,6 +1,8 @@
-# CLI Alpha - Task Manager
+# @cli-ops/clio-plugin-tasks
 
-A powerful task management CLI with CRUD operations, demonstrating the full capabilities of the shared workspace packages.
+A powerful task management plugin for Clio with CRUD operations and full workspace package integration.
+
+> **Documentation**: See [Tasks Plugin Documentation](https://github.com/archubbuck/cli-ops/tree/main/docs/plugins/tasks.md) for complete reference.
 
 ## Features
 
@@ -17,6 +19,8 @@ A powerful task management CLI with CRUD operations, demonstrating the full capa
 
 ## Installation
 
+Bundled with Clio by default. For development:
+
 ```bash
 pnpm install
 pnpm build
@@ -28,58 +32,58 @@ pnpm build
 
 ```bash
 # CLI mode
-alpha tasks:create --title "Implement feature" --priority high --tags backend,api
+clio tasks:create --title "Implement feature" --priority high --tags backend,api
 
 # Interactive mode
-alpha tasks:create --interactive
-alpha tasks:create -i
+clio tasks:create --interactive
+clio tasks:create -i
 ```
 
 ### List Tasks
 
 ```bash
 # List all tasks
-alpha tasks:list
+clio tasks:list
 
 # Filter by status
-alpha tasks:list --status todo
+clio tasks:list --status todo
 
 # Filter by priority
-alpha tasks:list --priority high
+clio tasks:list --priority high
 
 # Filter by tag
-alpha tasks:list --tag urgent
+clio tasks:list --tag urgent
 
 # JSON output
-alpha tasks:list --format json
+clio tasks:list --format json
 ```
 
 ### Show Task Details
 
 ```bash
-alpha tasks:show abc123
-alpha tasks:show abc123 --format json
+clio tasks:show abc123
+clio tasks:show abc123 --format json
 ```
 
 ### Update Tasks
 
 ```bash
 # CLI mode
-alpha tasks:update abc123 --status done
-alpha tasks:update abc123 --priority urgent --tags critical
+clio tasks:update abc123 --status done
+clio tasks:update abc123 --priority urgent --tags critical
 
 # Interactive mode
-alpha tasks:update abc123 --interactive
+clio tasks:update abc123 --interactive
 ```
 
 ### Delete Tasks
 
 ```bash
 # With confirmation
-alpha tasks:delete abc123
+clio tasks:delete abc123
 
 # Skip confirmation
-alpha tasks:delete abc123 --force
+clio tasks:delete abc123 --force
 ```
 
 ## Global Flags
@@ -92,13 +96,15 @@ alpha tasks:delete abc123 --force
 ## Examples
 
 ### Create a task interactively
+
 ```bash
-alpha tasks:create -i
+clio tasks:create -i
 ```
 
 ### Create a high-priority task with tags
+
 ```bash
-alpha tasks:create \
+clio tasks:create \
   --title "Fix critical bug" \
   --description "Server crashes on startup" \
   --priority urgent \
@@ -106,18 +112,21 @@ alpha tasks:create \
 ```
 
 ### List only in-progress tasks
+
 ```bash
-alpha tasks:list --status in-progress
+clio tasks:list --status in-progress
 ```
 
 ### Update task to done
+
 ```bash
-alpha tasks:update abc123 --status done
+clio tasks:update abc123 --status done
 ```
 
 ### Export tasks to JSON
+
 ```bash
-alpha tasks:list --format json > tasks.json
+clio tasks:list --format json > tasks.json
 ```
 
 ## Task Schema
@@ -139,12 +148,14 @@ alpha tasks:list --format json > tasks.json
 ## Storage
 
 Tasks are stored in:
-- Linux/Mac: `~/.local/share/alpha/tasks.json`
-- Windows: `%LOCALAPPDATA%/alpha/tasks.json`
+
+- Linux/Mac: `~/.local/share/clio/tasks.json`
+- Windows: `%LOCALAPPDATA%/clio/tasks.json`
 
 ## Architecture
 
 This CLI demonstrates:
+
 - **BaseCommand** - Enhanced oclif command with history, logging, config
 - **Zod Validation** - Type-safe schemas for tasks
 - **Storage Layer** - File-based persistence with async operations
@@ -169,6 +180,84 @@ pnpm typecheck
 # Performance check
 pnpm perf
 ```
+
+## Extension API
+
+> **New in v3.0.0**: Extension plugins can hook into task lifecycle events
+
+This plugin provides extension points for other plugins to add functionality. Extensions can register hooks to modify behavior at specific points in the task lifecycle.
+
+### Available Hooks
+
+#### `task:beforeCreate`
+
+**When**: Before a task is created  
+**Data**: Task creation data (title, description, priority, tags, etc.)  
+**Use case**: Validate or enrich task data before creation
+
+```typescript
+this.registerHook('task:beforeCreate', async (data: TaskCreateData) => {
+  // Add Jira ID lookup, validate fields, etc.
+})
+```
+
+#### `task:afterCreate`
+
+**When**: After a task is successfully created  
+**Data**: Complete task object with generated ID  
+**Use case**: Sync to external systems, trigger notifications
+
+```typescript
+this.registerHook('task:afterCreate', async (task: Task) => {
+  // Sync to Jira, send notification, etc.
+})
+```
+
+#### `task:beforeComplete`
+
+**When**: Before marking a task as complete  
+**Data**: Task object  
+**Use case**: Validate completion requirements
+
+```typescript
+this.registerHook('task:beforeComplete', async (task: Task) => {
+  // Check all subtasks done, validate Jira status, etc.
+})
+```
+
+#### `task:afterComplete`
+
+**When**: After a task is marked complete  
+**Data**: Updated task object  
+**Use case**: Trigger workflows, update external systems
+
+```typescript
+this.registerHook('task:afterComplete', async (task: Task) => {
+  // Update Jira, trigger CI/CD, etc.
+})
+```
+
+#### Other Hooks
+
+- `task:beforeUpdate` - Before task update
+- `task:afterUpdate` - After task update
+- `task:beforeDelete` - Before task deletion
+- `task:afterDelete` - After task deletion
+
+### Legacy Event Bus
+
+For backward compatibility, the following events are still emitted:
+
+- `task:created` - After task creation (legacy)
+- `task:completed` - After task completion (legacy)
+- `task:updated` - After task update (legacy)
+- `task:deleted` - After task deletion (legacy)
+
+**Note**: New extensions should use hooks instead of events for type safety and sequential execution guarantees.
+
+### Example Extension
+
+See [@cli-ops/clio-plugin-tasks-jira](../clio-plugin-tasks-jira) for a complete extension example.
 
 ## ADHD/OCD Benefits
 

@@ -1,8 +1,15 @@
+---
+sidebar_position: 1
+sidebar_label: 'ADR-001: Turborepo for Builds'
+title: 'ADR-001: Use Turborepo for Monorepo Builds'
+description: 'Decision to use Turborepo for monorepo build orchestration, task caching, and parallel execution'
+---
+
 # ADR-001: Use Turborepo for Monorepo Builds
 
 **Status:** Accepted  
 **Date:** 2025-12-26  
-**Deciders:** Team  
+**Deciders:** Team
 
 ## Context
 
@@ -15,6 +22,7 @@ This project is a monorepo containing the clio CLI manager, three plugins (`clio
 - Scale as the number of packages grows
 
 Alternative solutions considered:
+
 - **Lerna**: Legacy tool, less active development, slower build times
 - **Nx**: More complex configuration, steeper learning curve
 - **pnpm workspaces alone**: No task orchestration or caching capabilities
@@ -25,6 +33,7 @@ Alternative solutions considered:
 We will use **Turborepo** as our monorepo build orchestrator.
 
 Configuration is defined in `turbo.json` with the following tasks:
+
 - `build`: Compiles TypeScript with output caching
 - `test`: Runs Vitest with coverage
 - `lint`: Executes ESLint across all packages
@@ -63,6 +72,7 @@ Turborepo is implemented in the following files:
 - Each package's `package.json` includes `build`, `test`, `lint` scripts that Turborepo orchestrates
 
 Key scripts:
+
 ```bash
 pnpm build        # Build all packages
 pnpm test         # Run all tests

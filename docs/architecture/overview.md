@@ -1,3 +1,10 @@
+---
+sidebar_position: 1
+sidebar_label: 'Overview'
+title: 'Architecture Overview'
+description: 'High-level overview of the CLI Ops monorepo architecture, including system design and component relationships'
+---
+
 # Architecture Overview
 
 ## System Diagram

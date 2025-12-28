@@ -1,3 +1,10 @@
+---
+sidebar_position: 3
+sidebar_label: 'Dependency Graph'
+title: 'Dependency Graph'
+description: 'Visual representation and explanation of package dependencies within the monorepo'
+---
+
 # Dependency Graph
 
 ## Package Dependency Relationships

@@ -1,3 +1,10 @@
+---
+sidebar_position: 3
+sidebar_label: 'Plugin Development'
+title: 'Plugin Development Guide'
+description: 'Comprehensive guide for developing plugins for the clio CLI ecosystem using oclif conventions'
+---
+
 # Plugin Development Guide
 
 This guide explains how to create plugins for the clio CLI ecosystem.
@@ -596,11 +603,155 @@ cli-alpha-plugin-custom/
 
 ## Examples
 
-See extension plugins nested under their parent plugins:
+### Base Plugins
 
-- **clio-plugin-tasks-jira**: Jira integration for task management at `plugins/clio-plugin-tasks/src/extensions/clio-plugin-tasks-jira`
-- **clio-plugin-fetch-oauth**: OAuth authentication for HTTP requests at `plugins/clio-plugin-fetch/src/extensions/clio-plugin-fetch-oauth`
-- **clio-plugin-repo-hooks**: Git hooks automation for repositories at `plugins/clio-plugin-repo/src/extensions/clio-plugin-repo-hooks`
+- **[@cli-ops/clio-plugin-tasks](../../plugins/clio-plugin-tasks)**: Task management (bundled)
+- **[@cli-ops/clio-plugin-fetch](../../plugins/clio-plugin-fetch)**: HTTP client
+- **[@cli-ops/clio-plugin-repo](../../plugins/clio-plugin-repo)**: Git/GitHub tools
+
+### Extension Plugins (v3.0+)
+
+Extension plugins are now top-level packages with formal hook-based architecture:
+
+- **[@cli-ops/clio-plugin-tasks-jira](../../plugins/clio-plugin-tasks-jira)**: Jira integration via hooks
+- **[@cli-ops/clio-plugin-fetch-oauth](../../plugins/clio-plugin-fetch-oauth)**: OAuth 2.0 authentication
+- **[@cli-ops/clio-plugin-repo-hooks](../../plugins/clio-plugin-repo-hooks)**: Git hooks automation
+
+See [ADR-010: Extension Plugin Formalization](../adr/010-extension-plugin-formalization.md) for v3.0 extension architecture.
+
+## Creating Extension Plugins (v3.0+)
+
+Extension plugins extend existing base plugins using a formal hook system.
+
+### 1. Create Extension Package
+
+```bash
+cd /workspaces/cli-ops/plugins
+mkdir clio-plugin-tasks-myextension
+cd clio-plugin-tasks-myextension
+pnpm init
+```
+
+### 2. Configure package.json
+
+```json
+{
+  "name": "@cli-ops/clio-plugin-tasks-myextension",
+  "version": "1.0.0",
+  "description": "My extension for task management",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "oclif": {
+    "bin": "clio",
+    "commands": "./dist/commands",
+    "topics": {
+      "tasks:myext": {
+        "description": "My extension commands"
+      }
+    }
+  },
+  "clio": {
+    "extension": {
+      "parent": "@cli-ops/clio-plugin-tasks",
+      "hooks": ["task:beforeCreate", "task:afterComplete"]
+    }
+  },
+  "peerDependencies": {
+    "@cli-ops/clio": "^1.0.0",
+    "@cli-ops/clio-plugin-tasks": "^3.0.0"
+  }
+}
+```
+
+### 3. Create Extension Plugin Class
+
+```typescript
+// src/index.ts
+import { BaseExtensionPlugin } from '@cli-ops/shared-plugins'
+import type { PluginMetadata } from '@cli-ops/shared-types'
+
+export class MyExtensionPlugin extends BaseExtensionPlugin {
+  readonly metadata: PluginMetadata = {
+    name: '@cli-ops/clio-plugin-tasks-myextension',
+    version: '1.0.0',
+    description: 'My task extension',
+  }
+
+  override async init(): Promise<void> {
+    // Register with parent plugin
+    await this.registerExtension('@cli-ops/clio-plugin-tasks')
+
+    // Register hooks (type-safe, sequential execution)
+    this.registerHook('task:beforeCreate', this.enrichTask.bind(this))
+    this.registerHook('task:afterComplete', this.notifyComplete.bind(this))
+
+    // Events still work for backward compatibility
+    this.on('task:created', this.handleTaskCreated.bind(this))
+  }
+
+  private async enrichTask(data: any): Promise<void> {
+    // Validate or modify task before creation
+    console.log('Enriching task:', data)
+  }
+
+  private async notifyComplete(task: any): Promise<void> {
+    // React to task completion
+    console.log('Task completed:', task)
+  }
+
+  private handleTaskCreated(data: unknown): void {
+    // Legacy event handler
+    console.log('Task created event:', data)
+  }
+}
+
+export default MyExtensionPlugin
+```
+
+### 4. Discover Parent Plugin Hooks
+
+Check the parent plugin's README for available hooks:
+
+```bash
+# View extension API for a plugin
+cat plugins/clio-plugin-tasks/README.md | grep -A 50 "Extension API"
+```
+
+Or at runtime:
+
+```bash
+# List extensions for a plugin
+clio plugins:extensions @cli-ops/clio-plugin-tasks
+```
+
+### Hook vs Event Communication
+
+**Use Hooks When** (v3.0+):
+
+- You need to modify data before an operation
+- Order of execution matters
+- You need TypeScript type safety
+- You want validation errors to propagate
+
+**Use Events When**:
+
+- Fire-and-forget notifications
+- Multiple handlers can run independently
+- Backward compatibility required
+
+**Example**:
+
+```typescript
+// Hook: Modify task before creation (sequential, awaited)
+this.registerHook('task:beforeCreate', async (data: TaskData) => {
+  data.customField = await this.fetchExternalData()
+})
+
+// Event: Just get notified (async, no waiting)
+this.on('task:created', (task: unknown) => {
+  this.logMetrics(task)
+})
+```
 
 ## Troubleshooting
 
@@ -638,14 +789,16 @@ alpha plugins install cli-alpha-plugin-custom
 - [oclif Plugin Documentation](https://oclif.io/docs/plugins)
 - [Architecture Documentation](../ARCHITECTURE.md)
 - [ADR-009: Plugin System Architecture](../adr/009-plugin-system-architecture.md)
-- Example Plugins: Check `plugins/*/src/extensions/` directories
+- [ADR-010: Extension Plugin Formalization](../adr/010-extension-plugin-formalization.md)
+- Example Plugins: Check `plugins/` directory
+- Extension Examples: `plugins/clio-plugin-*-*` (double-hyphen naming)
 
 ## Support
 
 For questions or issues:
 
 1. Check the examples directory
-2. Review the architecture docs
+2. Review the architecture docs (especially ADR-010 for extensions)
 3. Open an issue on GitHub
 4. Join the community discussions
 

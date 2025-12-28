@@ -1,3 +1,10 @@
+---
+sidebar_position: 2
+sidebar_label: 'Monorepo Structure'
+title: 'Monorepo Structure'
+description: 'Organization and structure of the CLI Ops monorepo, including directory layout and package organization'
+---
+
 # Monorepo Structure
 
 ## Directory Organization Patterns

@@ -377,8 +377,15 @@ importers:
       '@oclif/test':
         specifier: ^4.1.15
         version: 4.1.15(@oclif/core@4.8.0)
+      zod:
+        specifier: ^3.22.4
+        version: 3.25.76
 
-  libs/shared-types: {}
+  libs/shared-types:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.25.76
 
   libs/shared-ui:
     dependencies:
@@ -457,32 +464,32 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
-  plugins/clio-plugin-fetch/src/extensions/clio-plugin-fetch-oauth:
+  plugins/clio-plugin-fetch-oauth:
     dependencies:
       '@cli-ops/clio':
         specifier: ^1.0.0
-        version: link:../../../../../apps/clio
+        version: link:../../apps/clio
       '@cli-ops/clio-plugin-fetch':
-        specifier: ^2.0.0
-        version: link:../../..
+        specifier: workspace:*
+        version: link:../clio-plugin-fetch
       '@cli-ops/shared-commands':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-commands
+        version: link:../../libs/shared-commands
       '@cli-ops/shared-logger':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-logger
+        version: link:../../libs/shared-logger
       '@cli-ops/shared-plugins':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-plugins
+        version: link:../../libs/shared-plugins
       '@cli-ops/shared-prompts':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-prompts
+        version: link:../../libs/shared-prompts
       '@cli-ops/shared-types':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-types
+        version: link:../../libs/shared-types
       '@cli-ops/shared-ui':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-ui
+        version: link:../../libs/shared-ui
       '@oclif/core':
         specifier: ^4.0.31
         version: 4.8.0
@@ -549,32 +556,32 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
-  plugins/clio-plugin-repo/src/extensions/clio-plugin-repo-hooks:
+  plugins/clio-plugin-repo-hooks:
     dependencies:
       '@cli-ops/clio':
         specifier: ^1.0.0
-        version: link:../../../../../apps/clio
+        version: link:../../apps/clio
       '@cli-ops/clio-plugin-repo':
-        specifier: ^2.0.0
-        version: link:../../..
+        specifier: workspace:*
+        version: link:../clio-plugin-repo
       '@cli-ops/shared-commands':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-commands
+        version: link:../../libs/shared-commands
       '@cli-ops/shared-logger':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-logger
+        version: link:../../libs/shared-logger
       '@cli-ops/shared-plugins':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-plugins
+        version: link:../../libs/shared-plugins
       '@cli-ops/shared-prompts':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-prompts
+        version: link:../../libs/shared-prompts
       '@cli-ops/shared-types':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-types
+        version: link:../../libs/shared-types
       '@cli-ops/shared-ui':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-ui
+        version: link:../../libs/shared-ui
       '@oclif/core':
         specifier: ^4.0.31
         version: 4.8.0
@@ -638,32 +645,32 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
-  plugins/clio-plugin-tasks/src/extensions/clio-plugin-tasks-jira:
+  plugins/clio-plugin-tasks-jira:
     dependencies:
       '@cli-ops/clio':
         specifier: ^1.0.0
-        version: link:../../../../../apps/clio
+        version: link:../../apps/clio
       '@cli-ops/clio-plugin-tasks':
-        specifier: ^2.0.0
-        version: link:../../..
+        specifier: workspace:*
+        version: link:../clio-plugin-tasks
       '@cli-ops/shared-commands':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-commands
+        version: link:../../libs/shared-commands
       '@cli-ops/shared-logger':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-logger
+        version: link:../../libs/shared-logger
       '@cli-ops/shared-plugins':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-plugins
+        version: link:../../libs/shared-plugins
       '@cli-ops/shared-prompts':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-prompts
+        version: link:../../libs/shared-prompts
       '@cli-ops/shared-types':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-types
+        version: link:../../libs/shared-types
       '@cli-ops/shared-ui':
         specifier: workspace:*
-        version: link:../../../../../libs/shared-ui
+        version: link:../../libs/shared-ui
       '@oclif/core':
         specifier: ^4.0.31
         version: 4.8.0

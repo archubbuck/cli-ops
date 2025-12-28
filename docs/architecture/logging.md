@@ -1,3 +1,10 @@
+---
+sidebar_position: 5
+sidebar_label: 'Logging'
+title: 'Logging Architecture'
+description: 'Structured logging system with multiple formats, log levels, and context-aware logging capabilities'
+---
+
 # Logging Architecture
 
 ## Overview
@@ -71,7 +78,7 @@ import { createLogger } from '@cli-ops/shared-logger'
 const logger = createLogger({
   name: 'cli-alpha',
   level: process.env.LOG_LEVEL || 'info',
-  format: process.env.LOG_FORMAT || 'pretty'
+  format: process.env.LOG_FORMAT || 'pretty',
 })
 ```
 
@@ -86,7 +93,7 @@ logger.error('Operation failed', { error })
 // With context
 logger.debug('Loading configuration', {
   path: configPath,
-  exists: fs.existsSync(configPath)
+  exists: fs.existsSync(configPath),
 })
 
 // Conditional logging
@@ -107,7 +114,7 @@ export abstract class BaseCommand {
   async init() {
     this.logger = createLogger({
       name: this.config.name,
-      level: this.flags.verbose ? 'debug' : 'info'
+      level: this.flags.verbose ? 'debug' : 'info',
     })
   }
 
@@ -148,7 +155,7 @@ logger.error('Task created') // Wrong severity
 logger.error('Failed to save task', {
   taskId: task.id,
   error: error.message,
-  stack: error.stack
+  stack: error.stack,
 })
 
 // ✗ Avoid - lacks useful context
@@ -162,12 +169,12 @@ logger.error('Failed to save task')
 logger.debug('API request', {
   url: request.url,
   method: request.method,
-  headers: redactSensitiveHeaders(request.headers)
+  headers: redactSensitiveHeaders(request.headers),
 })
 
 // ✗ Avoid - logs API keys
 logger.debug('API request', {
-  headers: request.headers // May contain Authorization header
+  headers: request.headers, // May contain Authorization header
 })
 ```
 
@@ -178,7 +185,7 @@ logger.debug('API request', {
 logger.info('Task operation complete', {
   operation: 'create',
   taskId: task.id,
-  duration: performance.now() - start
+  duration: performance.now() - start,
 })
 
 // ✗ Avoid - string interpolation loses structure
@@ -202,7 +209,7 @@ Automatically disables colors when not in a terminal:
 
 ```typescript
 const logger = createLogger({
-  format: process.stdout.isTTY ? 'pretty' : 'json'
+  format: process.stdout.isTTY ? 'pretty' : 'json',
 })
 ```
 
@@ -216,7 +223,7 @@ Disable logging during tests:
 import { createLogger } from '@cli-ops/shared-logger'
 
 const logger = createLogger({
-  silent: true // No output during tests
+  silent: true, // No output during tests
 })
 ```
 
@@ -229,13 +236,13 @@ import { createLogger, captureLogger } from '@cli-ops/shared-logger'
 
 test('logs error message', async () => {
   const capture = captureLogger()
-  
+
   await myFunction()
-  
+
   expect(capture.logs.error).toContainEqual(
     expect.objectContaining({
-      message: 'Operation failed'
-    })
+      message: 'Operation failed',
+    }),
   )
 })
 ```

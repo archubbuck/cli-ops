@@ -1,6 +1,8 @@
-# CLI Gamma - Developer Tools
+# @cli-ops/clio-plugin-repo
 
-A powerful developer tools CLI with Git and GitHub integration.
+A powerful Git and GitHub integration plugin for Clio.
+
+> **Documentation**: See [Repo Plugin Documentation](https://github.com/archubbuck/cli-ops/tree/main/docs/plugins/repo.md) for complete reference.
 
 ## Features
 
@@ -14,6 +16,14 @@ A powerful developer tools CLI with Git and GitHub integration.
 
 ## Installation
 
+Install via Clio:
+
+```bash
+clio plugins:install @cli-ops/clio-plugin-repo
+```
+
+Or for development:
+
 ```bash
 pnpm install
 pnpm build
@@ -25,29 +35,29 @@ pnpm build
 
 ```bash
 # Show repository status
-gamma git:status
+clio repo:status
 
 # Show commit history
-gamma git:log
-gamma git:log --limit 20
+clio repo:log
+clio repo:log --limit 20
 
 # JSON output
-gamma git:log --format json
+clio repo:log --format json
 ```
 
 ### Pull Request Commands
 
 ```bash
 # List open PRs
-gamma pr:list
+clio repo:pr:list
 
 # List all PRs
-gamma pr:list --state all
+clio repo:pr:list --state all
 
 # With GitHub token
-gamma pr:list --token YOUR_TOKEN
+clio repo:pr:list --token YOUR_TOKEN
 export GITHUB_TOKEN=your_token
-gamma pr:list
+clio repo:pr:list
 ```
 
 ## Global Flags
@@ -60,9 +70,11 @@ gamma pr:list
 ## Command Flags
 
 ### git:log
+
 - `--limit, -n` - Number of commits (default: 10)
 
 ### pr:list
+
 - `--state, -s` - Filter by state (open, closed, all)
 - `--token, -t` - GitHub token (or use GITHUB_TOKEN env var)
 
@@ -71,10 +83,11 @@ gamma pr:list
 ### Git Status
 
 ```bash
-gamma git:status
+clio repo:status
 ```
 
 Shows:
+
 - Current branch
 - Commits ahead/behind
 - Staged files
@@ -85,30 +98,30 @@ Shows:
 
 ```bash
 # Last 10 commits
-gamma git:log
+clio repo:log
 
 # Last 50 commits
-gamma git:log -n 50
+clio repo:log -n 50
 
 # JSON format
-gamma git:log --format json
+clio repo:log --format json
 ```
 
 ### Pull Requests
 
 ```bash
 # Open PRs
-gamma pr:list
+clio repo:pr:list
 
 # All PRs
-gamma pr:list --state all
+clio repo:pr:list --state all
 
 # Closed PRs
-gamma pr:list --state closed
+clio repo:pr:list --state closed
 
 # With authentication
 export GITHUB_TOKEN=ghp_yourtoken
-gamma pr:list
+clio repo:pr:list
 ```
 
 ## GitHub Token
@@ -116,13 +129,15 @@ gamma pr:list
 For GitHub API access, provide a token:
 
 1. Via environment variable:
+
    ```bash
    export GITHUB_TOKEN=ghp_yourtoken
    ```
 
 2. Via flag:
+
    ```bash
-   gamma pr:list --token ghp_yourtoken
+   clio repo:pr:list --token ghp_yourtoken
    ```
 
 3. Create token at: https://github.com/settings/tokens
@@ -148,6 +163,7 @@ Required scopes: `repo` (for private repos) or `public_repo` (for public)
 ### Caching
 
 GitHub API responses are cached:
+
 - 5-minute TTL
 - Reduces API calls
 - Faster responses
@@ -155,6 +171,7 @@ GitHub API responses are cached:
 ## Architecture
 
 This CLI demonstrates:
+
 - **GitClient** - Git command wrapper
 - **GitHubClient** - GitHub API wrapper with caching
 - **Error Handling** - Helpful error messages
@@ -163,15 +180,15 @@ This CLI demonstrates:
 
 ## Storage
 
-- **Cache**: `~/.cache/gamma/`
-- **Config**: `~/.config/gamma/`
-- **History**: `~/.local/share/gamma/`
+- **Cache**: `~/.cache/clio/`
+- **Config**: `~/.config/clio/`
+- **History**: `~/.local/share/clio/`
 
 ## Development
 
 ```bash
 # Run in dev mode
-pnpm dev git:status
+pnpm dev repo:status
 
 # Build
 pnpm build
@@ -179,6 +196,73 @@ pnpm build
 # Typecheck
 pnpm typecheck
 ```
+
+## Extension API
+
+> **New in v3.0.0**: Extension plugins can hook into Git operations
+
+This plugin provides extension points for Git hooks automation, pre-flight checks, and repository workflows.
+
+### Available Hooks
+
+#### `repo:beforeCommit`
+
+**When**: Before making a Git commit  
+**Data**: Commit data (message, files, etc.)  
+**Use case**: Run linters, tests, validate commit messages
+
+```typescript
+this.registerHook('repo:beforeCommit', async (commitData: CommitData) => {
+  // Run pre-commit hooks, linting, etc.
+  await this.runLinter(commitData.files)
+})
+```
+
+#### `repo:afterCommit`
+
+**When**: After a successful Git commit  
+**Data**: Commit result (hash, message, timestamp)  
+**Use case**: Trigger CI, update issue trackers, notifications
+
+```typescript
+this.registerHook('repo:afterCommit', async (result: CommitResult) => {
+  // Update linked issues, trigger builds, etc.
+})
+```
+
+#### `repo:beforePush`
+
+**When**: Before pushing to remote  
+**Data**: Push data (branch, commits, remote)  
+**Use case**: Run tests, validate branch protection, check secrets
+
+```typescript
+this.registerHook('repo:beforePush', async (pushData: PushData) => {
+  // Run full test suite, scan for secrets, etc.
+  await this.runTests()
+})
+```
+
+#### Other Hooks
+
+- `repo:afterPush` - After successful push
+- `repo:beforePull` - Before pulling from remote
+- `repo:afterPull` - After successful pull
+
+### Legacy Event Bus
+
+For backward compatibility, the following events are still emitted:
+
+- `git:commit:before` - Before commit (legacy)
+- `git:commit:after` - After commit (legacy)
+- `git:push:before` - Before push (legacy)
+- `git:push:after` - After push (legacy)
+
+**Note**: New extensions should use hooks for type safety and sequential execution.
+
+### Example Extension
+
+See [@cli-ops/clio-plugin-repo-hooks](../clio-plugin-repo-hooks) for a complete Git hooks automation example.
 
 ## ADHD/OCD Benefits
 

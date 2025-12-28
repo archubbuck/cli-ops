@@ -1,3 +1,10 @@
+---
+sidebar_position: 1
+sidebar_label: Contributing Overview
+title: Contributing to CLI Ops
+description: Guidelines and workflows for contributing to the CLI Ops project
+---
+
 # Contributing
 
 Thank you for your interest in contributing to CLI Ops! This document provides guidelines for contributing to the plugin-first monorepo.
@@ -515,6 +522,72 @@ Automated via GitHub Actions:
 - Check existing documentation first
 - Review [ISSUES.md](../.github/ISSUES.md) for known work items
 - For genuine questions, open a discussion or contact maintainers
+
+## Migration Guides
+
+### Upgrading to v3.0.0 (Extension Plugin Refactor)
+
+**Breaking Changes**: Extension plugins moved to top-level architecture
+
+#### For End Users
+
+1. **Update clio and base plugins**:
+
+   ```bash
+   # Update all installed plugins
+   clio plugins:update
+   ```
+
+2. **Reinstall extension plugins** (moved to top-level):
+
+   ```bash
+   # Extensions are now separate top-level packages
+   clio plugins:install @cli-ops/clio-plugin-tasks-jira
+   clio plugins:install @cli-ops/clio-plugin-fetch-oauth
+   clio plugins:install @cli-ops/clio-plugin-repo-hooks
+   ```
+
+3. **Discover available extensions**:
+
+   ```bash
+   # List extensions for a specific plugin
+   clio plugins:extensions @cli-ops/clio-plugin-tasks
+
+   # List all extensions
+   clio plugins:extensions
+   ```
+
+#### For Plugin Developers
+
+See [ADR-010: Extension Plugin Formalization](./adr/010-extension-plugin-formalization.md#migration-guide) for detailed migration instructions.
+
+**Key Changes**:
+
+- Extensions moved from nested (`plugins/{parent}/src/extensions/`) to top-level (`plugins/{extension}/`)
+- Use `BaseExtensionPlugin` instead of `BasePlugin`
+- Call `registerExtension()` in `init()`
+- Use `registerHook()` for type-safe extension points
+- Add `clio.extension` metadata to package.json
+
+**Quick Example**:
+
+```typescript
+// v3.0.0
+import { BaseExtensionPlugin } from '@cli-ops/shared-plugins'
+
+export class JiraPlugin extends BaseExtensionPlugin {
+  async init() {
+    await this.registerExtension('@cli-ops/clio-plugin-tasks')
+    this.registerHook('task:afterCreate', this.syncToJira.bind(this))
+  }
+}
+```
+
+For complete details, see:
+
+- [ADR-010](./adr/010-extension-plugin-formalization.md)
+- [Changeset](../.changeset/extension-plugin-refactor-v3.md)
+- [Plugin Development Guide](./contributing/plugin-development.md)
 
 ## Code of Conduct
 

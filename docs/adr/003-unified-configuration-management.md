@@ -1,3 +1,10 @@
+---
+sidebar_position: 3
+sidebar_label: 'ADR-003: Configuration Management'
+title: 'ADR-003: Unified Configuration Management System'
+description: 'Decision to implement a unified configuration system with hierarchical settings, validation, and migration support'
+---
+
 # ADR-003: Unified Configuration Management System
 
 **Status:** Accepted  

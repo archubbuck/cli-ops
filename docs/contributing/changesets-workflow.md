@@ -1,3 +1,10 @@
+---
+sidebar_position: 6
+sidebar_label: 'Changesets Workflow'
+title: 'Changesets Workflow'
+description: 'Guide for using Changesets for version management and changelog generation in the monorepo'
+---
+
 # Changesets Workflow
 
 ## Overview

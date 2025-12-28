@@ -24,31 +24,58 @@ Expected: All checks pass showing config files exist.
 
 ## Test 2: Fixture Validation
 
+### Understanding Fixture Organization
+
+The project uses a **hybrid fixture approach**:
+
+- **Shared fixtures**: `libs/shared-testing/fixtures/` - Common configs, API responses, etc.
+- **Package-local fixtures**: `{package}/test/fixtures/` - Package-specific test data
+- **Root fixtures**: `/fixtures/` - Cross-package E2E tests only
+
+All fixtures must include a `version` field and are validated against Zod schemas.
+
 ### Generate Fixture Types
 
 ```bash
-node scripts/generate-fixture-types.js
+pnpm generate:fixture-types
+# Or: node scripts/generate-fixture-types.js
 ```
 
 Expected:
 
-- ✅ Scans `libs/shared-testing/fixtures/`
+- ✅ Scans `libs/shared-testing/fixtures/` recursively
 - ✅ Generates `libs/shared-testing/src/fixture-types.ts`
-- ✅ Shows count of fixtures found
+- ✅ Shows count of fixtures found by category
+- ✅ Creates TypeScript types for IDE autocomplete
+
+Check generated types:
+
+```bash
+cat libs/shared-testing/src/fixture-types.ts | head -20
+```
 
 ### Validate Fixtures
 
 ```bash
-node scripts/validate-fixtures.js
+pnpm validate:fixtures
+# Or: node scripts/validate-fixtures.js
 ```
 
 Expected:
 
 - ✅ Validates all JSON fixtures against schemas
-- ✅ Shows validation report with counts
-- ✅ Creates `.fixture-cache/` for performance
+- ✅ Shows validation report with pass/fail counts
+- ✅ Creates `.fixture-cache/` for performance (caches by file hash)
 - ✅ Creates/updates `.fixture-snapshots/` for change detection
 - ✅ All fixtures pass validation
+- ✅ Reports: configs, tasks, api-responses, git-repos
+
+Validation checks:
+
+1. **Version field** - All fixtures must have `version: "1.0.0"`
+2. **Schema compliance** - Validates against Zod schemas
+3. **Type coercion** - Warns on coercible type mismatches
+4. **Breaking changes** - Detects structural changes via snapshots
 
 Test invalid fixture:
 

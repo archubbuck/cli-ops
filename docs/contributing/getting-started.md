@@ -1,3 +1,10 @@
+---
+sidebar_position: 1
+sidebar_label: 'Getting Started'
+title: 'Getting Started'
+description: 'Setup guide for contributing to the CLI Ops monorepo, including prerequisites and installation'
+---
+
 # Getting Started
 
 ## Overview

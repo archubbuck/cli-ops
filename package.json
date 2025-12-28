@@ -13,7 +13,6 @@
     "build": "turbo run build",
     "build:libs": "turbo run build --filter='./libs/**'",
     "build:plugins": "turbo run build --filter='./plugins/**'",
-    "build:extensions": "turbo run build --filter='./plugins/*/src/extensions/**'",
     "dev:clio": "pnpm --filter @cli-ops/clio run dev",
     "dev:tasks": "pnpm --filter @cli-ops/clio-plugin-tasks run dev",
     "dev:fetch": "pnpm --filter @cli-ops/clio-plugin-fetch run dev",
@@ -42,6 +41,7 @@
     "inventory:update-docs": "node scripts/update-architecture-docs.js",
     "generate:fixture-types": "node scripts/generate-fixture-types.js",
     "validate:fixtures": "node scripts/validate-fixtures.js",
+    "validate:extensions": "node scripts/validate-extensions.js",
     "prepare": "husky"
   },
   "devDependencies": {
