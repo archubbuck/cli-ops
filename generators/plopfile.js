@@ -145,18 +145,36 @@ export default function (plop) {
         message: 'Include interactive prompts?',
         default: false,
       },
-    ],
-    actions: [
       {
-        type: 'add',
-        path: 'plugins/clio-plugin-{{plugin}}/src/commands/{{topic}}/{{name}}.ts',
-        templateFile: 'templates/command.hbs',
-      },
-      {
-        type: 'add',
-        path: 'plugins/clio-plugin-{{plugin}}/test/commands/{{topic}}/{{name}}.test.ts',
-        templateFile: 'templates/command-test.hbs',
+        type: 'confirm',
+        name: 'createFixtures',
+        message: 'Create test/fixtures directory for this command?',
+        default: false,
       },
     ],
+    actions: function (data) {
+      const actions = [
+        {
+          type: 'add',
+          path: 'plugins/clio-plugin-{{plugin}}/src/commands/{{topic}}/{{name}}.ts',
+          templateFile: 'templates/command.hbs',
+        },
+        {
+          type: 'add',
+          path: 'plugins/clio-plugin-{{plugin}}/test/commands/{{topic}}/{{name}}.test.ts',
+          templateFile: 'templates/command-test.hbs',
+        },
+      ]
+
+      if (data.createFixtures) {
+        actions.push({
+          type: 'add',
+          path: 'plugins/clio-plugin-{{plugin}}/test/fixtures/{{topic}}/{{name}}/.gitkeep',
+          template: '',
+        })
+      }
+
+      return actions
+    },
   })
 }

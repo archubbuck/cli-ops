@@ -1,9 +1,18 @@
 export {
-  createTempDir,
-  removeTempDir,
+  createAPIFixture,
+  createGitFixture,
+  loadAndValidateFixture,
+  loadFixture,
+  loadSharedFixture,
+  snapshotFixture,
+  validateFixture,
+} from './fixture-helpers.js'
+export {
   createFixture,
-  FixtureManager,
   createFixtureManager,
+  createTempDir,
+  FixtureManager,
+  removeTempDir,
 } from './fixtures.js'
-
-export { mockConsole, mockEnv, mockExit, captureOutput } from './mocks.js'
+export { applyMigrations, getMigrationPath, registerMigration } from './migrations.js'
+export { captureOutput, mockConsole, mockEnv, mockExit } from './mocks.js'

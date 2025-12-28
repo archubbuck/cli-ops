@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "status": 404,
+  "statusText": "Not Found",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "data": {
+    "message": "Not Found",
+    "documentation_url": "https://docs.github.com/rest"
+  }
+}

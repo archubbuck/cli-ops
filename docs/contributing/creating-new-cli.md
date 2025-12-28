@@ -303,7 +303,7 @@ Update root [`pnpm-workspace.yaml`](../../pnpm-workspace.yaml):
 ```yaml
 packages:
   - 'apps/*'
-  - 'packages/*'
+  - 'libs/*'
   - 'tooling/*'
   - 'generators'
   # cli-delta is already included in apps/*

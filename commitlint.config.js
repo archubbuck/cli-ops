@@ -1,21 +1,21 @@
-module.exports = {
+export default {
   extends: ['@commitlint/config-conventional'],
   rules: {
     'type-enum': [
       2,
       'always',
       [
-        'feat',     // New feature
-        'fix',      // Bug fix
-        'docs',     // Documentation only
-        'style',    // Code style (formatting, etc)
+        'feat', // New feature
+        'fix', // Bug fix
+        'docs', // Documentation only
+        'style', // Code style (formatting, etc)
         'refactor', // Code refactoring
-        'perf',     // Performance improvement
-        'test',     // Adding/updating tests
-        'build',    // Build system/dependencies
-        'ci',       // CI configuration
-        'chore',    // Other changes
-        'revert',   // Revert previous commit
+        'perf', // Performance improvement
+        'test', // Adding/updating tests
+        'build', // Build system/dependencies
+        'ci', // CI configuration
+        'chore', // Other changes
+        'revert', // Revert previous commit
       ],
     ],
     'type-case': [2, 'always', 'lower-case'],
@@ -30,4 +30,4 @@ module.exports = {
     'footer-leading-blank': [1, 'always'],
     'footer-max-line-length': [2, 'always', 100],
   },
-};
+}

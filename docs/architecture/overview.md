@@ -171,7 +171,7 @@ cli-ops/
 │   ├── cli-alpha/
 │   ├── cli-beta/
 │   └── cli-gamma/
-├── packages/                 # Shared packages
+├── libs/                     # Shared packages
 │   ├── shared-commands/      # Base command infrastructure
 │   ├── shared-config/        # Configuration management
 │   ├── shared-logger/        # Logging system

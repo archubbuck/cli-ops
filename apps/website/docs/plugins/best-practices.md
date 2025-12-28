@@ -396,6 +396,6 @@ vi.mock('@cli-ops/shared-services', () => ({
 
 ## Next Steps
 
-- [View Example Plugins](https://github.com/archubbuck/cli-ops/tree/main/examples)
+- [View Example Plugins](https://github.com/archubbuck/cli-ops/tree/main/plugins)
 - [Contributing Guidelines](/docs/contributing/getting-started)
 - [Architecture Overview](/docs/architecture/overview)

@@ -36,6 +36,7 @@ await lockManager.acquire(async () => {
 ```
 
 Lock files stored in:
+
 ```
 ~/.local/share/cli-ops/locks/
   config-file.lock
@@ -57,7 +58,7 @@ await tasks.create(newTask)
 await bus.emit('task:created', {
   id: newTask.id,
   title: newTask.title,
-  cli: 'alpha'
+  cli: 'alpha',
 })
 
 // cli-beta: React to task creation
@@ -79,7 +80,7 @@ const registry = new ServiceRegistry()
 await registry.register('cli-alpha', {
   pid: process.pid,
   version: '1.0.0',
-  startedAt: Date.now()
+  startedAt: Date.now(),
 })
 
 // Find other running CLIs
@@ -120,17 +121,17 @@ Lock files prevent concurrent access:
 ```typescript
 export class LockManager {
   private lockDir = '~/.local/share/cli-ops/locks'
-  
+
   async acquire(resource: string, callback: () => Promise<void>) {
     const lockFile = path.join(this.lockDir, `${resource}.lock`)
-    
+
     // Wait for lock availability
     await this.waitForLock(lockFile)
-    
+
     try {
       // Create lock file with PID
       await fs.writeFile(lockFile, String(process.pid))
-      
+
       // Execute critical section
       await callback()
     } finally {
@@ -138,7 +139,7 @@ export class LockManager {
       await fs.unlink(lockFile)
     }
   }
-  
+
   async isLocked(resource: string): Promise<boolean> {
     const lockFile = path.join(this.lockDir, `${resource}.lock`)
     return fs.pathExists(lockFile)
@@ -153,25 +154,20 @@ Publish/subscribe using file system watching:
 ```typescript
 export class EventBus {
   private eventDir = '~/.local/share/cli-ops/events'
-  
+
   async emit(event: string, data: any) {
-    const eventFile = path.join(
-      this.eventDir,
-      `${event}-${Date.now()}.json`
-    )
+    const eventFile = path.join(this.eventDir, `${event}-${Date.now()}.json`)
     await fs.writeJSON(eventFile, {
       event,
       data,
       timestamp: Date.now(),
-      source: process.pid
+      source: process.pid,
     })
   }
-  
+
   on(event: string, handler: (data: any) => void) {
-    const watcher = chokidar.watch(
-      path.join(this.eventDir, `${event}-*.json`)
-    )
-    
+    const watcher = chokidar.watch(path.join(this.eventDir, `${event}-*.json`))
+
     watcher.on('add', async (filePath) => {
       const data = await fs.readJSON(filePath)
       handler(data.data)
@@ -188,23 +184,23 @@ Track running CLI instances:
 ```typescript
 export class ServiceRegistry {
   private registryFile = '~/.local/share/cli-ops/registry.json'
-  
+
   async register(name: string, metadata: any) {
     const registry = await this.load()
     registry[name] = {
       ...metadata,
       pid: process.pid,
-      lastSeen: Date.now()
+      lastSeen: Date.now(),
     }
     await this.save(registry)
-    
+
     // Unregister on exit
     process.on('exit', () => this.unregister(name))
   }
-  
+
   async discover(): Promise<ServiceInfo[]> {
     const registry = await this.load()
-    
+
     // Filter out dead processes
     const alive = []
     for (const [name, info] of Object.entries(registry)) {
@@ -212,7 +208,7 @@ export class ServiceRegistry {
         alive.push({ name, ...info })
       }
     }
-    
+
     return alive
   }
 }
@@ -226,17 +222,17 @@ Fast IPC for complex data exchange:
 export class IPCServer {
   private socketPath: string
   private server: net.Server
-  
+
   constructor(name: string) {
     this.socketPath = `/tmp/cli-ops/${name}.sock`
     this.server = net.createServer(this.handleConnection)
     this.server.listen(this.socketPath)
   }
-  
+
   on(event: 'request', handler: (data: any) => Promise<any>) {
     this.requestHandler = handler
   }
-  
+
   private async handleConnection(socket: net.Socket) {
     socket.on('data', async (buffer) => {
       const request = JSON.parse(buffer.toString())
@@ -249,22 +245,22 @@ export class IPCServer {
 
 export class IPCClient {
   constructor(private targetName: string) {}
-  
+
   async request(data: any): Promise<any> {
     const socketPath = `/tmp/cli-ops/${this.targetName}.sock`
-    
+
     return new Promise((resolve, reject) => {
       const socket = net.connect(socketPath)
-      
+
       socket.on('connect', () => {
         socket.write(JSON.stringify(data))
       })
-      
+
       socket.on('data', (buffer) => {
         resolve(JSON.parse(buffer.toString()))
         socket.end()
       })
-      
+
       socket.on('error', reject)
     })
   }
@@ -309,9 +305,8 @@ export class IPCClient {
 
 ```typescript
 // Platform-specific socket path
-const socketPath = process.platform === 'win32'
-  ? `\\\\.\\pipe\\cli-ops-${name}`
-  : `/tmp/cli-ops/${name}.sock`
+const socketPath =
+  process.platform === 'win32' ? `\\\\.\\pipe\\cli-ops-${name}` : `/tmp/cli-ops/${name}.sock`
 ```
 
 ## Cleanup & Maintenance
@@ -323,13 +318,10 @@ Remove locks from dead processes:
 ```typescript
 async function cleanStaleLocks() {
   const locks = await fs.readdir(lockDir)
-  
+
   for (const lockFile of locks) {
-    const pid = await fs.readFile(
-      path.join(lockDir, lockFile),
-      'utf-8'
-    )
-    
+    const pid = await fs.readFile(path.join(lockDir, lockFile), 'utf-8')
+
     if (!isProcessAlive(Number(pid))) {
       await fs.unlink(path.join(lockDir, lockFile))
     }
@@ -345,12 +337,13 @@ Remove old event files:
 async function cleanOldEvents() {
   const events = await fs.readdir(eventDir)
   const now = Date.now()
-  
+
   for (const eventFile of events) {
     const stat = await fs.stat(path.join(eventDir, eventFile))
     const age = now - stat.mtimeMs
-    
-    if (age > 60000) { // 1 minute old
+
+    if (age > 60000) {
+      // 1 minute old
       await fs.unlink(path.join(eventDir, eventFile))
     }
   }
@@ -382,7 +375,7 @@ Disable IPC during tests:
 import { LockManager } from '@cli-ops/shared-ipc'
 
 const mockLockManager = new LockManager({
-  disabled: process.env.NODE_ENV === 'test'
+  disabled: process.env.NODE_ENV === 'test',
 })
 ```
 
@@ -393,12 +386,12 @@ Test event handlers:
 ```typescript
 test('handles task creation event', async () => {
   const bus = new EventBus({ inMemory: true })
-  
+
   const handler = vi.fn()
   bus.on('task:created', handler)
-  
+
   await bus.emit('task:created', { id: 'task-123' })
-  
+
   expect(handler).toHaveBeenCalledWith({ id: 'task-123' })
 })
 ```
@@ -437,11 +430,12 @@ async function emit(event: string, data: any) {
   const key = `${event}-${process.pid}`
   const lastEmit = rateLimiter.get(key) || 0
   const now = Date.now()
-  
-  if (now - lastEmit < 100) { // Max 10/sec
+
+  if (now - lastEmit < 100) {
+    // Max 10/sec
     throw new Error('Rate limit exceeded')
   }
-  
+
   rateLimiter.set(key, now)
   await bus.emit(event, data)
 }
@@ -450,7 +444,7 @@ async function emit(event: string, data: any) {
 ## Related Documentation
 
 - [ADR-008: Cross-CLI Communication](../adr/008-cross-cli-communication.md)
-- [shared-ipc package](../../packages/shared-ipc/README.md)
+- [shared-ipc package](../../libs/shared-ipc/README.md)
 
 <!-- TODO: Expand with WebSocket implementation for remote CLI coordination -->
 <!-- TODO: Add examples of distributed locking for multi-machine scenarios -->

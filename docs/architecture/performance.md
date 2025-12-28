@@ -86,7 +86,7 @@ Cache strategies:
 - **Filesystem**: For across-process (HTTP responses, computed data)
 - **Time-based**: Expire after duration
 
-Example cache implementation in [`packages/shared-config/src/cache.ts`](../../packages/shared-config/src/cache.ts).
+Example cache implementation in [`libs/shared-config/src/cache.ts`](../../libs/shared-config/src/cache.ts).
 
 ### 3. Parallelization
 

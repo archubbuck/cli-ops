@@ -145,4 +145,4 @@ Git and GitHub repository management.
 
 - [Develop Your Own Plugin](./development)
 - [Plugin Best Practices](./best-practices)
-- [View Example Plugins](https://github.com/archubbuck/cli-ops/tree/main/examples)
+- [View Example Plugins](https://github.com/archubbuck/cli-ops/tree/main/plugins)

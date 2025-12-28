@@ -1,6 +1,6 @@
-import { Args } from '@oclif/core'
 import { BaseCommand } from '@cli-ops/shared-commands'
 import { SUCCESS } from '@cli-ops/shared-exit-codes'
+import { Args } from '@oclif/core'
 
 export default class ConfigSet extends BaseCommand {
   static override description = 'Set a configuration value'
@@ -27,10 +27,6 @@ export default class ConfigSet extends BaseCommand {
 
   protected async execute(): Promise<void> {
     const { args } = await this.parse(ConfigSet)
-    // TODO: Implement config loading and saving
-    // const config = await loadConfig(this.context.configDir)
-    // this.setNestedValue(config, args.key, args.value)
-    // await saveConfig(this.context.configDir, config)
     this.logger.warn('Config commands not yet implemented')
 
     this.logger.info(`Set ${args.key} = ${args.value}`)

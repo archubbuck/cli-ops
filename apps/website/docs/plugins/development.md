@@ -315,5 +315,5 @@ pnpm changeset:publish
 ## Next Steps
 
 - [Plugin Best Practices](./best-practices)
-- [View Example Plugins](https://github.com/archubbuck/cli-ops/tree/main/examples)
+- [View Example Plugins](https://github.com/archubbuck/cli-ops/tree/main/plugins)
 - [Architecture Overview](/docs/architecture/overview)

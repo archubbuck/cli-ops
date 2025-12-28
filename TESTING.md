@@ -1,6 +1,6 @@
 # Testing Consistency Tools
 
-This document provides manual testing steps for all consistency enforcement tools.
+This document provides manual testing steps for all consistency enforcement tools and fixture validation.
 
 ## Prerequisites
 
@@ -10,6 +10,7 @@ pnpm install
 
 # Make scripts executable
 chmod +x scripts/*.sh
+chmod +x scripts/*.js
 chmod +x .husky/*
 ```
 
@@ -21,7 +22,50 @@ bash scripts/test-setup.sh
 
 Expected: All checks pass showing config files exist.
 
-## Test 2: ESLint
+## Test 2: Fixture Validation
+
+### Generate Fixture Types
+
+```bash
+node scripts/generate-fixture-types.js
+```
+
+Expected:
+
+- ✅ Scans `libs/shared-testing/fixtures/`
+- ✅ Generates `libs/shared-testing/src/fixture-types.ts`
+- ✅ Shows count of fixtures found
+
+### Validate Fixtures
+
+```bash
+node scripts/validate-fixtures.js
+```
+
+Expected:
+
+- ✅ Validates all JSON fixtures against schemas
+- ✅ Shows validation report with counts
+- ✅ Creates `.fixture-cache/` for performance
+- ✅ Creates/updates `.fixture-snapshots/` for change detection
+- ✅ All fixtures pass validation
+
+Test invalid fixture:
+
+```bash
+# Create invalid fixture
+mkdir -p libs/shared-testing/fixtures/test
+echo '{"invalid": "no version"}' > libs/shared-testing/fixtures/test/invalid.json
+
+# Run validation
+node scripts/validate-fixtures.js
+# Expected: ❌ Shows validation error for missing version
+
+# Cleanup
+rm -rf libs/shared-testing/fixtures/test
+```
+
+## Test 3: ESLint
 
 The test file `test-file.ts` has several intentional violations:
 
@@ -30,6 +74,7 @@ npx eslint test-file.ts
 ```
 
 Expected errors:
+
 - ❌ Interface must be prefixed with `I` (naming-convention)
 - ❌ Function name must be camelCase (naming-convention)
 - ❌ `console.log` not allowed (no-console)
@@ -46,6 +91,7 @@ npx prettier --check test-file.ts
 Expected: File needs formatting (spacing, semicolons).
 
 Auto-fix:
+
 ```bash
 npx prettier --write test-file.ts
 ```
@@ -59,6 +105,7 @@ npx ls-lint
 Expected: `test-file.ts` should pass (kebab-case).
 
 Create invalid file to test:
+
 ```bash
 touch test_file_invalid.ts
 npx ls-lint
@@ -83,6 +130,7 @@ npx cspell test-file.ts
 Expected: Pass (no misspellings in test file).
 
 Add typo to test:
+
 ```bash
 echo "// typooo in comment" >> test-file.ts
 npx cspell test-file.ts
@@ -131,6 +179,7 @@ git commit -m "test: add test file"
 ## Test 9: Validation Scripts
 
 ### Command Structure Validator
+
 ```bash
 # Create invalid command file
 mkdir -p test-commands
@@ -147,6 +196,7 @@ node scripts/validate-command-structure.js test-commands/invalid.ts
 ```
 
 ### Performance Budget Checker
+
 ```bash
 node scripts/check-perf-budget.js
 # Expected: ⏭️ Skip (CLIs not created yet)
@@ -179,6 +229,10 @@ rm -rf test-commands
 After running all tests, you should have verified:
 
 - [x] All config files present
+- [x] Fixture type generation works
+- [x] Fixture validation works
+- [x] Fixture caching improves performance
+- [x] Fixture snapshots detect changes
 - [x] ESLint catches violations
 - [x] Prettier enforces formatting
 - [x] ls-lint validates file naming
@@ -191,3 +245,53 @@ After running all tests, you should have verified:
 - [x] Turborepo commands execute
 
 All tools working correctly = Ready to proceed with package implementation! ✅
+
+## Fixture Testing Workflow
+
+### Creating New Fixtures
+
+1. Add fixture file to appropriate directory:
+   - Shared: `libs/shared-testing/fixtures/`
+   - Package-local: `{package}/test/fixtures/`
+
+2. Ensure fixture has `version` field:
+
+```json
+{
+  "version": "1.0.0",
+  "name": "example",
+  "data": {}
+}
+```
+
+3. Validate fixture:
+
+```bash
+node scripts/validate-fixtures.js
+```
+
+4. Regenerate types:
+
+```bash
+node scripts/generate-fixture-types.js
+```
+
+### Using Fixtures in Tests
+
+```typescript
+import { loadSharedFixture, validateFixture } from '@cli-ops/shared-testing'
+import { ConfigFixtureSchema } from '@cli-ops/shared-types'
+
+describe('my test', () => {
+  it('loads fixture', () => {
+    const config = loadSharedFixture('configs/v1/valid.json')
+    expect(config.version).toBe('1.0.0')
+  })
+
+  it('validates fixture', () => {
+    const config = loadSharedFixture('configs/v1/valid.json')
+    const result = validateFixture(config, ConfigFixtureSchema)
+    expect(result.valid).toBe(true)
+  })
+})
+```

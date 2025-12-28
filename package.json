@@ -2,6 +2,7 @@
   "name": "cli-workspace-root",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Multi-CLI monorepo workspace optimized for AI-driven solution engineering",
   "engines": {
     "node": ">=20.0.0",
@@ -39,6 +40,8 @@
     "inventory:generate": "node scripts/generate-inventory.js",
     "inventory:validate": "node scripts/validate-inventory.js",
     "inventory:update-docs": "node scripts/update-architecture-docs.js",
+    "generate:fixture-types": "node scripts/generate-fixture-types.js",
+    "validate:fixtures": "node scripts/validate-fixtures.js",
     "prepare": "husky"
   },
   "devDependencies": {

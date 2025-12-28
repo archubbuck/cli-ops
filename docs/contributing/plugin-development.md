@@ -625,7 +625,7 @@ alpha plugins install cli-alpha-plugin-custom
 
 - Ensure shared packages are linked: `pnpm install`
 - Check TypeScript references in tsconfig.json
-- Rebuild shared packages: `pnpm --filter './packages/**' build`
+- Rebuild shared packages: `pnpm --filter './libs/**' build`
 
 ### Events not working
 

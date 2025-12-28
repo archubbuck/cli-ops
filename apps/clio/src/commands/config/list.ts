@@ -12,9 +12,6 @@ export default class ConfigList extends BaseCommand {
 
   protected async execute(): Promise<void> {
     await this.parse(ConfigList)
-    // TODO: Implement config loading
-    // const config = await loadConfig(this.context.configDir)
-    // this.printConfig(config)
     this.logger.warn('Config commands not yet implemented')
 
     this.exit(SUCCESS)

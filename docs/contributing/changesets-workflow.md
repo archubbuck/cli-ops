@@ -7,6 +7,7 @@ This project uses [Changesets](https://github.com/changesets/changesets) for ver
 ## What is a Changeset?
 
 A changeset is a file that describes:
+
 1. Which packages changed
 2. What type of change (major/minor/patch)
 3. A summary of the change
@@ -67,18 +68,21 @@ For each package, choose bump type:
 #### Version Bump Guidelines
 
 **Major (Breaking Change)**
+
 - Changed public API
 - Removed functionality
 - Changed behavior in incompatible way
 - Example: Renamed function, removed parameter
 
 **Minor (New Feature)**
+
 - Added new functionality
 - Enhanced existing features
 - New commands or options
 - Example: New command, new configuration option
 
 **Patch (Bug Fix)**
+
 - Fixed bugs
 - Updated documentation
 - Internal improvements
@@ -94,6 +98,7 @@ Enter a description of your changes:
 ```
 
 Tips for good summaries:
+
 - Start with imperative verb (Add, Fix, Update)
 - Be concise but descriptive
 - Focus on user impact
@@ -123,7 +128,7 @@ Add JSON output format support
 This allows users to specify `--json` flag to get machine-readable output.
 
 Example:
-  alpha tasks list --json
+alpha tasks list --json
 ```
 
 ## Semantic Versioning
@@ -137,6 +142,7 @@ This project follows [SemVer](https://semver.org/):
 ### Pre-1.0 Versions
 
 For `0.x.y` versions:
+
 - **Minor** bump can include breaking changes
 - **Patch** for all other changes
 - Move to `1.0.0` when API is stable
@@ -150,6 +156,7 @@ pnpm changeset version
 ```
 
 This:
+
 1. Reads all changesets
 2. Updates `package.json` versions
 3. Generates `CHANGELOG.md` entries
@@ -160,8 +167,8 @@ This:
 Check the updated files:
 
 ```bash
-git diff packages/shared-logger/package.json
-git diff packages/shared-logger/CHANGELOG.md
+git diff libs/shared-logger/package.json
+git diff libs/shared-logger/CHANGELOG.md
 ```
 
 ### Commit Versions
@@ -249,7 +256,7 @@ You can create multiple changesets:
 pnpm changeset
 # Summary: "Add JSON output"
 
-# Second change  
+# Second change
 pnpm changeset
 # Summary: "Fix logging color scheme"
 ```
@@ -280,6 +287,7 @@ pnpm changeset pre enter beta
 ```
 
 Now all version bumps create beta versions:
+
 - `1.0.0` → `1.1.0-beta.0`
 - `1.1.0-beta.0` → `1.1.0-beta.1`
 
@@ -290,6 +298,7 @@ pnpm changeset pre exit
 ```
 
 Next version bump creates stable release:
+
 - `1.1.0-beta.1` → `1.1.0`
 
 ## Changeset Configuration
@@ -356,7 +365,7 @@ This allows users to specify `--json` flag to get machine-readable output.
 Useful for scripting and automation.
 
 Example:
-  alpha tasks list --json | jq '.tasks[] | .title'
+alpha tasks list --json | jq '.tasks[] | .title'
 ```
 
 ### 4. Reference Issues

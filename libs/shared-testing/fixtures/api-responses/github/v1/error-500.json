@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "status": 500,
+  "statusText": "Internal Server Error",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "data": {
+    "message": "Internal Server Error"
+  }
+}

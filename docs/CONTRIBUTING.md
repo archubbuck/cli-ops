@@ -74,7 +74,7 @@ This workspace uses pnpm for several reasons:
 # Remove npm artifacts
 rm -rf node_modules package-lock.json
 rm -rf plugins/*/node_modules
-rm -rf packages/*/node_modules
+rm -rf libs/*/node_modules
 rm -rf tooling/*/node_modules
 
 # Install with pnpm
@@ -320,7 +320,7 @@ pnpm generate:command
 1. Use generator or follow structure:
 
 ```
-packages/shared-myfeature/
+libs/shared-myfeature/
 ├── src/
 │   ├── index.ts
 │   └── ...
@@ -349,7 +349,7 @@ packages/shared-myfeature/
 // tsconfig.base.json
 {
   "paths": {
-    "@/shared-myfeature": ["./packages/shared-myfeature/src"]
+    "@/shared-myfeature": ["./libs/shared-myfeature/src"]
   }
 }
 ```

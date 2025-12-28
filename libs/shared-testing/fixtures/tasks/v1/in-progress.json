@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "id": "task-1",
+  "title": "Implement new feature",
+  "description": "Add support for feature X in the CLI",
+  "status": "in-progress",
+  "tags": ["feature", "high-priority"],
+  "createdAt": "2025-01-15T10:00:00Z",
+  "updatedAt": "2025-01-20T14:30:00Z"
+}

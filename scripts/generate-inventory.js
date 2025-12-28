@@ -164,8 +164,8 @@ function discoverCommands(cliPath) {
 /**
  * Check performance of help and version commands
  */
-function checkPerformance(cliName) {
-  const devScript = join(APPS_DIR, cliName, 'bin', 'dev.js')
+function checkPerformance(cliPath) {
+  const devScript = join(cliPath, 'bin', 'dev.js')
 
   if (!existsSync(devScript)) {
     return {
@@ -427,7 +427,7 @@ function main() {
     const commands = discoverCommands(cli.path)
     console.log(`   Commands: ${commands.length}`)
 
-    const performance = checkPerformance(cli.name)
+    const performance = checkPerformance(cli.path)
     console.log(
       `   Performance: help=${performance.help.duration}ms, version=${performance.version.duration}ms`,
     )

@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "name": "example-config",
+  "theme": "dark",
+  "plugins": ["@cli-ops/clio-plugin-tasks", "@cli-ops/clio-plugin-fetch"],
+  "settings": {
+    "autoSave": true,
+    "verbose": false
+  }
+}

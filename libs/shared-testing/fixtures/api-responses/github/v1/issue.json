@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json",
+    "x-github-request-id": "ABC123"
+  },
+  "data": {
+    "id": 1,
+    "number": 42,
+    "title": "Add new feature",
+    "state": "open",
+    "user": {
+      "login": "octocat",
+      "id": 1
+    },
+    "labels": [
+      {
+        "name": "enhancement",
+        "color": "a2eeef"
+      }
+    ],
+    "created_at": "2025-01-15T10:00:00Z",
+    "updated_at": "2025-01-15T12:00:00Z"
+  }
+}

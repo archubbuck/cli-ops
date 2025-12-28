@@ -54,6 +54,14 @@
       "dependsOn": ["build"],
       "cache": true,
       "outputs": []
+    },
+    "generate:fixture-types": {
+      "cache": true,
+      "outputs": ["libs/shared-testing/src/fixture-types.ts"]
+    },
+    "validate:fixtures": {
+      "cache": true,
+      "outputs": [".fixture-snapshots/**"]
     }
   }
 }

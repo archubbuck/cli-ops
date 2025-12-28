@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "branches": ["main", "develop", "feature/new-api"],
+  "commits": [
+    {
+      "sha": "abc123def456",
+      "message": "feat: add new feature",
+      "author": "Developer <dev@example.com>",
+      "date": "2025-01-15T10:00:00Z"
+    },
+    {
+      "sha": "def456abc123",
+      "message": "fix: resolve bug in parser",
+      "author": "Contributor <contrib@example.com>",
+      "date": "2025-01-14T15:30:00Z"
+    },
+    {
+      "sha": "123abc456def",
+      "message": "Initial commit",
+      "author": "Developer <dev@example.com>",
+      "date": "2025-01-01T00:00:00Z"
+    }
+  ],
+  "tags": ["v1.0.0", "v0.9.0"],
+  "remotes": {
+    "origin": "https://github.com/example/repo.git"
+  }
+}

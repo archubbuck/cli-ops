@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "name": "invalid-config",
+  "theme": "invalid-theme",
+  "plugins": "not-an-array",
+  "settings": {
+    "autoSave": "not-a-boolean"
+  }
+}

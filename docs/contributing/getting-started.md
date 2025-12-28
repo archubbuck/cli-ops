@@ -76,7 +76,7 @@ cli-ops/
 │   ├── cli-alpha/     # Task management CLI
 │   ├── cli-beta/      # Item management CLI
 │   └── cli-gamma/     # Project management CLI
-├── packages/          # Shared packages
+├── libs/              # Shared packages
 │   ├── shared-commands/    # Base command abstraction
 │   ├── shared-config/      # Configuration management
 │   ├── shared-logger/      # Logging infrastructure
@@ -223,7 +223,7 @@ Follow prompts to scaffold new command.
 
 ```bash
 # Run single test file
-pnpm test packages/shared-config/test/config.test.ts
+pnpm test libs/shared-config/test/config.test.ts
 
 # Run tests matching pattern
 pnpm test --filter "config"

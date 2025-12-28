@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json",
+    "x-github-request-id": "DEF456"
+  },
+  "data": {
+    "id": 2,
+    "number": 10,
+    "title": "Fix bug in parser",
+    "state": "open",
+    "user": {
+      "login": "contributor",
+      "id": 2
+    },
+    "head": {
+      "ref": "fix/parser-bug",
+      "sha": "abc123def456"
+    },
+    "base": {
+      "ref": "main",
+      "sha": "def456abc123"
+    },
+    "created_at": "2025-01-20T14:30:00Z",
+    "updated_at": "2025-01-20T16:00:00Z"
+  }
+}

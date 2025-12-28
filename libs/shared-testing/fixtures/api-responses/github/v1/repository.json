@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json",
+    "x-github-request-id": "GHI789"
+  },
+  "data": {
+    "id": 123456,
+    "name": "example-repo",
+    "full_name": "octocat/example-repo",
+    "owner": {
+      "login": "octocat",
+      "id": 1
+    },
+    "private": false,
+    "description": "An example repository",
+    "stargazers_count": 42,
+    "watchers_count": 10,
+    "forks_count": 5,
+    "default_branch": "main",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2025-01-15T10:00:00Z"
+  }
+}

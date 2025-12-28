@@ -169,7 +169,7 @@ Example from `plugins/cli-alpha/package.json`:
 
 ### Shared Package Dependencies
 
-Example from `packages/shared-commands/package.json`:
+Example from `libs/shared-commands/package.json`:
 
 ```json
 {
@@ -283,10 +283,10 @@ pnpm ls --depth=1 --long
 
 ```bash
 # Use madge to detect circular dependencies
-npx madge --circular --extensions ts ./packages
+npx madge --circular --extensions ts ./libs
 
 # Or dpdm
-npx dpdm --circular ./packages/*/src/index.ts
+npx dpdm --circular ./libs/*/src/index.ts
 ```
 
 ### Find Unused Dependencies

@@ -1,0 +1,10 @@
+# Clio Configuration
+
+name: example-config
+theme: light
+plugins:
+  - @cli-ops/clio-plugin-tasks
+  - @cli-ops/clio-plugin-repo
+settings:
+  autoSave: true
+  verbose: true

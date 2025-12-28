@@ -1,0 +1,247 @@
+{
+  "generated": "2025-12-28T04:08:24.898Z",
+  "clis": [
+    {
+      "name": "clio",
+      "metadata": {
+        "name": "@cli-ops/clio",
+        "version": "1.0.0",
+        "description": "Foundational plugin manager CLI for CLI Ops tools",
+        "bin": "clio",
+        "topics": {
+          "config": {
+            "description": "Manage clio configuration"
+          },
+          "history": {
+            "description": "View command history"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "config:get",
+          "description": "Get a configuration value",
+          "aliases": [],
+          "file": "src/commands/config/get.ts"
+        },
+        {
+          "id": "config:list",
+          "description": "List all configuration values",
+          "aliases": [],
+          "file": "src/commands/config/list.ts"
+        },
+        {
+          "id": "config:set",
+          "description": "Set a configuration value",
+          "aliases": [],
+          "file": "src/commands/config/set.ts"
+        },
+        {
+          "id": "doctor",
+          "description": "Check clio installation health",
+          "aliases": [],
+          "file": "src/commands/doctor.ts"
+        },
+        {
+          "id": "history:list",
+          "description": "View command history",
+          "aliases": [],
+          "file": "src/commands/history/list.ts"
+        },
+        {
+          "id": "setup",
+          "description": "Set up shell completions and other configuration",
+          "aliases": [],
+          "file": "src/commands/setup.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": 924,
+          "budget": 500,
+          "status": "fail"
+        },
+        "version": {
+          "duration": 889,
+          "budget": 200,
+          "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    },
+    {
+      "name": "clio-plugin-fetch",
+      "metadata": {
+        "name": "@cli-ops/clio-plugin-fetch",
+        "version": "2.0.0",
+        "description": "HTTP API client plugin for clio",
+        "bin": "clio",
+        "topics": {
+          "fetch": {
+            "description": "Make HTTP requests"
+          },
+          "auth": {
+            "description": "Manage authentication"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "request:get",
+          "description": "Make a GET request",
+          "aliases": [],
+          "file": "src/commands/request/get.ts"
+        },
+        {
+          "id": "request:post",
+          "description": "Make a POST request",
+          "aliases": [],
+          "file": "src/commands/request/post.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": 774,
+          "budget": 500,
+          "status": "fail"
+        },
+        "version": {
+          "duration": 691,
+          "budget": 200,
+          "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    },
+    {
+      "name": "clio-plugin-repo",
+      "metadata": {
+        "name": "@cli-ops/clio-plugin-repo",
+        "version": "2.0.0",
+        "description": "Developer tools plugin for clio with Git and GitHub integration",
+        "bin": "clio",
+        "topics": {
+          "repo": {
+            "description": "Repository management"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "git:log",
+          "description": "Show git commit history",
+          "aliases": [],
+          "file": "src/commands/git/log.ts"
+        },
+        {
+          "id": "git:status",
+          "description": "Show git repository status",
+          "aliases": [],
+          "file": "src/commands/git/status.ts"
+        },
+        {
+          "id": "pr:list",
+          "description": "List pull requests",
+          "aliases": [],
+          "file": "src/commands/pr/list.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": 928,
+          "budget": 500,
+          "status": "fail"
+        },
+        "version": {
+          "duration": 764,
+          "budget": 200,
+          "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    },
+    {
+      "name": "clio-plugin-tasks",
+      "metadata": {
+        "name": "@cli-ops/clio-plugin-tasks",
+        "version": "2.0.0",
+        "description": "Task management plugin for clio",
+        "bin": "clio",
+        "topics": {
+          "tasks": {
+            "description": "Manage tasks"
+          }
+        },
+        "sharedPackages": [],
+        "packageCount": 0
+      },
+      "commands": [
+        {
+          "id": "tasks:create",
+          "description": "Create a new task",
+          "aliases": [],
+          "file": "src/commands/tasks/create.ts"
+        },
+        {
+          "id": "tasks:delete",
+          "description": "Delete a task",
+          "aliases": [],
+          "file": "src/commands/tasks/delete.ts"
+        },
+        {
+          "id": "tasks:list",
+          "description": "List all tasks",
+          "aliases": [],
+          "file": "src/commands/tasks/list.ts"
+        },
+        {
+          "id": "tasks:show",
+          "description": "Show task details",
+          "aliases": [],
+          "file": "src/commands/tasks/show.ts"
+        },
+        {
+          "id": "tasks:update",
+          "description": "Update a task",
+          "aliases": [],
+          "file": "src/commands/tasks/update.ts"
+        }
+      ],
+      "performance": {
+        "help": {
+          "duration": 854,
+          "budget": 500,
+          "status": "fail"
+        },
+        "version": {
+          "duration": 969,
+          "budget": 200,
+          "status": "fail"
+        }
+      },
+      "tests": {
+        "hasTests": false,
+        "testFiles": 0,
+        "testPatterns": []
+      }
+    }
+  ]
+}

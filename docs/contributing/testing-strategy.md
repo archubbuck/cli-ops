@@ -17,6 +17,7 @@ This document outlines the testing approach for the cli-ops monorepo, including 
 ### Test Runner: Vitest
 
 [Vitest](https://vitest.dev/) provides:
+
 - Fast execution with ESM support
 - Watch mode for development
 - Coverage reporting
@@ -36,16 +37,16 @@ export default defineConfig({
         lines: 80,
         functions: 80,
         branches: 80,
-        statements: 80
-      }
-    }
-  }
+        statements: 80,
+      },
+    },
+  },
 })
 ```
 
 ### Testing Utilities
 
-Shared testing helpers in [`packages/shared-testing`](../../packages/shared-testing/):
+Shared testing helpers in [`libs/shared-testing`](../../libs/shared-testing/):
 
 - **Fixture management**: Temporary directories and files
 - **Mocking**: Console, environment, process.exit
@@ -56,7 +57,7 @@ Shared testing helpers in [`packages/shared-testing`](../../packages/shared-test
 ### Directory Structure
 
 ```
-packages/shared-logger/
+libs/shared-logger/
 ├── src/
 │   └── index.ts
 └── test/
@@ -90,7 +91,7 @@ describe('formatTask', () => {
       id: 'task-123',
       title: 'Buy groceries',
       status: 'pending',
-      createdAt: 1609459200000
+      createdAt: 1609459200000,
     }
 
     const result = formatTask(task)
@@ -101,7 +102,7 @@ describe('formatTask', () => {
   it('handles missing optional fields', () => {
     const task = {
       id: 'task-123',
-      title: 'Buy groceries'
+      title: 'Buy groceries',
     }
 
     const result = formatTask(task)
@@ -128,7 +129,7 @@ describe('tasks:add command', () => {
 
   beforeEach(async () => {
     await fixtures.create({
-      'config.json': '{}'
+      'config.json': '{}',
     })
   })
 
@@ -140,7 +141,7 @@ describe('tasks:add command', () => {
     const { stdout } = await runCommand(['tasks:add', 'New task'])
 
     expect(stdout).toContain('✓ Created task')
-    
+
     const tasks = storage.getTasks()
     expect(tasks).toHaveLength(1)
     expect(tasks[0].title).toBe('New task')
@@ -176,7 +177,7 @@ describe('cli-alpha', () => {
   it('creates and lists tasks', async () => {
     // Add task
     await execAsync('./bin/run.js tasks add "Test task"')
-    
+
     // List tasks
     const { stdout } = await execAsync('./bin/run.js tasks list')
     expect(stdout).toContain('Test task')
@@ -206,7 +207,9 @@ it('deletes task', async () => {
 
 ### Using Fixtures
 
-Create temporary files and directories:
+#### Dynamic Fixtures
+
+Create temporary files and directories programmatically:
 
 ```typescript
 import { createFixtureManager } from '@cli-ops/shared-testing'
@@ -221,14 +224,131 @@ describe('config loading', () => {
   it('loads config from file', async () => {
     // Create temporary config file
     const dir = await fixtures.create({
-      'config.json': JSON.stringify({ theme: 'dark' })
+      'config.json': JSON.stringify({ theme: 'dark' }),
+      'data/tasks.json': JSON.stringify({ tasks: [] }),
     })
 
     const config = await loadConfig(dir)
-    
+
     expect(config.theme).toBe('dark')
   })
 })
+```
+
+#### Shared Fixtures
+
+Load pre-defined fixtures from `@cli-ops/shared-testing/fixtures`:
+
+```typescript
+import { loadSharedFixture, validateFixture } from '@cli-ops/shared-testing'
+import { ConfigFixtureSchema } from '@cli-ops/shared-types'
+
+describe('config validation', () => {
+  it('validates valid config', () => {
+    const config = loadSharedFixture('configs/v1/valid.json')
+    const result = validateFixture(config, ConfigFixtureSchema)
+
+    expect(result.valid).toBe(true)
+  })
+
+  it('catches invalid config', () => {
+    const config = loadSharedFixture('configs/v1/invalid.json')
+    const result = validateFixture(config, ConfigFixtureSchema)
+
+    expect(result.valid).toBe(false)
+    expect(result.errors).toHaveLength(1)
+  })
+})
+```
+
+#### Package-Local Fixtures
+
+For package-specific test data:
+
+```typescript
+import { loadFixture } from '@cli-ops/shared-testing'
+import { join } from 'path'
+
+describe('task import', () => {
+  it('imports tasks from file', async () => {
+    const tasks = loadFixture('tasks/sample-tasks.json', {
+      baseDir: join(__dirname, 'fixtures'),
+    })
+
+    expect(tasks).toHaveLength(3)
+  })
+})
+```
+
+#### Fixture Versioning and Migration
+
+All fixtures must include a version field and support migration strategies:
+
+```typescript
+import { loadAndValidateFixture, applyMigrations, registerMigration } from '@cli-ops/shared-testing'
+import { TaskFixtureSchema } from '@cli-ops/shared-types'
+
+// Load with automatic validation
+const task = loadAndValidateFixture('tasks/v1/sample.json', TaskFixtureSchema)
+
+// Register custom migration
+registerMigration(
+  'task',
+  '1.0.0',
+  '2.0.0',
+  (data) => ({
+    ...data,
+    version: '2.0.0',
+    priority: data.tags?.includes('urgent') ? 'high' : 'normal',
+  }),
+  {
+    description: 'Add priority field based on tags',
+    breaking: true,
+  },
+)
+
+// Apply migrations
+const migratedTask = applyMigrations('task', oldTask, '2.0.0')
+```
+
+#### Type-Safe Fixture Loading
+
+Generate TypeScript types for fixtures:
+
+```bash
+npm run generate:fixture-types
+```
+
+Then use with type safety:
+
+```typescript
+import type { GetFixtureType } from '@cli-ops/shared-testing/fixture-types'
+
+// Type-safe fixture loading
+const config: GetFixtureType<'configs/v1/valid.json'> = loadSharedFixture('configs/v1/valid.json')
+```
+
+#### Creating Test Fixtures
+
+Use the command generator to create fixture directories:
+
+```bash
+npm run generate
+# Select: command
+# Answer prompts...
+# Create test/fixtures directory? Yes
+```
+
+This creates:
+
+```
+plugins/clio-plugin-tasks/test/
+├── commands/
+│   └── add.test.ts
+└── fixtures/
+    └── tasks/
+        └── add/
+            └── .gitkeep
 ```
 
 ### Mocking
@@ -243,9 +363,7 @@ it('logs error message', () => {
 
   logger.error('Something failed')
 
-  expect(console.error).toHaveBeenCalledWith(
-    expect.stringContaining('Something failed')
-  )
+  expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Something failed'))
 
   restore()
 })
@@ -325,22 +443,24 @@ it('provides helpful error message', () => {
 
 ### Package Coverage Targets
 
-| Priority | Packages | Target Coverage |
-|----------|----------|----------------|
-| Critical | shared-commands, shared-config, shared-logger | 80%+ |
-| High | shared-ui, shared-prompts, shared-formatter | 80%+ |
-| Medium | shared-history, shared-ipc, shared-core | 70%+ |
-| CLIs | cli-alpha, cli-beta, cli-gamma | 70%+ |
+| Priority | Packages                                      | Target Coverage |
+| -------- | --------------------------------------------- | --------------- |
+| Critical | shared-commands, shared-config, shared-logger | 80%+            |
+| High     | shared-ui, shared-prompts, shared-formatter   | 80%+            |
+| Medium   | shared-history, shared-ipc, shared-core       | 70%+            |
+| CLIs     | cli-alpha, cli-beta, cli-gamma                | 70%+            |
 
 ### What to Cover
 
 **High Priority:**
+
 - Public APIs
 - Error handling
 - Edge cases
 - Business logic
 
 **Lower Priority:**
+
 - Trivial getters/setters
 - Type definitions
 - Console output formatting
@@ -378,7 +498,7 @@ pnpm --filter @cli-ops/shared-logger test
 ### Run Specific Test File
 
 ```bash
-pnpm test packages/shared-logger/test/logger.test.ts
+pnpm test libs/shared-logger/test/logger.test.ts
 ```
 
 ### Watch Mode
@@ -416,7 +536,7 @@ import { bench, describe } from 'vitest'
 
 describe('performance', () => {
   bench('array filter', () => {
-    [1, 2, 3, 4, 5].filter(x => x > 2)
+    ;[1, 2, 3, 4, 5].filter((x) => x > 2)
   })
 
   bench('array for loop', () => {
@@ -438,9 +558,9 @@ import { performance } from 'perf_hooks'
 
 it('completes within performance budget', async () => {
   const start = performance.now()
-  
+
   await runCommand(['tasks:list'])
-  
+
   const duration = performance.now() - start
   expect(duration).toBeLessThan(500) // 500ms budget
 })
@@ -524,10 +644,10 @@ it('validates config', async () => {
 afterEach(async () => {
   // Clean up test files
   await fixtures.cleanup()
-  
+
   // Reset mocks
   vi.restoreAllMocks()
-  
+
   // Clear storage
   storage.clear()
 })
@@ -559,7 +679,7 @@ expect(component._internalState).toBe(...)
 
 ```typescript
 // Avoid timing dependencies
-await new Promise(resolve => setTimeout(resolve, 1000))
+await new Promise((resolve) => setTimeout(resolve, 1000))
 
 // Use waitFor instead
 await waitFor(() => expect(result).toBeDefined())
@@ -593,7 +713,7 @@ await expect(dangerousOperation()).rejects.toThrow()
 ## Related Documentation
 
 - [TESTING.md](../../TESTING.md) - Manual testing guide
-- [shared-testing package](../../packages/shared-testing/README.md)
+- [shared-testing package](../../libs/shared-testing/README.md)
 - [Vitest Documentation](https://vitest.dev/)
 
 <!-- TODO: Expand with snapshot testing examples -->
