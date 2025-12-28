@@ -93,7 +93,7 @@ jobs:
           name: build
           path: |
             plugins/*/dist
-            extensions/*/dist
+            plugins/*/src/extensions/*/dist
             packages/*/dist
           retention-days: 1
 
