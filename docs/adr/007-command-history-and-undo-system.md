@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2025-12-26  
-**Deciders:** Team  
+**Deciders:** Team
 
 ## Context
 
@@ -14,16 +14,19 @@ Users frequently make mistakes when running CLI commands:
 - Needing to reverse changes made by commands
 
 This is especially problematic for:
+
 - **ADHD users**: May run commands impulsively, then realize the mistake
 - **OCD users**: Need reassurance that mistakes can be undone
 - **All users**: Learning a new CLI involves trial and error
 
 Traditional CLIs provide no built-in undo mechanism:
+
 - Shell history (↑) only shows commands, not results
 - No way to reverse command effects
 - Users must manually reverse changes (error-prone)
 
 Requirements:
+
 - Track all commands with their outcomes
 - Enable undo for reversible operations
 - Show command history for reference
@@ -37,21 +40,25 @@ We will implement a **command history and undo system** in the `shared-history` 
 ### Architecture
 
 **Storage:** SQLite database for reliability and queryability
+
 - Location: `~/.local/share/clio/history.db`
 - Schema: commands table with metadata
 
 **Tracking:** Automatic recording via base command lifecycle
+
 - Command name and arguments
 - Timestamp and duration
 - Exit code and status
 - Undo metadata (if reversible)
 
 **Undo System:** Commands implement `getUndoMetadata()` and `undo()`
+
 - Not all commands are undoable (read-only commands, external API calls)
 - Undo metadata stores what's needed to reverse the operation
 - Undo operations are themselves recorded in history
 
 **Commands:**
+
 - `history` - List recent commands with status
 - `undo` - Reverse last reversible command
 - `redo` - Re-apply undone command
@@ -110,11 +117,13 @@ $ clio history:list
 History system is implemented in:
 
 ### Core Package
-- [packages/shared-history/src/history-manager.ts](../../packages/shared-history/src/history-manager.ts) - Core history tracking
-- [packages/shared-history/src/undo-manager.ts](../../packages/shared-history/src/undo-manager.ts) - Undo/redo logic
-- [packages/shared-history/src/storage/sqlite.ts](../../packages/shared-history/src/storage/sqlite.ts) - SQLite persistence
+
+- [libs/shared-history/src/history-manager.ts](../../libs/shared-history/src/history-manager.ts) - Core history tracking
+- [libs/shared-history/src/undo-manager.ts](../../libs/shared-history/src/undo-manager.ts) - Undo/redo logic
+- [libs/shared-history/src/storage/sqlite.ts](../../libs/shared-history/src/storage/sqlite.ts) - SQLite persistence
 
 ### Database Schema
+
 ```sql
 CREATE TABLE commands (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -133,14 +142,15 @@ CREATE INDEX idx_status ON commands(status);
 ```
 
 ### Base Command Integration
+
 ```typescript
 export abstract class BaseCommand {
   async run() {
     const startTime = Date.now()
-    
+
     try {
       await this.execute()
-      
+
       // Record successful command
       await historyManager.record({
         command: this.id,
@@ -148,7 +158,7 @@ export abstract class BaseCommand {
         duration: Date.now() - startTime,
         exitCode: 0,
         status: 'success',
-        undoMetadata: await this.getUndoMetadata?.()
+        undoMetadata: await this.getUndoMetadata?.(),
       })
     } catch (error) {
       // Record failed command
@@ -157,12 +167,12 @@ export abstract class BaseCommand {
         args: this.argv,
         duration: Date.now() - startTime,
         exitCode: error.exitCode || 1,
-        status: 'error'
+        status: 'error',
       })
       throw error
     }
   }
-  
+
   // Optional: Implement to make command undoable
   async getUndoMetadata?(): Promise<UndoMetadata>
   async undo?(metadata: UndoMetadata): Promise<void>
@@ -170,6 +180,7 @@ export abstract class BaseCommand {
 ```
 
 ### Command Implementation
+
 ```typescript
 import { BaseCommand } from '@cli-ops/shared-core'
 
@@ -177,18 +188,18 @@ export default class TasksCreate extends BaseCommand {
   async execute() {
     const task = await tasksService.add(this.args.description)
     this.log(`✓ Task added: #${task.id} "${task.description}"`)
-    
+
     // Store task ID for undo
     this._undoTaskId = task.id
   }
-  
+
   async getUndoMetadata() {
     return {
       type: 'tasks:add',
-      taskId: this._undoTaskId
+      taskId: this._undoTaskId,
     }
   }
-  
+
   async undo(metadata) {
     await tasksService.delete(metadata.taskId)
     this.log(`✓ Removed task #${metadata.taskId}`)
@@ -197,12 +208,13 @@ export default class TasksCreate extends BaseCommand {
 ```
 
 ### History Commands
+
 ```typescript
 // clio history:list
 export default class HistoryList extends BaseCommand {
   async execute() {
     const commands = await historyManager.list({ limit: 20 })
-    
+
     for (const cmd of commands) {
       const icon = cmd.status === 'success' ? '✓' : '✗'
       const time = formatRelative(cmd.timestamp)
@@ -215,14 +227,14 @@ export default class HistoryList extends BaseCommand {
 export default class Undo extends BaseCommand {
   async execute() {
     const lastCommand = await historyManager.getLastReversible()
-    
+
     if (!lastCommand) {
       this.error('No commands to undo')
     }
-    
+
     await undoManager.undo(lastCommand)
     await historyManager.markAsUndone(lastCommand.id)
-    
+
     this.log(`✓ Undid: ${lastCommand.command}`)
   }
 }
@@ -231,42 +243,51 @@ export default class Undo extends BaseCommand {
 ## Limitations and Constraints
 
 ### Non-Undoable Operations
+
 Some commands cannot be undone:
+
 - **External API calls**: Can't reverse actions on external services
 - **File deletions**: Files might be permanently deleted (mitigation: trash bin)
 - **Irreversible operations**: e.g., sending emails, publishing packages
 
 These commands should:
+
 1. Show warning before execution: "This operation cannot be undone"
 2. Require confirmation (unless `--yes` flag)
 3. Not provide undo metadata
 
 ### Retention Policy
+
 History database shouldn't grow unbounded:
+
 - Default: Keep last 1000 commands or 90 days (whichever is more)
 - Configurable: `cli-alpha config set historyRetention 30`
 - Manual cleanup: `cli-alpha history clear --older-than 30d`
 
 ### Privacy Considerations
+
 Command history may contain sensitive data:
+
 - Passwords in command arguments
 - API keys passed as flags
 - Private file paths
 
 Mitigations:
+
 - Users can disable history: `cli-alpha config set historyEnabled false`
 - Clear history: `cli-alpha history clear`
 - History location documented in `cli-alpha history path`
 
 ## References
 
-- [shared-history Package](../../packages/shared-history/)
+- [shared-history Package](../../libs/shared-history/)
 - [ADHD/OCD UX Patterns](005-adhd-ocd-friendly-ux-patterns.md)
 - Related ADRs:
   - [ADR-003 (Configuration)](003-unified-configuration-management.md) - History settings
   - [ADR-005 (ADHD/OCD UX)](005-adhd-ocd-friendly-ux-patterns.md) - Safety features
 
 ### External Resources
+
 - [Git's approach to undo](https://git-scm.com/docs/git-revert)
 - [Emacs undo tree](https://www.emacswiki.org/emacs/UndoTree)
 

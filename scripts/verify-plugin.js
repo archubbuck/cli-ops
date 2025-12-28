@@ -119,11 +119,11 @@ async function main() {
 
   if (pluginArg === 'all') {
     // Find all plugin directories
-    pluginPaths = await glob('packages/clio-plugin-*', { cwd: process.cwd() })
+    pluginPaths = await glob('plugins/clio-plugin-*', { cwd: process.cwd() })
   } else {
     // Verify specific plugin
     const pluginName = pluginArg.replace('@cli-ops/', '')
-    pluginPaths = [`packages/${pluginName}`]
+    pluginPaths = [`plugins/${pluginName}`]
   }
 
   let totalErrors = 0

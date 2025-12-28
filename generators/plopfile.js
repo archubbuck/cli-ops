@@ -54,7 +54,7 @@ export default function (plop) {
       const actions = [
         {
           type: 'addMany',
-          destination: 'packages/clio-plugin-{{name}}',
+          destination: 'plugins/clio-plugin-{{name}}',
           base: 'templates/plugin',
           templateFiles: 'templates/plugin/**/*',
           globOptions: { dot: true },
@@ -64,7 +64,7 @@ export default function (plop) {
       if (data.includeTests) {
         actions.push({
           type: 'addMany',
-          destination: 'packages/clio-plugin-{{name}}',
+          destination: 'plugins/clio-plugin-{{name}}',
           base: 'templates/plugin-tests',
           templateFiles: 'templates/plugin-tests/**/*',
         })
@@ -73,7 +73,7 @@ export default function (plop) {
       if (data.includeCI) {
         actions.push({
           type: 'add',
-          path: 'packages/clio-plugin-{{name}}/.github/workflows/ci.yml',
+          path: 'plugins/clio-plugin-{{name}}/.github/workflows/ci.yml',
           templateFile: 'templates/plugin-ci.yml.hbs',
         })
       }
@@ -81,7 +81,7 @@ export default function (plop) {
       if (data.includeDocs) {
         actions.push({
           type: 'add',
-          path: 'packages/clio-plugin-{{name}}/docs/README.md',
+          path: 'plugins/clio-plugin-{{name}}/docs/README.md',
           templateFile: 'templates/plugin-docs.md.hbs',
         })
       }
@@ -108,7 +108,7 @@ export default function (plop) {
     actions: [
       {
         type: 'addMany',
-        destination: 'packages/{{name}}',
+        destination: 'libs/{{name}}',
         base: 'templates/package',
         templateFiles: 'templates/package/**/*',
       },
@@ -149,12 +149,12 @@ export default function (plop) {
     actions: [
       {
         type: 'add',
-        path: 'packages/clio-plugin-{{plugin}}/src/commands/{{topic}}/{{name}}.ts',
+        path: 'plugins/clio-plugin-{{plugin}}/src/commands/{{topic}}/{{name}}.ts',
         templateFile: 'templates/command.hbs',
       },
       {
         type: 'add',
-        path: 'packages/clio-plugin-{{plugin}}/test/commands/{{topic}}/{{name}}.test.ts',
+        path: 'plugins/clio-plugin-{{plugin}}/test/commands/{{topic}}/{{name}}.test.ts',
         templateFile: 'templates/command-test.hbs',
       },
     ],

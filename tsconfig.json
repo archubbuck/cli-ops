@@ -2,37 +2,37 @@
   "files": [],
   "references": [
     // Shared packages - Infrastructure
-    { "path": "./packages/shared-core" },
-    { "path": "./packages/shared-types" },
+    { "path": "./libs/shared-core" },
+    { "path": "./libs/shared-types" },
 
     // Shared packages - CLI Foundations
-    { "path": "./packages/shared-commands" },
-    { "path": "./packages/shared-hooks" },
-    { "path": "./packages/shared-services" },
-    { "path": "./packages/shared-plugins" },
+    { "path": "./libs/shared-commands" },
+    { "path": "./libs/shared-hooks" },
+    { "path": "./libs/shared-services" },
+    { "path": "./libs/shared-plugins" },
 
     // Shared packages - User Experience
-    { "path": "./packages/shared-ui" },
-    { "path": "./packages/shared-formatter" },
-    { "path": "./packages/shared-prompts" },
+    { "path": "./libs/shared-ui" },
+    { "path": "./libs/shared-formatter" },
+    { "path": "./libs/shared-prompts" },
 
     // Shared packages - System
-    { "path": "./packages/shared-config" },
-    { "path": "./packages/shared-logger" },
-    { "path": "./packages/shared-exit-codes" },
-    { "path": "./packages/shared-history" },
-    { "path": "./packages/shared-ipc" },
-    { "path": "./packages/shared-testing" },
+    { "path": "./libs/shared-config" },
+    { "path": "./libs/shared-logger" },
+    { "path": "./libs/shared-exit-codes" },
+    { "path": "./libs/shared-history" },
+    { "path": "./libs/shared-ipc" },
+    { "path": "./libs/shared-testing" },
 
     // CLI Applications and Plugins
-    { "path": "./plugins/clio" },
-    { "path": "./plugins/cli-alpha" },
-    { "path": "./plugins/cli-beta" },
-    { "path": "./plugins/cli-gamma" },
+    { "path": "./apps/clio" },
+    { "path": "./plugins/clio-plugin-tasks" },
+    { "path": "./plugins/clio-plugin-fetch" },
+    { "path": "./plugins/clio-plugin-repo" },
 
-    // Extension Plugins
-    { "path": "./extensions/clio-plugin-tasks-jira" },
-    { "path": "./extensions/clio-plugin-fetch-oauth" },
-    { "path": "./extensions/clio-plugin-repo-hooks" }
+    // Extension Plugins (nested under parent plugins' src/)
+    { "path": "./plugins/clio-plugin-tasks/src/extensions/clio-plugin-tasks-jira" },
+    { "path": "./plugins/clio-plugin-fetch/src/extensions/clio-plugin-fetch-oauth" },
+    { "path": "./plugins/clio-plugin-repo/src/extensions/clio-plugin-repo-hooks" }
   ]
 }

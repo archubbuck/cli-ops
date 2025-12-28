@@ -48,21 +48,21 @@
     // Path Mapping
     "baseUrl": ".",
     "paths": {
-      "@cli-ops/shared-core": ["packages/shared-core/src"],
-      "@cli-ops/shared-types": ["packages/shared-types/src"],
-      "@cli-ops/shared-commands": ["packages/shared-commands/src"],
-      "@cli-ops/shared-hooks": ["packages/shared-hooks/src"],
-      "@cli-ops/shared-services": ["packages/shared-services/src"],
-      "@cli-ops/shared-ui": ["packages/shared-ui/src"],
-      "@cli-ops/shared-formatter": ["packages/shared-formatter/src"],
-      "@cli-ops/shared-prompts": ["packages/shared-prompts/src"],
-      "@cli-ops/shared-config": ["packages/shared-config/src"],
-      "@cli-ops/shared-logger": ["packages/shared-logger/src"],
-      "@cli-ops/shared-exit-codes": ["packages/shared-exit-codes/src"],
-      "@cli-ops/shared-history": ["packages/shared-history/src"],
-      "@cli-ops/shared-ipc": ["packages/shared-ipc/src"],
-      "@cli-ops/shared-plugins": ["packages/shared-plugins/src"],
-      "@cli-ops/shared-testing": ["packages/shared-testing/src"]
+      "@cli-ops/shared-core": ["libs/shared-core/src"],
+      "@cli-ops/shared-types": ["libs/shared-types/src"],
+      "@cli-ops/shared-commands": ["libs/shared-commands/src"],
+      "@cli-ops/shared-hooks": ["libs/shared-hooks/src"],
+      "@cli-ops/shared-services": ["libs/shared-services/src"],
+      "@cli-ops/shared-ui": ["libs/shared-ui/src"],
+      "@cli-ops/shared-formatter": ["libs/shared-formatter/src"],
+      "@cli-ops/shared-prompts": ["libs/shared-prompts/src"],
+      "@cli-ops/shared-config": ["libs/shared-config/src"],
+      "@cli-ops/shared-logger": ["libs/shared-logger/src"],
+      "@cli-ops/shared-exit-codes": ["libs/shared-exit-codes/src"],
+      "@cli-ops/shared-history": ["libs/shared-history/src"],
+      "@cli-ops/shared-ipc": ["libs/shared-ipc/src"],
+      "@cli-ops/shared-plugins": ["libs/shared-plugins/src"],
+      "@cli-ops/shared-testing": ["libs/shared-testing/src"]
     }
   },
   "exclude": ["node_modules", "dist", "build", "lib", "coverage", "**/*.test.ts", "**/*.spec.ts"]

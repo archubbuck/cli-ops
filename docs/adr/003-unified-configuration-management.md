@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2025-12-26  
-**Deciders:** Team  
+**Deciders:** Team
 
 ## Context
 
@@ -16,12 +16,14 @@ The clio CLI and its plugins (`clio-plugin-tasks`, `clio-plugin-fetch`, `clio-pl
 - Allow debugging and inspection of active configuration
 
 We needed a solution that:
+
 - Abstracts away file I/O and storage details
 - Provides type safety for configuration values
 - Handles edge cases (corrupted files, missing directories, etc.)
 - Is testable without touching the filesystem
 
 Alternative approaches:
+
 - **Direct file I/O in each CLI**: Code duplication, inconsistent behavior
 - **Third-party config libraries** (e.g., `conf`, `configstore`): Extra dependencies, less control
 - **Environment variables only**: Not persistent, poor UX for complex settings
@@ -32,6 +34,7 @@ Alternative approaches:
 We will implement a **unified configuration system** in the `shared-config` package.
 
 Architecture:
+
 - **ConfigManager class**: Core abstraction for loading, saving, validating config
 - **JSON-based storage**: Human-readable, easy to debug
 - **XDG Base Directory compliance**: Stores configs in `~/.config/clio/config.json`
@@ -40,6 +43,7 @@ Architecture:
 - **Debug mode**: Can dump active config for troubleshooting
 
 Key design principles:
+
 1. **Separation of concerns**: Config logic is separate from CLI logic
 2. **Testability**: Uses dependency injection to avoid filesystem access in tests
 3. **Fail-safe defaults**: Never crashes if config file is missing/corrupted
@@ -72,18 +76,19 @@ Key design principles:
 
 Configuration system is implemented in:
 
-- [packages/shared-config/src/config-manager.ts](../../packages/shared-config/src/config-manager.ts) - Core ConfigManager class
-- [packages/shared-config/src/schemas/](../../packages/shared-config/src/schemas/) - Zod schemas for validation
+- [libs/shared-config/src/config-manager.ts](../../libs/shared-config/src/config-manager.ts) - Core ConfigManager class
+- [libs/shared-config/src/schemas/](../../libs/shared-config/src/schemas/) - Zod schemas for validation
 - Each CLI defines its own config schema extending base schema
 
 Usage example:
+
 ```typescript
 import { ConfigManager } from '@cli-ops/shared-config'
 
 const config = new ConfigManager('cli-alpha', {
   debug: false,
   theme: 'auto',
-  logLevel: 'info'
+  logLevel: 'info',
 })
 
 // Load config (merges defaults + user config)
@@ -100,6 +105,7 @@ console.log(config.dump())
 ```
 
 Commands that use config:
+
 - `cli-alpha config get [key]` - Read config value
 - `cli-alpha config set <key> <value>` - Write config value
 - `cli-alpha config reset` - Delete user config (revert to defaults)
@@ -107,7 +113,7 @@ Commands that use config:
 
 ## References
 
-- [shared-config Package](../../packages/shared-config/)
+- [shared-config Package](../../libs/shared-config/)
 - [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
 - Related ADRs: [ADR-004 (Structured Logging)](004-structured-logging-architecture.md)
 

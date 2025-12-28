@@ -1,0 +1,29 @@
+{
+  "name": "@cli-ops/shared-core",
+  "version": "1.0.0",
+  "description": "Core utilities and base classes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "core",
+    "utilities",
+    "base"
+  ],
+  "dependencies": {
+    "@cli-ops/shared-types": "workspace:*",
+    "@cli-ops/shared-exit-codes": "workspace:*",
+    "@cli-ops/shared-logger": "workspace:*"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -74,16 +74,23 @@ clio repo:pr                # Manage pull requests
 
 ```
 .
+├── apps/
+│   ├── clio/                      # Core CLI manager
+│   └── website/                   # Documentation site
 ├── plugins/
-│   └── clio/                      # Core CLI manager
-├── extensions/                    # Extension plugins (examples)
-│   ├── clio-plugin-tasks-jira/    # Jira integration
-│   ├── clio-plugin-fetch-oauth/   # OAuth authentication
-│   └── clio-plugin-repo-hooks/    # Git hooks automation
-├── packages/
 │   ├── clio-plugin-tasks/         # Task management (bundled)
+│   │   └── src/
+│   │       └── extensions/        # Extensions that enhance tasks plugin
+│   │           └── clio-plugin-tasks-jira/  # Jira integration
 │   ├── clio-plugin-fetch/         # HTTP API client
-│   ├── clio-plugin-repo/          # Developer tools
+│   │   └── src/
+│   │       └── extensions/        # Extensions that enhance fetch plugin
+│   │           └── clio-plugin-fetch-oauth/ # OAuth authentication
+│   └── clio-plugin-repo/          # Developer tools
+│       └── src/
+│           └── extensions/        # Extensions that enhance repo plugin
+│               └── clio-plugin-repo-hooks/  # Git hooks automation
+├── libs/
 │   ├── clio-meta-*/               # Persona-based bundles
 │   └── shared-*/                  # Shared libraries (@cli-ops/shared-*)
 ├── tooling/                       # Development configs

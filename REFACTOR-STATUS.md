@@ -6,6 +6,7 @@ This refactoring renames the folder structure to better reflect the architecture
 
 - `apps/` → `plugins/` (base plugins)
 - `examples/` → `extensions/` (extension plugins that extend base plugins)
+- `extensions/` → nested under `plugins/*/src/extensions/` (extensions now live with their parent plugins)
 
 ## ✅ Completed Tasks
 
@@ -13,6 +14,7 @@ This refactoring renames the folder structure to better reflect the architecture
 
 - ✅ `apps/` renamed to `plugins/`
 - ✅ `examples/` renamed to `extensions/`
+- ✅ Extensions nested under parent plugins at `plugins/*/src/extensions/*`
 - ✅ Extension folder renames complete:
   - `cli-alpha-plugin-jira` → `clio-plugin-tasks-jira`
   - `cli-beta-plugin-auth-oauth` → `clio-plugin-fetch-oauth`
@@ -20,8 +22,8 @@ This refactoring renames the folder structure to better reflect the architecture
 
 ### 2. Workspace Configuration ✅
 
-- ✅ `pnpm-workspace.yaml` - Updated to include `plugins/*` and `extensions/*`
-- ✅ `tsconfig.json` - Updated all path references and added extension paths
+- ✅ `pnpm-workspace.yaml` - Updated to include `plugins/*` and `plugins/*/src/extensions/*`
+- ✅ `tsconfig.json` - Updated all path references to nested extension structure
 - ✅ `package.json` - Renamed `build:apps` to `build:plugins`, added `build:extensions`
 - ✅ `.ls-lint.yml` - Updated linting rules for new folder patterns
 
@@ -129,7 +131,10 @@ This refactoring improves semantic clarity:
 
 - **`plugins/`** - Base functionality plugins (tasks, fetch, repo, clio)
 - **`extensions/`** - Extension plugins that extend base plugins
-- **`packages/`** - Shared libraries and utilities
+- **`apps/`** - Applications (clio CLI, website)
+- **`plugins/`** - Base plugins (tasks, fetch, repo)
+  - **`plugins/*/src/extensions/`** - Extension plugins nested with their parents (Jira, OAuth, hooks)
+- **`libs/`** - Shared libraries and utilities
 - **Integrated workspace** - Extensions now part of build system (can be published)
 - **Proper naming** - `clio-plugin-*` convention throughout
 

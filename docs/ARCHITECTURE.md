@@ -17,12 +17,14 @@ The workspace is a **monorepo** with a unified CLI (`clio`) as a plugin manager.
 
 ```
 .
+├── apps/
+│   ├── clio/                      # Core CLI manager (@cli-ops/clio)
+│   └── website/                   # Documentation site (Docusaurus)
 ├── plugins/
-│   └── clio/                      # Core CLI manager (@cli-ops/clio)
-├── packages/
 │   ├── clio-plugin-tasks/         # Task management plugin (bundled)
 │   ├── clio-plugin-fetch/         # HTTP API client plugin
-│   ├── clio-plugin-repo/          # Developer tools plugin
+│   └── clio-plugin-repo/          # Developer tools plugin
+├── libs/
 │   ├── clio-meta-developer/       # Dev persona bundle
 │   ├── clio-meta-complete/        # Complete bundle
 │   ├── shared-commands/           # Base command classes
@@ -45,10 +47,11 @@ The workspace is a **monorepo** with a unified CLI (`clio`) as a plugin manager.
 │   ├── prettier-config/           # Prettier configuration
 │   ├── tsconfig-base/             # TypeScript configurations
 │   └── perf-config/               # Performance budgets
-├── extensions/                    # Extension plugin examples
 ├── docs/                          # Documentation
 ├── scripts/                       # Build and utility scripts
 └── completions/                   # Shell completion scripts
+
+Note: Extension plugins are nested under their parent plugins at `plugins/{parent}/src/extensions/{extension}`
 ```
 
 ## Architecture Layers

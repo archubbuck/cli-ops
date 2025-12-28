@@ -3,7 +3,7 @@
 **Status**: Accepted (Updated for clio architecture)  
 **Date**: 2025-12-26 (Updated: 2025-01)  
 **Decision Makers**: Architecture Team  
-**Stakeholders**: CLI Users, Plugin Developers  
+**Stakeholders**: CLI Users, Plugin Developers
 
 ## Context
 
@@ -34,6 +34,7 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 **Purpose**: Plugin manager and foundational CLI
 
 **Responsibilities**:
+
 - Plugin installation/management (`@oclif/plugin-plugins`)
 - Configuration management (`config:get`, `config:set`, `config:list`)
 - Command history (`history:list`)
@@ -47,12 +48,14 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 **Package**: `@cli-ops/shared-plugins`
 
 **Components**:
+
 - `PluginManager`: Discovery, validation, registration
 - `BasePlugin`: Abstract base class for plugin implementations
 - `BasePluginCommand`: Extended command class for plugin commands
 - Plugin lifecycle hooks: `plugin:loaded`, `plugin:unloaded`
 
 **Dependencies**:
+
 ```
 @cli-ops/shared-plugins
   ├── @oclif/core (oclif framework)
@@ -68,11 +71,13 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 **Plugin Storage**: Managed by oclif's plugin system
 
 **Configuration Files**:
+
 - `~/.config/clio/config.json` - Global configuration
 - `~/.config/clio/plugins/*.json` - Plugin-specific settings
 - `~/.local/share/clio/` - Data storage for plugins
 
-**Rationale**: 
+**Rationale**:
+
 - Centralized configuration under clio
 - Follows XDG Base Directory specification
 - Simplifies plugin management and discovery
@@ -83,13 +88,15 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 **Extension Plugins**: `@cli-ops/clio-plugin-{parent}-{feature}`
 
 **Examples**:
+
 - `@cli-ops/clio-plugin-tasks` - Task management (bundled)
 - `@cli-ops/clio-plugin-fetch` - HTTP API client
 - `@cli-ops/clio-plugin-repo` - Developer tools
-- `@cli-ops/clio-plugin-tasks-jira` - Jira integration for tasks
-- `@cli-ops/clio-plugin-fetch-oauth` - OAuth for fetch
+- `@cli-ops/clio-plugin-tasks-jira` - Jira integration for tasks (nested in `plugins/clio-plugin-tasks/src/extensions/`)
+- `@cli-ops/clio-plugin-fetch-oauth` - OAuth for fetch (nested in `plugins/clio-plugin-fetch/src/extensions/`)
 
 **Rationale**:
+
 - Scoped under `@cli-ops` organization
 - Clear feature identification
 - Easy discovery on npm
@@ -99,6 +106,7 @@ We implement a plugin system with **clio** as the core plugin manager, built on 
 #### 5. Plugin Management Commands
 
 Via `@oclif/plugin-plugins`, clio automatically provides:
+
 ```bash
 clio plugins                      # List installed plugins
 clio plugins:install PKG          # Install plugin from npm
@@ -123,9 +131,10 @@ this.on('tasks:created', (data) => {
 ```
 
 **Standard Events**:
+
 - `plugin:loaded` - Plugin initialized
 - `plugin:unloaded` - Plugin destroyed
-- Feature-specific events (tasks:*, fetch:*, repo:*, etc.)
+- Feature-specific events (tasks:_, fetch:_, repo:\*, etc.)
 
 #### 7. Configuration Integration
 
@@ -134,7 +143,9 @@ Plugins store settings in clio config under `plugins` namespace:
 ```json
 {
   "version": "1.0.0",
-  "clio": { /* global settings */ },
+  "clio": {
+    /* global settings */
+  },
   "plugins": {
     "tasks": {
       "defaultFormat": "json"
@@ -156,19 +167,18 @@ Plugins store settings in clio config under `plugins` namespace:
 **Purpose**: Bundles clio with curated plugin sets for specific user personas
 
 **Examples**:
+
 - `@cli-ops/clio-meta-developer` - clio + fetch + repo
 - `@cli-ops/clio-meta-complete` - clio + all official plugins
 
 **postinstall.js Pattern**:
+
 ```javascript
 const { execSync } = require('child_process')
 
-const plugins = [
-  '@cli-ops/clio-plugin-fetch',
-  '@cli-ops/clio-plugin-repo'
-]
+const plugins = ['@cli-ops/clio-plugin-fetch', '@cli-ops/clio-plugin-repo']
 
-plugins.forEach(plugin => {
+plugins.forEach((plugin) => {
   try {
     execSync(`clio plugins:install ${plugin}`, { stdio: 'inherit' })
   } catch (error) {
@@ -178,6 +188,7 @@ plugins.forEach(plugin => {
 ```
 
 **Installation Flow**:
+
 ```bash
 npm install -g @cli-ops/clio-meta-developer
 # → Installs clio
@@ -190,17 +201,20 @@ npm install -g @cli-ops/clio-meta-developer
 **Decision**: **npm Trust Model** (no sandboxing in v1)
 
 **Rationale**:
+
 1. **Simplicity**: No complex security infrastructure needed
 2. **Standard Practice**: Same trust model as npm, VS Code, Homebrew
 3. **Developer Velocity**: Enables rapid plugin development
 4. **User Control**: Users explicitly install plugins they trust
 
 **Trade-offs Accepted**:
+
 - ❌ Plugins have full Node.js access
 - ❌ No code signing or verification (yet)
 - ❌ No resource limits or sandboxing
 
 **Future Considerations**:
+
 - Add plugin signature verification
 - Implement permission system
 - Add resource monitoring
@@ -253,7 +267,7 @@ import { Flags } from '@oclif/core'
 export default class TasksJiraSync extends BasePluginCommand {
   static pluginName = '@cli-ops/clio-plugin-tasks-jira'
   static description = 'Sync tasks with Jira'
-  
+
   static flags = {
     project: Flags.string({ required: true }),
   }
@@ -261,8 +275,8 @@ export default class TasksJiraSync extends BasePluginCommand {
   async run(): Promise<void> {
     const { flags } = await this.parse(TasksJiraSync)
     // Sync implementation
-    this.emitPluginEvent('tasks:jira:sync:complete', { 
-      project: flags.project 
+    this.emitPluginEvent('tasks:jira:sync:complete', {
+      project: flags.project,
     })
   }
 }
@@ -281,7 +295,7 @@ export default class TasksJiraSync extends BasePluginCommand {
 ✅ **Developer Experience**: Clear patterns and examples  
 ✅ **Event-Driven**: Loose coupling via event bus  
 ✅ **Scoped Packages**: Official plugins under `@cli-ops` org  
-✅ **Persona Bundles**: Easy installation for specific workflows  
+✅ **Persona Bundles**: Easy installation for specific workflows
 
 ### Negative
 
@@ -290,13 +304,13 @@ export default class TasksJiraSync extends BasePluginCommand {
 ❌ **Discovery**: No centralized plugin registry (npm search only)  
 ❌ **Breaking Changes**: Plugin APIs may change between versions  
 ❌ **Testing Complexity**: Plugins must be tested with host CLI  
-❌ **Migration Path**: Existing users need to adopt new structure  
+❌ **Migration Path**: Existing users need to adopt new structure
 
 ### Neutral
 
 ⚖️ **Per-CLI Isolation**: Increases isolation but prevents sharing  
 ⚖️ **npm Distribution**: Standard but requires npm account  
-⚖️ **Event Bus**: Powerful but can be overused  
+⚖️ **Event Bus**: Powerful but can be overused
 
 ## Alternatives Considered
 
@@ -305,6 +319,7 @@ export default class TasksJiraSync extends BasePluginCommand {
 **Approach**: Single `~/.cli-ops/plugins/` for all CLIs
 
 **Rejected Because**:
+
 - Plugins would need to support multiple CLIs
 - Version conflicts between CLI requirements
 - Complicates plugin APIs and testing
@@ -314,6 +329,7 @@ export default class TasksJiraSync extends BasePluginCommand {
 **Approach**: Build custom plugin system from scratch
 
 **Rejected Because**:
+
 - Reinvents oclif's proven solution
 - More maintenance burden
 - Loses oclif ecosystem benefits
@@ -323,6 +339,7 @@ export default class TasksJiraSync extends BasePluginCommand {
 **Approach**: Run plugins in WASM sandbox for security
 
 **Rejected Because**:
+
 - Significant complexity and limitations
 - Poor Node.js/npm integration
 - Limits plugin capabilities
@@ -333,6 +350,7 @@ export default class TasksJiraSync extends BasePluginCommand {
 **Approach**: Install plugins only from Git repositories
 
 **Rejected Because**:
+
 - Friction for users (no version management)
 - No centralized discovery
 - Complicates versioning and updates
@@ -340,6 +358,7 @@ export default class TasksJiraSync extends BasePluginCommand {
 ## Implementation Plan
 
 ### Phase 1: Core Infrastructure ✅
+
 - [x] Add `@oclif/plugin-plugins` to all CLIs
 - [x] Create `shared-plugins` package
 - [x] Implement `PluginManager` class
@@ -348,23 +367,27 @@ export default class TasksJiraSync extends BasePluginCommand {
 - [x] Wire plugin types from `shared-types`
 
 ### Phase 2: Example Plugins ✅
+
 - [x] `cli-alpha-plugin-jira` - Task/Jira sync
 - [x] `cli-beta-plugin-auth-oauth` - OAuth flow
 - [x] `cli-gamma-plugin-git-hooks` - Git automation
 
 ### Phase 3: Documentation ✅
+
 - [x] Plugin development guide
 - [x] Update architecture docs
 - [x] Create ADR-009
 - [x] Example READMEs
 
 ### Phase 4: Testing & Validation (Next)
+
 - [ ] Integration tests for plugin loading
 - [ ] Example plugin test suites
 - [ ] Plugin validation tests
 - [ ] Performance benchmarks
 
 ### Phase 5: Polish & Release (Future)
+
 - [ ] Plugin generator template
 - [ ] CI/CD for example plugins
 - [ ] Plugin best practices guide
@@ -373,16 +396,19 @@ export default class TasksJiraSync extends BasePluginCommand {
 ## Monitoring & Success Metrics
 
 **Adoption Metrics**:
+
 - Number of plugins published
 - Plugin installation count
 - Community contributions
 
 **Quality Metrics**:
+
 - Plugin load time (< 100ms)
 - Event bus overhead (< 10ms)
 - Memory usage per plugin (< 10MB)
 
 **Developer Metrics**:
+
 - Time to create first plugin (< 1 hour)
 - Plugin documentation completeness
 - Issue response time

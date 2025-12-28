@@ -304,6 +304,5 @@ Potential improvements:
 
 - [docs/CLI-INVENTORY.md](./docs/CLI-INVENTORY.md) - Generated inventory
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) - System architecture (includes inventory tree)
-- [plugins/README.md](./plugins/README.md) - Base plugins overview
-- [extensions/README.md](./extensions/README.md) - Extension plugins (examples)
+- [plugins/README.md](./plugins/README.md) - Base plugins overview (extensions nested within)
 - [scripts/README.md](./scripts/README.md) - Scripts documentation

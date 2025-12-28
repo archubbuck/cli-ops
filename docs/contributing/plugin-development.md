@@ -596,11 +596,11 @@ cli-alpha-plugin-custom/
 
 ## Examples
 
-See the [`extensions/`](../../extensions) directory for complete plugin implementations:
+See extension plugins nested under their parent plugins:
 
-- **clio-plugin-tasks-jira**: Jira integration for task management
-- **clio-plugin-fetch-oauth**: OAuth authentication for HTTP requests
-- **clio-plugin-repo-hooks**: Git hooks automation for repositories
+- **clio-plugin-tasks-jira**: Jira integration for task management at `plugins/clio-plugin-tasks/src/extensions/clio-plugin-tasks-jira`
+- **clio-plugin-fetch-oauth**: OAuth authentication for HTTP requests at `plugins/clio-plugin-fetch/src/extensions/clio-plugin-fetch-oauth`
+- **clio-plugin-repo-hooks**: Git hooks automation for repositories at `plugins/clio-plugin-repo/src/extensions/clio-plugin-repo-hooks`
 
 ## Troubleshooting
 
@@ -638,7 +638,7 @@ alpha plugins install cli-alpha-plugin-custom
 - [oclif Plugin Documentation](https://oclif.io/docs/plugins)
 - [Architecture Documentation](../ARCHITECTURE.md)
 - [ADR-009: Plugin System Architecture](../adr/009-plugin-system-architecture.md)
-- [Example Plugins](../../extensions/)
+- Example Plugins: Check `plugins/*/src/extensions/` directories
 
 ## Support
 

@@ -10,9 +10,9 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "build": "turbo run build",
-    "build:packages": "turbo run build --filter='./packages/**'",
+    "build:libs": "turbo run build --filter='./libs/**'",
     "build:plugins": "turbo run build --filter='./plugins/**'",
-    "build:extensions": "turbo run build --filter='./extensions/**'",
+    "build:extensions": "turbo run build --filter='./plugins/*/src/extensions/**'",
     "dev:clio": "pnpm --filter @cli-ops/clio run dev",
     "dev:tasks": "pnpm --filter @cli-ops/clio-plugin-tasks run dev",
     "dev:fetch": "pnpm --filter @cli-ops/clio-plugin-fetch run dev",

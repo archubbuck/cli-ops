@@ -8,8 +8,7 @@ The CLI Ops monorepo follows a **well-defined directory structure** that separat
 
 ```
 cli-ops/
-├── plugins/                   # Base plugins
-├── extensions/                # Extension plugins (examples)
+├── plugins/                   # Base plugins (with nested extensions)
 ├── packages/                  # Shared libraries
 ├── tooling/                   # Development tooling
 ├── docs/                      # Documentation
@@ -303,7 +302,7 @@ packages/shared-commands/
 ```yaml
 packages:
   - 'plugins/*'
-  - 'extensions/*'
+  - 'plugins/*/src/extensions/*'
   - 'packages/*'
   - 'tooling/*'
   - 'generators'

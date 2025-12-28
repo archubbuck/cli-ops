@@ -1,0 +1,21 @@
+{
+  "extends": "../../tooling/tsconfig-base/cli.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../libs/shared-commands" },
+    { "path": "../../libs/shared-config" },
+    { "path": "../../libs/shared-core" },
+    { "path": "../../libs/shared-exit-codes" },
+    { "path": "../../libs/shared-formatter" },
+    { "path": "../../libs/shared-history" },
+    { "path": "../../libs/shared-hooks" },
+    { "path": "../../libs/shared-logger" },
+    { "path": "../../libs/shared-prompts" },
+    { "path": "../../libs/shared-types" },
+    { "path": "../../libs/shared-ui" }
+  ]
+}

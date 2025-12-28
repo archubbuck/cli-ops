@@ -330,42 +330,21 @@ pnpm --filter @cli-ops/cli-delta build
 pnpm --filter @cli-ops/cli-delta test
 ```
 
-### 12. Add Shell Completions
+### 12. Shell Completions
 
-Create completion scripts in [`completions/`](../../completions/):
+Shell completions are automatically provided by oclif's `@oclif/plugin-autocomplete` package, which is included with clio. Completions automatically discover all installed plugins and their commands.
 
-#### completions/delta.bash
+Users can set up completions using:
 
 ```bash
-# Bash completion for delta CLI
-_delta_completion() {
-  local cur="${COMP_WORDS[COMP_CWORD]}"
-  local commands="items help version"
-
-  COMPREPLY=( $(compgen -W "${commands}" -- ${cur}) )
-}
-
-complete -F _delta_completion delta
+clio setup                    # Interactive setup
+clio autocomplete bash        # Manual bash setup
+clio autocomplete zsh         # Manual zsh setup
+clio autocomplete fish        # Manual fish setup
+clio autocomplete powershell  # Manual PowerShell setup
 ```
 
-#### completions/\_delta (Zsh)
-
-```zsh
-#compdef delta
-
-_delta() {
-  local -a commands
-  commands=(
-    'items:Manage items'
-    'help:Display help'
-    'version:Display version'
-  )
-
-  _describe 'command' commands
-}
-
-_delta
-```
+No additional completion files need to be created for plugins - oclif handles this automatically!
 
 ### 13. Add to Documentation
 
@@ -457,7 +436,7 @@ Before considering your CLI complete:
 - [ ] All commands have help text
 - [ ] All commands have tests (80%+ coverage)
 - [ ] README.md with examples
-- [ ] Shell completions (bash, zsh, fish)
+- [ ] Shell completions work automatically via oclif autocomplete
 - [ ] Integration with shared packages
 - [ ] Error handling with helpful messages
 - [ ] CI pipeline passes

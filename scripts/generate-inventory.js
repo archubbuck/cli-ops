@@ -29,7 +29,7 @@ function discoverCLIs() {
   const clis = []
 
   // Add core clio CLI
-  const clioPath = join(ROOT_DIR, 'plugins', 'clio')
+  const clioPath = join(ROOT_DIR, 'apps', 'clio')
   if (existsSync(clioPath)) {
     clis.push({
       name: 'clio',
@@ -38,18 +38,18 @@ function discoverCLIs() {
     })
   }
 
-  // Add plugins from packages/
-  const packagesDir = join(ROOT_DIR, 'packages')
-  if (existsSync(packagesDir)) {
-    readdirSync(packagesDir)
+  // Add plugins from plugins/
+  const pluginsDir = join(ROOT_DIR, 'plugins')
+  if (existsSync(pluginsDir)) {
+    readdirSync(pluginsDir)
       .filter((name) => {
-        const path = join(packagesDir, name)
+        const path = join(pluginsDir, name)
         return statSync(path).isDirectory() && name.startsWith('clio-plugin-')
       })
       .forEach((name) => {
         clis.push({
           name,
-          path: join(packagesDir, name),
+          path: join(pluginsDir, name),
           type: 'plugin',
         })
       })

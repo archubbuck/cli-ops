@@ -5,9 +5,11 @@ Base TypeScript configurations for different use cases.
 ## Configurations
 
 ### `base.json`
+
 Shared foundation with all strict settings enabled.
 
 **Features:**
+
 - All strict type checking enabled
 - No unused variables/parameters allowed
 - Implicit returns forbidden
@@ -15,22 +17,26 @@ Shared foundation with all strict settings enabled.
 - Maximum type safety
 
 ### `cli.json`
+
 For CLI applications (oclif).
 
 **Extends:** `base.json`
 
 **Additional:**
+
 - Composite builds enabled
 - Incremental compilation
 - Output to `dist/`
 - Source from `src/`
 
 ### `library.json`
+
 For shared packages/libraries.
 
 **Extends:** `base.json`
 
 **Additional:**
+
 - Declaration files generated
 - Declaration maps for IDE support
 - Composite builds for project references
@@ -48,10 +54,7 @@ For shared packages/libraries.
     "rootDir": "./src"
   },
   "include": ["src/**/*"],
-  "references": [
-    { "path": "../../packages/shared-core" },
-    { "path": "../../packages/shared-commands" }
-  ]
+  "references": [{ "path": "../../libs/shared-core" }, { "path": "../../libs/shared-commands" }]
 }
 ```
 
@@ -71,6 +74,7 @@ For shared packages/libraries.
 ## Strict Mode Benefits
 
 Our strict configuration catches:
+
 - Null/undefined errors at compile time
 - Unused code
 - Implicit any types

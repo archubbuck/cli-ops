@@ -108,504 +108,47 @@ importers:
         specifier: ^3.23.8
         version: 3.25.76
 
-  extensions/clio-plugin-fetch-oauth:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: ^1.0.0
-        version: link:../../plugins/clio
-      '@cli-ops/clio-plugin-fetch':
-        specifier: ^2.0.0
-        version: link:../../plugins/cli-beta
-      '@cli-ops/shared-commands':
-        specifier: workspace:*
-        version: link:../../packages/shared-commands
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../../packages/shared-logger
-      '@cli-ops/shared-plugins':
-        specifier: workspace:*
-        version: link:../../packages/shared-plugins
-      '@cli-ops/shared-prompts':
-        specifier: workspace:*
-        version: link:../../packages/shared-prompts
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@cli-ops/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  extensions/clio-plugin-repo-hooks:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: ^1.0.0
-        version: link:../../plugins/clio
-      '@cli-ops/clio-plugin-repo':
-        specifier: ^2.0.0
-        version: link:../../plugins/cli-gamma
-      '@cli-ops/shared-commands':
-        specifier: workspace:*
-        version: link:../../packages/shared-commands
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../../packages/shared-logger
-      '@cli-ops/shared-plugins':
-        specifier: workspace:*
-        version: link:../../packages/shared-plugins
-      '@cli-ops/shared-prompts':
-        specifier: workspace:*
-        version: link:../../packages/shared-prompts
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@cli-ops/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  extensions/clio-plugin-tasks-jira:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: ^1.0.0
-        version: link:../../plugins/clio
-      '@cli-ops/clio-plugin-tasks':
-        specifier: ^2.0.0
-        version: link:../../plugins/cli-alpha
-      '@cli-ops/shared-commands':
-        specifier: workspace:*
-        version: link:../../packages/shared-commands
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../../packages/shared-logger
-      '@cli-ops/shared-plugins':
-        specifier: workspace:*
-        version: link:../../packages/shared-plugins
-      '@cli-ops/shared-prompts':
-        specifier: workspace:*
-        version: link:../../packages/shared-prompts
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@cli-ops/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  packages/clio-meta-complete:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: workspace:*
-        version: link:../../plugins/clio
-      '@cli-ops/clio-plugin-fetch':
-        specifier: workspace:*
-        version: link:../../plugins/cli-beta
-      '@cli-ops/clio-plugin-repo':
-        specifier: workspace:*
-        version: link:../../plugins/cli-gamma
-
-  packages/clio-meta-developer:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: workspace:*
-        version: link:../../plugins/clio
-      '@cli-ops/clio-plugin-fetch':
-        specifier: workspace:*
-        version: link:../../plugins/cli-beta
-      '@cli-ops/clio-plugin-repo':
-        specifier: workspace:*
-        version: link:../../plugins/cli-gamma
-
-  packages/shared-commands:
-    dependencies:
-      '@cli-ops/shared-config':
-        specifier: workspace:*
-        version: link:../shared-config
-      '@cli-ops/shared-core':
-        specifier: workspace:*
-        version: link:../shared-core
-      '@cli-ops/shared-history':
-        specifier: workspace:*
-        version: link:../shared-history
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../shared-logger
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../shared-types
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-
-  packages/shared-config:
-    dependencies:
-      cosmiconfig:
-        specifier: ^9.0.0
-        version: 9.0.0(typescript@5.9.3)
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-
-  packages/shared-core:
-    dependencies:
-      '@cli-ops/shared-exit-codes':
-        specifier: workspace:*
-        version: link:../shared-exit-codes
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../shared-logger
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../shared-types
-
-  packages/shared-exit-codes: {}
-
-  packages/shared-formatter:
-    dependencies:
-      chalk:
-        specifier: ^5.4.1
-        version: 5.6.2
-      cli-table3:
-        specifier: ^0.6.5
-        version: 0.6.5
-
-  packages/shared-history:
-    dependencies:
-      better-sqlite3:
-        specifier: ^11.7.0
-        version: 11.10.0
-    devDependencies:
-      '@types/better-sqlite3':
-        specifier: ^7.6.12
-        version: 7.6.13
-
-  packages/shared-hooks:
-    dependencies:
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../shared-logger
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-
-  packages/shared-ipc: {}
-
-  packages/shared-logger:
-    dependencies:
-      debug:
-        specifier: ^4.3.7
-        version: 4.4.3(supports-color@8.1.1)
-      pino:
-        specifier: ^9.5.0
-        version: 9.14.0
-      pino-pretty:
-        specifier: ^11.2.2
-        version: 11.3.0
-    devDependencies:
-      '@types/debug':
-        specifier: ^4.1.12
-        version: 4.1.12
-
-  packages/shared-plugins:
-    dependencies:
-      '@cli-ops/shared-core':
-        specifier: workspace:*
-        version: link:../shared-core
-      '@cli-ops/shared-ipc':
-        specifier: workspace:*
-        version: link:../shared-ipc
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../shared-logger
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../shared-types
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-    devDependencies:
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  packages/shared-prompts:
-    dependencies:
-      inquirer:
-        specifier: ^12.2.0
-        version: 12.11.1(@types/node@22.19.3)
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-
-  packages/shared-services:
-    dependencies:
-      '@cli-ops/shared-core':
-        specifier: workspace:*
-        version: link:../shared-core
-      '@cli-ops/shared-ipc':
-        specifier: workspace:*
-        version: link:../shared-ipc
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../shared-types
-
-  packages/shared-testing:
-    dependencies:
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../shared-types
-      '@oclif/test':
-        specifier: ^4.1.15
-        version: 4.1.15(@oclif/core@4.8.0)
-
-  packages/shared-types: {}
-
-  packages/shared-ui:
-    dependencies:
-      chalk:
-        specifier: ^5.4.1
-        version: 5.6.2
-      cli-progress:
-        specifier: ^3.12.0
-        version: 3.12.0
-      listr2:
-        specifier: ^8.2.5
-        version: 8.3.3
-      ora:
-        specifier: ^8.1.1
-        version: 8.2.0
-    devDependencies:
-      '@types/cli-progress':
-        specifier: ^3.11.6
-        version: 3.11.6
-
-  plugins/cli-alpha:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: ^1.0.0
-        version: link:../clio
-      '@cli-ops/shared-commands':
-        specifier: workspace:*
-        version: link:../../packages/shared-commands
-      '@cli-ops/shared-config':
-        specifier: workspace:*
-        version: link:../../packages/shared-config
-      '@cli-ops/shared-core':
-        specifier: workspace:*
-        version: link:../../packages/shared-core
-      '@cli-ops/shared-exit-codes':
-        specifier: workspace:*
-        version: link:../../packages/shared-exit-codes
-      '@cli-ops/shared-formatter':
-        specifier: workspace:*
-        version: link:../../packages/shared-formatter
-      '@cli-ops/shared-history':
-        specifier: workspace:*
-        version: link:../../packages/shared-history
-      '@cli-ops/shared-hooks':
-        specifier: workspace:*
-        version: link:../../packages/shared-hooks
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../../packages/shared-logger
-      '@cli-ops/shared-plugins':
-        specifier: workspace:*
-        version: link:../../packages/shared-plugins
-      '@cli-ops/shared-prompts':
-        specifier: workspace:*
-        version: link:../../packages/shared-prompts
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@cli-ops/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-    devDependencies:
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  plugins/cli-beta:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: ^1.0.0
-        version: link:../clio
-      '@cli-ops/shared-commands':
-        specifier: workspace:*
-        version: link:../../packages/shared-commands
-      '@cli-ops/shared-config':
-        specifier: workspace:*
-        version: link:../../packages/shared-config
-      '@cli-ops/shared-core':
-        specifier: workspace:*
-        version: link:../../packages/shared-core
-      '@cli-ops/shared-exit-codes':
-        specifier: workspace:*
-        version: link:../../packages/shared-exit-codes
-      '@cli-ops/shared-formatter':
-        specifier: workspace:*
-        version: link:../../packages/shared-formatter
-      '@cli-ops/shared-history':
-        specifier: workspace:*
-        version: link:../../packages/shared-history
-      '@cli-ops/shared-hooks':
-        specifier: workspace:*
-        version: link:../../packages/shared-hooks
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../../packages/shared-logger
-      '@cli-ops/shared-plugins':
-        specifier: workspace:*
-        version: link:../../packages/shared-plugins
-      '@cli-ops/shared-prompts':
-        specifier: workspace:*
-        version: link:../../packages/shared-prompts
-      '@cli-ops/shared-services':
-        specifier: workspace:*
-        version: link:../../packages/shared-services
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@cli-ops/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-    devDependencies:
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  plugins/cli-gamma:
-    dependencies:
-      '@cli-ops/clio':
-        specifier: ^1.0.0
-        version: link:../clio
-      '@cli-ops/shared-commands':
-        specifier: workspace:*
-        version: link:../../packages/shared-commands
-      '@cli-ops/shared-config':
-        specifier: workspace:*
-        version: link:../../packages/shared-config
-      '@cli-ops/shared-core':
-        specifier: workspace:*
-        version: link:../../packages/shared-core
-      '@cli-ops/shared-exit-codes':
-        specifier: workspace:*
-        version: link:../../packages/shared-exit-codes
-      '@cli-ops/shared-formatter':
-        specifier: workspace:*
-        version: link:../../packages/shared-formatter
-      '@cli-ops/shared-history':
-        specifier: workspace:*
-        version: link:../../packages/shared-history
-      '@cli-ops/shared-hooks':
-        specifier: workspace:*
-        version: link:../../packages/shared-hooks
-      '@cli-ops/shared-logger':
-        specifier: workspace:*
-        version: link:../../packages/shared-logger
-      '@cli-ops/shared-plugins':
-        specifier: workspace:*
-        version: link:../../packages/shared-plugins
-      '@cli-ops/shared-prompts':
-        specifier: workspace:*
-        version: link:../../packages/shared-prompts
-      '@cli-ops/shared-services':
-        specifier: workspace:*
-        version: link:../../packages/shared-services
-      '@cli-ops/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@cli-ops/shared-ui':
-        specifier: workspace:*
-        version: link:../../packages/shared-ui
-      '@oclif/core':
-        specifier: ^4.0.31
-        version: 4.8.0
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-    devDependencies:
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.7.2
-        version: 5.9.3
-
-  plugins/clio:
+  apps/clio:
     dependencies:
       '@cli-ops/clio-plugin-tasks':
         specifier: workspace:*
-        version: link:../cli-alpha
+        version: link:../../plugins/clio-plugin-tasks
       '@cli-ops/shared-commands':
         specifier: workspace:*
-        version: link:../../packages/shared-commands
+        version: link:../../libs/shared-commands
       '@cli-ops/shared-config':
         specifier: workspace:*
-        version: link:../../packages/shared-config
+        version: link:../../libs/shared-config
       '@cli-ops/shared-core':
         specifier: workspace:*
-        version: link:../../packages/shared-core
+        version: link:../../libs/shared-core
       '@cli-ops/shared-exit-codes':
         specifier: workspace:*
-        version: link:../../packages/shared-exit-codes
+        version: link:../../libs/shared-exit-codes
       '@cli-ops/shared-formatter':
         specifier: workspace:*
-        version: link:../../packages/shared-formatter
+        version: link:../../libs/shared-formatter
       '@cli-ops/shared-history':
         specifier: workspace:*
-        version: link:../../packages/shared-history
+        version: link:../../libs/shared-history
       '@cli-ops/shared-hooks':
         specifier: workspace:*
-        version: link:../../packages/shared-hooks
+        version: link:../../libs/shared-hooks
       '@cli-ops/shared-logger':
         specifier: workspace:*
-        version: link:../../packages/shared-logger
+        version: link:../../libs/shared-logger
       '@cli-ops/shared-plugins':
         specifier: workspace:*
-        version: link:../../packages/shared-plugins
+        version: link:../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../libs/shared-prompts
       '@cli-ops/shared-types':
         specifier: workspace:*
-        version: link:../../packages/shared-types
+        version: link:../../libs/shared-types
       '@cli-ops/shared-ui':
         specifier: workspace:*
-        version: link:../../packages/shared-ui
+        version: link:../../libs/shared-ui
       '@oclif/core':
         specifier: ^4.0.31
         version: 4.8.0
@@ -632,15 +175,7 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
-  tooling/eslint-config: {}
-
-  tooling/perf-config: {}
-
-  tooling/prettier-config: {}
-
-  tooling/tsconfig-base: {}
-
-  website:
+  apps/website:
     dependencies:
       '@docusaurus/core':
         specifier: ^3.1.0
@@ -676,6 +211,474 @@ importers:
       typescript:
         specifier: ~5.3.0
         version: 5.3.3
+
+  libs/clio-meta-complete:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: workspace:*
+        version: link:../../apps/clio
+      '@cli-ops/clio-plugin-fetch':
+        specifier: workspace:*
+        version: link:../../plugins/clio-plugin-fetch
+      '@cli-ops/clio-plugin-repo':
+        specifier: workspace:*
+        version: link:../../plugins/clio-plugin-repo
+
+  libs/clio-meta-developer:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: workspace:*
+        version: link:../../apps/clio
+      '@cli-ops/clio-plugin-fetch':
+        specifier: workspace:*
+        version: link:../../plugins/clio-plugin-fetch
+      '@cli-ops/clio-plugin-repo':
+        specifier: workspace:*
+        version: link:../../plugins/clio-plugin-repo
+
+  libs/shared-commands:
+    dependencies:
+      '@cli-ops/shared-config':
+        specifier: workspace:*
+        version: link:../shared-config
+      '@cli-ops/shared-core':
+        specifier: workspace:*
+        version: link:../shared-core
+      '@cli-ops/shared-history':
+        specifier: workspace:*
+        version: link:../shared-history
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../shared-logger
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+
+  libs/shared-config:
+    dependencies:
+      cosmiconfig:
+        specifier: ^9.0.0
+        version: 9.0.0(typescript@5.9.3)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+
+  libs/shared-core:
+    dependencies:
+      '@cli-ops/shared-exit-codes':
+        specifier: workspace:*
+        version: link:../shared-exit-codes
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../shared-logger
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+
+  libs/shared-exit-codes: {}
+
+  libs/shared-formatter:
+    dependencies:
+      chalk:
+        specifier: ^5.4.1
+        version: 5.6.2
+      cli-table3:
+        specifier: ^0.6.5
+        version: 0.6.5
+
+  libs/shared-history:
+    dependencies:
+      better-sqlite3:
+        specifier: ^11.7.0
+        version: 11.10.0
+    devDependencies:
+      '@types/better-sqlite3':
+        specifier: ^7.6.12
+        version: 7.6.13
+
+  libs/shared-hooks:
+    dependencies:
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../shared-logger
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+
+  libs/shared-ipc: {}
+
+  libs/shared-logger:
+    dependencies:
+      debug:
+        specifier: ^4.3.7
+        version: 4.4.3(supports-color@8.1.1)
+      pino:
+        specifier: ^9.5.0
+        version: 9.14.0
+      pino-pretty:
+        specifier: ^11.2.2
+        version: 11.3.0
+    devDependencies:
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
+
+  libs/shared-plugins:
+    dependencies:
+      '@cli-ops/shared-core':
+        specifier: workspace:*
+        version: link:../shared-core
+      '@cli-ops/shared-ipc':
+        specifier: workspace:*
+        version: link:../shared-ipc
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../shared-logger
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  libs/shared-prompts:
+    dependencies:
+      inquirer:
+        specifier: ^12.2.0
+        version: 12.11.1(@types/node@22.19.3)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+
+  libs/shared-services:
+    dependencies:
+      '@cli-ops/shared-core':
+        specifier: workspace:*
+        version: link:../shared-core
+      '@cli-ops/shared-ipc':
+        specifier: workspace:*
+        version: link:../shared-ipc
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+
+  libs/shared-testing:
+    dependencies:
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+      '@oclif/test':
+        specifier: ^4.1.15
+        version: 4.1.15(@oclif/core@4.8.0)
+
+  libs/shared-types: {}
+
+  libs/shared-ui:
+    dependencies:
+      chalk:
+        specifier: ^5.4.1
+        version: 5.6.2
+      cli-progress:
+        specifier: ^3.12.0
+        version: 3.12.0
+      listr2:
+        specifier: ^8.2.5
+        version: 8.3.3
+      ora:
+        specifier: ^8.1.1
+        version: 8.2.0
+    devDependencies:
+      '@types/cli-progress':
+        specifier: ^3.11.6
+        version: 3.11.6
+
+  plugins/clio-plugin-fetch:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: ^1.0.0
+        version: link:../../apps/clio
+      '@cli-ops/shared-commands':
+        specifier: workspace:*
+        version: link:../../libs/shared-commands
+      '@cli-ops/shared-config':
+        specifier: workspace:*
+        version: link:../../libs/shared-config
+      '@cli-ops/shared-core':
+        specifier: workspace:*
+        version: link:../../libs/shared-core
+      '@cli-ops/shared-exit-codes':
+        specifier: workspace:*
+        version: link:../../libs/shared-exit-codes
+      '@cli-ops/shared-formatter':
+        specifier: workspace:*
+        version: link:../../libs/shared-formatter
+      '@cli-ops/shared-history':
+        specifier: workspace:*
+        version: link:../../libs/shared-history
+      '@cli-ops/shared-hooks':
+        specifier: workspace:*
+        version: link:../../libs/shared-hooks
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../../libs/shared-logger
+      '@cli-ops/shared-plugins':
+        specifier: workspace:*
+        version: link:../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../libs/shared-prompts
+      '@cli-ops/shared-services':
+        specifier: workspace:*
+        version: link:../../libs/shared-services
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../../libs/shared-types
+      '@cli-ops/shared-ui':
+        specifier: workspace:*
+        version: link:../../libs/shared-ui
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  plugins/clio-plugin-fetch/src/extensions/clio-plugin-fetch-oauth:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: ^1.0.0
+        version: link:../../../../../apps/clio
+      '@cli-ops/clio-plugin-fetch':
+        specifier: ^2.0.0
+        version: link:../../..
+      '@cli-ops/shared-commands':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-commands
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-logger
+      '@cli-ops/shared-plugins':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-prompts
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-types
+      '@cli-ops/shared-ui':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-ui
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  plugins/clio-plugin-repo:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: ^1.0.0
+        version: link:../../apps/clio
+      '@cli-ops/shared-commands':
+        specifier: workspace:*
+        version: link:../../libs/shared-commands
+      '@cli-ops/shared-config':
+        specifier: workspace:*
+        version: link:../../libs/shared-config
+      '@cli-ops/shared-core':
+        specifier: workspace:*
+        version: link:../../libs/shared-core
+      '@cli-ops/shared-exit-codes':
+        specifier: workspace:*
+        version: link:../../libs/shared-exit-codes
+      '@cli-ops/shared-formatter':
+        specifier: workspace:*
+        version: link:../../libs/shared-formatter
+      '@cli-ops/shared-history':
+        specifier: workspace:*
+        version: link:../../libs/shared-history
+      '@cli-ops/shared-hooks':
+        specifier: workspace:*
+        version: link:../../libs/shared-hooks
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../../libs/shared-logger
+      '@cli-ops/shared-plugins':
+        specifier: workspace:*
+        version: link:../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../libs/shared-prompts
+      '@cli-ops/shared-services':
+        specifier: workspace:*
+        version: link:../../libs/shared-services
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../../libs/shared-types
+      '@cli-ops/shared-ui':
+        specifier: workspace:*
+        version: link:../../libs/shared-ui
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  plugins/clio-plugin-repo/src/extensions/clio-plugin-repo-hooks:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: ^1.0.0
+        version: link:../../../../../apps/clio
+      '@cli-ops/clio-plugin-repo':
+        specifier: ^2.0.0
+        version: link:../../..
+      '@cli-ops/shared-commands':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-commands
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-logger
+      '@cli-ops/shared-plugins':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-prompts
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-types
+      '@cli-ops/shared-ui':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-ui
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  plugins/clio-plugin-tasks:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: ^1.0.0
+        version: link:../../apps/clio
+      '@cli-ops/shared-commands':
+        specifier: workspace:*
+        version: link:../../libs/shared-commands
+      '@cli-ops/shared-config':
+        specifier: workspace:*
+        version: link:../../libs/shared-config
+      '@cli-ops/shared-core':
+        specifier: workspace:*
+        version: link:../../libs/shared-core
+      '@cli-ops/shared-exit-codes':
+        specifier: workspace:*
+        version: link:../../libs/shared-exit-codes
+      '@cli-ops/shared-formatter':
+        specifier: workspace:*
+        version: link:../../libs/shared-formatter
+      '@cli-ops/shared-history':
+        specifier: workspace:*
+        version: link:../../libs/shared-history
+      '@cli-ops/shared-hooks':
+        specifier: workspace:*
+        version: link:../../libs/shared-hooks
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../../libs/shared-logger
+      '@cli-ops/shared-plugins':
+        specifier: workspace:*
+        version: link:../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../libs/shared-prompts
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../../libs/shared-types
+      '@cli-ops/shared-ui':
+        specifier: workspace:*
+        version: link:../../libs/shared-ui
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  plugins/clio-plugin-tasks/src/extensions/clio-plugin-tasks-jira:
+    dependencies:
+      '@cli-ops/clio':
+        specifier: ^1.0.0
+        version: link:../../../../../apps/clio
+      '@cli-ops/clio-plugin-tasks':
+        specifier: ^2.0.0
+        version: link:../../..
+      '@cli-ops/shared-commands':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-commands
+      '@cli-ops/shared-logger':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-logger
+      '@cli-ops/shared-plugins':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-plugins
+      '@cli-ops/shared-prompts':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-prompts
+      '@cli-ops/shared-types':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-types
+      '@cli-ops/shared-ui':
+        specifier: workspace:*
+        version: link:../../../../../libs/shared-ui
+      '@oclif/core':
+        specifier: ^4.0.31
+        version: 4.8.0
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  tooling/eslint-config: {}
+
+  tooling/perf-config: {}
+
+  tooling/prettier-config: {}
+
+  tooling/tsconfig-base: {}
 
 packages:
 

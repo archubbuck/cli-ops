@@ -1,15 +1,15 @@
 packages:
+  # Applications
+  - 'apps/*'
+
   # Base plugins
   - 'plugins/*'
 
-  # Extension plugins
-  - 'extensions/*'
+  # Extension plugins (nested under parent plugins' src/)
+  - 'plugins/*/src/extensions/*'
 
   # Shared libraries
-  - 'packages/*'
+  - 'libs/*'
 
   # Development tooling
   - 'tooling/*'
-
-  # Documentation website
-  - 'website'

@@ -1,0 +1,11 @@
+{
+  "extends": "../../tooling/tsconfig-base/library.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../shared-types" }
+  ]
+}
