@@ -31,14 +31,9 @@ export interface LoadEnvOptions<T extends z.ZodRawShape> {
  * Load and validate environment variables
  */
 export function loadEnv<T extends z.ZodRawShape>(
-  options: LoadEnvOptions<T>
+  options: LoadEnvOptions<T>,
 ): z.infer<z.ZodObject<T>> {
-  const {
-    schema,
-    prefix,
-    stripPrefix = true,
-    env = process.env,
-  } = options
+  const { schema, prefix, stripPrefix = true, env = process.env } = options
 
   let envToValidate = { ...env }
 
@@ -46,11 +41,14 @@ export function loadEnv<T extends z.ZodRawShape>(
   if (prefix) {
     envToValidate = Object.entries(env)
       .filter(([key]) => key.startsWith(prefix))
-      .reduce((acc, [key, value]) => {
-        const newKey = stripPrefix ? key.slice(prefix.length) : key
-        acc[newKey] = value
-        return acc
-      }, {} as Record<string, string | undefined>)
+      .reduce(
+        (acc, [key, value]) => {
+          const newKey = stripPrefix ? key.slice(prefix.length) : key
+          acc[newKey] = value
+          return acc
+        },
+        {} as Record<string, string | undefined>,
+      )
   }
 
   // Validate with Zod
@@ -58,7 +56,7 @@ export function loadEnv<T extends z.ZodRawShape>(
 
   if (!parseResult.success) {
     const errors = parseResult.error.errors
-      .map(err => `  - ${err.path.join('.')}: ${err.message}`)
+      .map((err) => `  - ${err.path.join('.')}: ${err.message}`)
       .join('\n')
 
     throw new Error(`Invalid environment variables:\n${errors}`)
@@ -70,12 +68,8 @@ export function loadEnv<T extends z.ZodRawShape>(
 /**
  * Create a typed env loader for your CLI
  */
-export function createEnvLoader<T extends z.ZodRawShape>(
-  schema: z.ZodObject<T>,
-  prefix?: string
-) {
-  return (env?: NodeJS.ProcessEnv) =>
-    loadEnv({ schema, prefix, env })
+export function createEnvLoader<T extends z.ZodRawShape>(schema: z.ZodObject<T>, prefix?: string) {
+  return (env?: NodeJS.ProcessEnv) => loadEnv({ schema, prefix, env })
 }
 
 /**
@@ -87,8 +81,7 @@ export const required = (message?: string) =>
 /**
  * Helper to define optional env var with default
  */
-export const optional = (defaultValue: string) =>
-  z.string().default(defaultValue)
+export const optional = (defaultValue: string) => z.string().default(defaultValue)
 
 /**
  * Helper to parse boolean env var
@@ -97,9 +90,7 @@ export const boolean = () =>
   z
     .string()
     .optional()
-    .transform(val => 
-      val === 'true' || val === '1' || val === 'yes'
-    )
+    .transform((val) => val === 'true' || val === '1' || val === 'yes')
     .pipe(z.boolean())
 
 /**
@@ -108,14 +99,13 @@ export const boolean = () =>
 export const number = () =>
   z
     .string()
-    .transform(val => Number.parseInt(val, 10))
+    .transform((val) => Number.parseInt(val, 10))
     .pipe(z.number())
 
 /**
  * Helper to parse URL env var
  */
-export const url = () =>
-  z.string().url()
+export const url = () => z.string().url()
 
 /**
  * Helper to parse JSON env var
@@ -142,5 +132,10 @@ export const json = <T extends z.ZodTypeAny>(schema: T) =>
 export const list = () =>
   z
     .string()
-    .transform(val => val.split(',').map(s => s.trim()).filter(Boolean))
+    .transform((val) =>
+      val
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean),
+    )
     .pipe(z.array(z.string()))

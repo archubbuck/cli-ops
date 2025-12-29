@@ -1,9 +1,4 @@
-export {
-  loadConfig,
-  loadConfigSync,
-  type LoadConfigOptions,
-  type ConfigResult,
-} from './loader.js'
+export { loadConfig, loadConfigSync, type LoadConfigOptions, type ConfigResult } from './loader.js'
 
 export {
   migrateConfig,

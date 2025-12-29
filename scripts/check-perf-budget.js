@@ -20,7 +20,7 @@ console.log('Checking CLI performance budgets...\n')
 
 clis.forEach((cli) => {
   const cliPath = path.join(__dirname, '..', 'apps', cli)
-  
+
   // Check if CLI exists
   if (!require('fs').existsSync(cliPath)) {
     console.log(`⏭️  Skipping ${cli} (not yet created)`)
@@ -36,7 +36,7 @@ clis.forEach((cli) => {
     })
     const helpTime = Date.now() - helpStart
 
-    // Measure version command  
+    // Measure version command
     const versionStart = Date.now()
     execSync(`node ${path.join(cliPath, 'bin', 'dev.js')} --version`, {
       stdio: 'pipe',
@@ -62,7 +62,7 @@ clis.forEach((cli) => {
   } catch (error) {
     console.log(`  ⚠️  Could not benchmark ${cli}: ${error.message}`)
   }
-  
+
   console.log()
 })
 

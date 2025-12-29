@@ -35,11 +35,16 @@ Auto-formats on commit via lint-staged.
 ## Example Output
 
 **Before:**
+
 ```typescript
-const obj={a:1,b:2};function test(x,y){return x+y}
+const obj = { a: 1, b: 2 }
+function test(x, y) {
+  return x + y
+}
 ```
 
 **After:**
+
 ```typescript
 const obj = { a: 1, b: 2 }
 function test(x, y) {

@@ -1,6 +1,6 @@
 /**
  * Standard exit codes for CLI applications
- * 
+ *
  * Following conventions from:
  * - BSD sysexits.h
  * - POSIX standards

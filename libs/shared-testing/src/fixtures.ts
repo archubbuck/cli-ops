@@ -19,14 +19,11 @@ export async function removeTempDir(dir: string): Promise<void> {
 /**
  * Create test fixture files
  */
-export async function createFixture(
-  dir: string,
-  files: Record<string, string>
-): Promise<void> {
+export async function createFixture(dir: string, files: Record<string, string>): Promise<void> {
   for (const [filePath, content] of Object.entries(files)) {
     const fullPath = join(dir, filePath)
     const dirPath = fullPath.split('/').slice(0, -1).join('/')
-    
+
     await mkdir(dirPath, { recursive: true })
     await writeFile(fullPath, content)
   }
@@ -50,10 +47,7 @@ export class FixtureManager {
   /**
    * Create fixture files in a temp directory
    */
-  async create(
-    files: Record<string, string>,
-    prefix?: string
-  ): Promise<string> {
+  async create(files: Record<string, string>, prefix?: string): Promise<string> {
     const dir = await this.createDir(prefix)
     await createFixture(dir, files)
     return dir
@@ -63,7 +57,7 @@ export class FixtureManager {
    * Clean up all temp directories
    */
   async cleanup(): Promise<void> {
-    await Promise.all(this.tempDirs.map(dir => removeTempDir(dir)))
+    await Promise.all(this.tempDirs.map((dir) => removeTempDir(dir)))
     this.tempDirs = []
   }
 }

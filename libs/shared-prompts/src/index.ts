@@ -24,8 +24,4 @@ export {
   confirmRetry,
 } from './confirmation.js'
 
-export {
-  PromptBuilder,
-  createPromptBuilder,
-  type PromptDefinition,
-} from './builder.js'
+export { PromptBuilder, createPromptBuilder, type PromptDefinition } from './builder.js'

@@ -20,15 +20,18 @@ export class GitHubClient {
   /**
    * Make GitHub API request
    */
-  private async request<T>(endpoint: string, options: {
-    method?: string
-    body?: unknown
-    useCache?: boolean
-  } = {}): Promise<T> {
+  private async request<T>(
+    endpoint: string,
+    options: {
+      method?: string
+      body?: unknown
+      useCache?: boolean
+    } = {},
+  ): Promise<T> {
     const { method = 'GET', body, useCache = false } = options
 
     const headers: Record<string, string> = {
-      'Accept': 'application/vnd.github.v3+json',
+      Accept: 'application/vnd.github.v3+json',
       'User-Agent': 'cli-gamma',
     }
 
@@ -60,7 +63,7 @@ export class GitHubClient {
       throw new Error(`GitHub API error: ${response.status} ${response.statusText}`)
     }
 
-    const data = await response.json() as T
+    const data = (await response.json()) as T
 
     // Cache successful GET requests
     if (useCache && method === 'GET') {
@@ -73,15 +76,21 @@ export class GitHubClient {
   /**
    * Get pull requests
    */
-  async getPullRequests(owner: string, repo: string, state: 'open' | 'closed' | 'all' = 'open'): Promise<Array<{
-    number: number
-    title: string
-    state: string
-    user: { login: string }
-    created_at: string
-    updated_at: string
-    html_url: string
-  }>> {
+  async getPullRequests(
+    owner: string,
+    repo: string,
+    state: 'open' | 'closed' | 'all' = 'open',
+  ): Promise<
+    Array<{
+      number: number
+      title: string
+      state: string
+      user: { login: string }
+      created_at: string
+      updated_at: string
+      html_url: string
+    }>
+  > {
     return this.request(`/repos/${owner}/${repo}/pulls?state=${state}`, {
       useCache: true,
     })
@@ -90,7 +99,11 @@ export class GitHubClient {
   /**
    * Get single pull request
    */
-  async getPullRequest(owner: string, repo: string, number: number): Promise<{
+  async getPullRequest(
+    owner: string,
+    repo: string,
+    number: number,
+  ): Promise<{
     number: number
     title: string
     body: string
@@ -109,7 +122,10 @@ export class GitHubClient {
   /**
    * Get repository
    */
-  async getRepository(owner: string, repo: string): Promise<{
+  async getRepository(
+    owner: string,
+    repo: string,
+  ): Promise<{
     name: string
     full_name: string
     description: string

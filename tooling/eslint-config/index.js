@@ -32,7 +32,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
-    
+
     // TypeScript - Naming Conventions
     '@typescript-eslint/naming-convention': [
       'error',
@@ -87,13 +87,5 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: [
-    'dist',
-    'build',
-    'lib',
-    'node_modules',
-    '*.js',
-    'coverage',
-    '.turbo',
-  ],
-};
+  ignorePatterns: ['dist', 'build', 'lib', 'node_modules', '*.js', 'coverage', '.turbo'],
+}

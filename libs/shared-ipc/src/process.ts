@@ -87,7 +87,7 @@ export class ManagedProcess extends EventEmitter {
     })
 
     // Handle errors
-    this.process.on('error', error => {
+    this.process.on('error', (error) => {
       this.emit('error', error)
     })
 
@@ -127,10 +127,7 @@ export class ManagedProcess extends EventEmitter {
   /**
    * Send a request and wait for response
    */
-  request<TReq = unknown, TRes = unknown>(
-    type: string,
-    payload: TReq
-  ): Promise<TRes> {
+  request<TReq = unknown, TRes = unknown>(type: string, payload: TReq): Promise<TRes> {
     if (!this.process) {
       throw new Error('Process not started')
     }
@@ -176,7 +173,7 @@ export class ManagedProcess extends EventEmitter {
     // Handle regular messages
     const handlers = this.messageHandlers.get(message.type)
     if (handlers) {
-      handlers.forEach(handler => handler(message.payload))
+      handlers.forEach((handler) => handler(message.payload))
     }
 
     this.emit('message', message)
@@ -215,9 +212,6 @@ export class ManagedProcess extends EventEmitter {
 /**
  * Create a managed child process
  */
-export function createProcess(
-  modulePath: string,
-  options?: ProcessManagerOptions
-): ManagedProcess {
+export function createProcess(modulePath: string, options?: ProcessManagerOptions): ManagedProcess {
   return new ManagedProcess(modulePath, options)
 }

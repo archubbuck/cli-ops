@@ -31,16 +31,8 @@ export interface JSONFormatOptions {
 /**
  * Format data as JSON
  */
-export function formatJSON(
-  data: unknown,
-  options: JSONFormatOptions = {}
-): string {
-  const {
-    pretty = true,
-    indent = 2,
-    sortKeys = false,
-    includeNulls = true,
-  } = options
+export function formatJSON(data: unknown, options: JSONFormatOptions = {}): string {
+  const { pretty = true, indent = 2, sortKeys = false, includeNulls = true } = options
 
   let processedData = data
 
@@ -66,7 +58,7 @@ export function formatJSON(
  */
 export function parseJSON<T = unknown>(
   json: string,
-  options: { throwOnError?: boolean } = {}
+  options: { throwOnError?: boolean } = {},
 ): T | null {
   const { throwOnError = true } = options
 
@@ -75,10 +67,7 @@ export function parseJSON<T = unknown>(
   } catch (error) {
     if (throwOnError) {
       if (error instanceof SyntaxError) {
-        throw new Error(
-          `Invalid JSON: ${error.message}\n` +
-          `Near: ${json.slice(0, 100)}...`
-        )
+        throw new Error(`Invalid JSON: ${error.message}\n` + `Near: ${json.slice(0, 100)}...`)
       }
       throw error
     }
@@ -95,20 +84,20 @@ function removeNulls(data: unknown): unknown {
   }
 
   if (Array.isArray(data)) {
-    return data
-      .map(item => removeNulls(item))
-      .filter(item => item !== undefined)
+    return data.map((item) => removeNulls(item)).filter((item) => item !== undefined)
   }
 
   if (typeof data === 'object') {
-    return Object.entries(data as Record<string, unknown>)
-      .reduce((acc, [key, value]) => {
+    return Object.entries(data as Record<string, unknown>).reduce(
+      (acc, [key, value]) => {
         const cleaned = removeNulls(value)
         if (cleaned !== undefined) {
           acc[key] = cleaned
         }
         return acc
-      }, {} as Record<string, unknown>)
+      },
+      {} as Record<string, unknown>,
+    )
   }
 
   return data
@@ -119,16 +108,19 @@ function removeNulls(data: unknown): unknown {
  */
 function sortObjectKeys(data: unknown): unknown {
   if (Array.isArray(data)) {
-    return data.map(item => sortObjectKeys(item))
+    return data.map((item) => sortObjectKeys(item))
   }
 
   if (typeof data === 'object' && data !== null) {
     return Object.keys(data as Record<string, unknown>)
       .sort()
-      .reduce((acc, key) => {
-        acc[key] = sortObjectKeys((data as Record<string, unknown>)[key])
-        return acc
-      }, {} as Record<string, unknown>)
+      .reduce(
+        (acc, key) => {
+          acc[key] = sortObjectKeys((data as Record<string, unknown>)[key])
+          return acc
+        },
+        {} as Record<string, unknown>,
+      )
   }
 
   return data
@@ -138,7 +130,7 @@ function sortObjectKeys(data: unknown): unknown {
  * Format JSON for streaming/JSONL
  */
 export function formatJSONLines(data: unknown[]): string {
-  return data.map(item => JSON.stringify(item)).join('\n')
+  return data.map((item) => JSON.stringify(item)).join('\n')
 }
 
 /**
@@ -147,6 +139,6 @@ export function formatJSONLines(data: unknown[]): string {
 export function parseJSONLines<T = unknown>(jsonl: string): T[] {
   return jsonl
     .split('\n')
-    .filter(line => line.trim())
-    .map(line => JSON.parse(line) as T)
+    .filter((line) => line.trim())
+    .map((line) => JSON.parse(line) as T)
 }

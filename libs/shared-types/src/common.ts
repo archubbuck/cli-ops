@@ -50,10 +50,7 @@ export type JSONPrimitive = string | number | boolean | null
 /**
  * JSON value types
  */
-export type JSONValue =
-  | JSONPrimitive
-  | JSONValue[]
-  | { [key: string]: JSONValue }
+export type JSONValue = JSONPrimitive | JSONValue[] | { [key: string]: JSONValue }
 
 /**
  * JSON object type
@@ -83,9 +80,7 @@ export type Fallible<T> = () => T | never
 /**
  * Result type for operations
  */
-export type Result<T, E = Error> =
-  | { ok: true; value: T }
-  | { ok: false; error: E }
+export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E }
 
 /**
  * Constructor type
@@ -95,9 +90,7 @@ export type Constructor<T = unknown> = new (...args: unknown[]) => T
 /**
  * Abstract constructor type
  */
-export type AbstractConstructor<T = unknown> = abstract new (
-  ...args: unknown[]
-) => T
+export type AbstractConstructor<T = unknown> = abstract new (...args: unknown[]) => T
 
 /**
  * Mixin type
@@ -115,13 +108,10 @@ export type ClassDecorator<T = unknown> = (target: Constructor<T>) => void
 export type MethodDecorator<T = unknown> = (
   target: T,
   propertyKey: string | symbol,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) => void
 
 /**
  * Property decorator
  */
-export type PropertyDecorator<T = unknown> = (
-  target: T,
-  propertyKey: string | symbol
-) => void
+export type PropertyDecorator<T = unknown> = (target: T, propertyKey: string | symbol) => void

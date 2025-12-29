@@ -39,7 +39,7 @@ const email = await promptText({
 // Custom validation
 const username = await promptText({
   message: 'Choose a username:',
-  validate: async value => {
+  validate: async (value) => {
     if (value.length < 3) {
       return 'Username must be at least 3 characters'
     }
@@ -143,7 +143,8 @@ import { z } from 'zod'
 const password = await promptPassword({
   message: 'Enter password:',
   mask: '*',
-  schema: z.string()
+  schema: z
+    .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain uppercase letter')
     .regex(/[0-9]/, 'Password must contain number'),
@@ -205,7 +206,7 @@ interface ProjectConfig {
 
 const answers = await createPromptBuilder<ProjectConfig>()
   .text('name', 'Project name:', {
-    validate: value => value.length > 0 || 'Name is required',
+    validate: (value) => value.length > 0 || 'Name is required',
   })
   .list('language', 'Programming language:', [
     { name: 'TypeScript', value: 'typescript' },
@@ -214,13 +215,18 @@ const answers = await createPromptBuilder<ProjectConfig>()
   .confirm('testing', 'Include testing?', {
     default: true,
   })
-  .checkbox('features', 'Select features:', [
-    { name: 'Linting', value: 'lint' },
-    { name: 'Formatting', value: 'format' },
-    { name: 'Git hooks', value: 'hooks' },
-  ], {
-    when: answers => answers.testing === true,
-  })
+  .checkbox(
+    'features',
+    'Select features:',
+    [
+      { name: 'Linting', value: 'lint' },
+      { name: 'Formatting', value: 'format' },
+      { name: 'Git hooks', value: 'hooks' },
+    ],
+    {
+      when: (answers) => answers.testing === true,
+    },
+  )
   .run()
 
 console.log(answers.name) // Type-safe!
@@ -234,10 +240,10 @@ console.log(answers.name) // Type-safe!
 const answers = await createPromptBuilder()
   .confirm('useDatabase', 'Use database?')
   .list('dbType', 'Database type:', ['postgresql', 'mysql', 'sqlite'], {
-    when: answers => answers.useDatabase,
+    when: (answers) => answers.useDatabase,
   })
   .text('dbHost', 'Database host:', {
-    when: answers => answers.useDatabase && answers.dbType !== 'sqlite',
+    when: (answers) => answers.useDatabase && answers.dbType !== 'sqlite',
     default: 'localhost',
   })
   .run()
@@ -252,7 +258,7 @@ async function setupProject() {
   // Step 1: Basic info
   const name = await promptText({
     message: 'Project name:',
-    validate: value => value.length > 0 || 'Required',
+    validate: (value) => value.length > 0 || 'Required',
   })
 
   const description = await promptText({
@@ -303,17 +309,14 @@ async function setupProject() {
 ```typescript
 async function promptWithRetry<T>(
   promptFn: () => Promise<T>,
-  maxAttempts: number = 3
+  maxAttempts: number = 3,
 ): Promise<T | null> {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await promptFn()
     } catch (error) {
       if (attempt < maxAttempts) {
-        const retry = await confirmRetry(
-          'Input',
-          `Attempt ${attempt} of ${maxAttempts}`
-        )
+        const retry = await confirmRetry('Input', `Attempt ${attempt} of ${maxAttempts}`)
         if (!retry) {
           return null
         }
@@ -329,11 +332,11 @@ async function promptWithRetry<T>(
 const apiKey = await promptWithRetry(() =>
   promptPassword({
     message: 'Enter API key:',
-    validate: async key => {
+    validate: async (key) => {
       const valid = await validateApiKey(key)
       return valid || 'Invalid API key'
     },
-  })
+  }),
 )
 ```
 
@@ -358,6 +361,7 @@ const apiKey = await promptWithRetry(() =>
 ## API Reference
 
 ### Prompt Functions
+
 - `promptText(options)` - Text input
 - `promptConfirm(options)` - Yes/no confirmation
 - `promptList(options)` - Single selection from list
@@ -367,6 +371,7 @@ const apiKey = await promptWithRetry(() =>
 - `promptEditor(options)` - Multi-line text editor
 
 ### Confirmation Helpers
+
 - `confirmDestruction(name, options?)` - Delete confirmation
 - `confirmOverwrite(filepath, options?)` - File overwrite
 - `confirmWarning(message, options?)` - Warning confirmation
@@ -375,6 +380,7 @@ const apiKey = await promptWithRetry(() =>
 - `confirmRetry(action, error)` - Retry after failure
 
 ### Builder
+
 - `createPromptBuilder<T>()` - Create fluent builder
 - `.text(name, message, options?)` - Add text prompt
 - `.confirm(name, message, options?)` - Add confirmation
@@ -386,6 +392,7 @@ const apiKey = await promptWithRetry(() =>
 - `.run()` - Execute prompts
 
 All prompts support:
+
 - `message` - Question to display
 - `default` - Default value
 - `validate` - Validation function

@@ -1,6 +1,6 @@
 /**
  * YAML formatting utilities
- * 
+ *
  * Note: This is a basic implementation. For production use,
  * consider adding 'yaml' package as dependency.
  */
@@ -22,14 +22,11 @@ export interface YAMLFormatOptions {
 /**
  * Format data as YAML (basic implementation)
  */
-export function formatYAML(
-  data: unknown,
-  options: YAMLFormatOptions = {}
-): string {
+export function formatYAML(data: unknown, options: YAMLFormatOptions = {}): string {
   const { indent = 2, documentSeparator = false } = options
 
   const yaml = toYAML(data, 0, indent)
-  
+
   if (documentSeparator) {
     return `---\n${yaml}`
   }
@@ -71,7 +68,7 @@ function toYAML(data: unknown, depth: number, indent: number): string {
     }
 
     return data
-      .map(item => {
+      .map((item) => {
         const value = toYAML(item, depth + 1, indent)
         if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
           // Complex object in array
@@ -85,7 +82,7 @@ function toYAML(data: unknown, depth: number, indent: number): string {
 
   if (typeof data === 'object') {
     const entries = Object.entries(data as Record<string, unknown>)
-    
+
     if (entries.length === 0) {
       return '{}'
     }
@@ -93,7 +90,7 @@ function toYAML(data: unknown, depth: number, indent: number): string {
     return entries
       .map(([key, value]) => {
         const yamlValue = toYAML(value, depth + 1, indent)
-        
+
         if (typeof value === 'object' && value !== null) {
           if (Array.isArray(value)) {
             if (value.length === 0) {
@@ -122,18 +119,17 @@ function toYAML(data: unknown, depth: number, indent: number): string {
 export function parseYAML<T = unknown>(yaml: string): T {
   // This is a very basic implementation
   // For production, use 'yaml' package
-  
+
   // Remove document separator
   let content = yaml.replace(/^---\n/, '')
-  
+
   // Remove comments
   content = content.replace(/#.*$/gm, '')
-  
+
   // Very basic parsing - just convert to JSON-like structure
   // This won't handle all YAML features
-  
+
   throw new Error(
-    'Basic YAML parser not implemented. ' +
-    'Please add "yaml" package for full YAML support.'
+    'Basic YAML parser not implemented. ' + 'Please add "yaml" package for full YAML support.',
   )
 }

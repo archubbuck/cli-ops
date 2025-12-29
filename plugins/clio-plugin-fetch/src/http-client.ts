@@ -35,14 +35,18 @@ export class HttpClient {
     // Check cache for GET requests
     if (useCache && method === 'GET') {
       const cacheKey = `http:${method}:${url}`
-      const cached = await this.cache.get<{ status: number; headers: Record<string, string>; body: string }>(cacheKey)
+      const cached = await this.cache.get<{
+        status: number
+        headers: Record<string, string>
+        body: string
+      }>(cacheKey)
       if (cached) {
         return cached
       }
     }
 
     let lastError: Error | null = null
-    
+
     for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
       try {
         const response = await fetch(url, {
@@ -67,10 +71,12 @@ export class HttpClient {
         return result
       } catch (error) {
         lastError = error as Error
-        
+
         if (attempt < this.maxRetries) {
           // Exponential backoff
-          await new Promise(resolve => setTimeout(resolve, this.retryDelay * Math.pow(2, attempt)))
+          await new Promise((resolve) =>
+            setTimeout(resolve, this.retryDelay * Math.pow(2, attempt)),
+          )
         }
       }
     }
@@ -88,28 +94,43 @@ export class HttpClient {
   /**
    * GET request
    */
-  async get(url: string, headers?: Record<string, string>, useCache?: boolean): Promise<{ status: number; headers: Record<string, string>; body: string }> {
+  async get(
+    url: string,
+    headers?: Record<string, string>,
+    useCache?: boolean,
+  ): Promise<{ status: number; headers: Record<string, string>; body: string }> {
     return this.request({ url, method: 'GET', headers, useCache })
   }
 
   /**
    * POST request
    */
-  async post(url: string, body: string, headers?: Record<string, string>): Promise<{ status: number; headers: Record<string, string>; body: string }> {
+  async post(
+    url: string,
+    body: string,
+    headers?: Record<string, string>,
+  ): Promise<{ status: number; headers: Record<string, string>; body: string }> {
     return this.request({ url, method: 'POST', body, headers })
   }
 
   /**
    * PUT request
    */
-  async put(url: string, body: string, headers?: Record<string, string>): Promise<{ status: number; headers: Record<string, string>; body: string }> {
+  async put(
+    url: string,
+    body: string,
+    headers?: Record<string, string>,
+  ): Promise<{ status: number; headers: Record<string, string>; body: string }> {
     return this.request({ url, method: 'PUT', body, headers })
   }
 
   /**
    * DELETE request
    */
-  async delete(url: string, headers?: Record<string, string>): Promise<{ status: number; headers: Record<string, string>; body: string }> {
+  async delete(
+    url: string,
+    headers?: Record<string, string>,
+  ): Promise<{ status: number; headers: Record<string, string>; body: string }> {
     return this.request({ url, method: 'DELETE', headers })
   }
 }

@@ -57,7 +57,7 @@ export default class TasksList extends BaseCommand {
       this.log(formatJSON(tasks, { pretty: true }))
     } else {
       // Format as table
-      const tableData = tasks.map(task => ({
+      const tableData = tasks.map((task) => ({
         id: task.id,
         title: task.title.length > 40 ? task.title.slice(0, 37) + '...' : task.title,
         status: task.status,

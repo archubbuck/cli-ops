@@ -2,7 +2,7 @@ import chalk from 'chalk'
 
 /**
  * Colorblind-friendly color theme
- * 
+ *
  * Based on research for ADHD/OCD users:
  * - High contrast
  * - Works for deuteranopia (red-green colorblindness)
@@ -146,18 +146,13 @@ export function link(text: string, url?: string): string {
 /**
  * Create a simple progress bar
  */
-export function progressBar(
-  current: number,
-  total: number,
-  width = 20
-): string {
+export function progressBar(current: number, total: number, width = 20): string {
   const percentage = current / total
   const filled = Math.floor(percentage * width)
   const empty = width - filled
 
   const bar =
-    symbols.progressBar.complete.repeat(filled) +
-    symbols.progressBar.incomplete.repeat(empty)
+    symbols.progressBar.complete.repeat(filled) + symbols.progressBar.incomplete.repeat(empty)
 
   const percent = Math.floor(percentage * 100)
 
@@ -168,7 +163,7 @@ export function progressBar(
  * Format a list with bullets
  */
 export function list(items: string[]): string {
-  return items.map(item => `  ${symbols.bullet} ${item}`).join('\n')
+  return items.map((item) => `  ${symbols.bullet} ${item}`).join('\n')
 }
 
 /**

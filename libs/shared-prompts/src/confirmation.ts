@@ -9,7 +9,7 @@ import { promptConfirm } from './prompts.js'
  */
 export async function confirmDestruction(
   resourceName: string,
-  options: { force?: boolean } = {}
+  options: { force?: boolean } = {},
 ): Promise<boolean> {
   if (options.force) {
     return true
@@ -26,7 +26,7 @@ export async function confirmDestruction(
  */
 export async function confirmOverwrite(
   filepath: string,
-  options: { force?: boolean } = {}
+  options: { force?: boolean } = {},
 ): Promise<boolean> {
   if (options.force) {
     return true
@@ -43,7 +43,7 @@ export async function confirmOverwrite(
  */
 export async function confirmWarning(
   warning: string,
-  options: { defaultYes?: boolean } = {}
+  options: { defaultYes?: boolean } = {},
 ): Promise<boolean> {
   return promptConfirm({
     message: `${warning} Continue?`,
@@ -55,7 +55,7 @@ export async function confirmWarning(
  * Confirm exit/cancel operation
  */
 export async function confirmExit(
-  message: string = 'Are you sure you want to exit?'
+  message: string = 'Are you sure you want to exit?',
 ): Promise<boolean> {
   return promptConfirm({
     message,
@@ -66,9 +66,7 @@ export async function confirmExit(
 /**
  * Confirm production deployment
  */
-export async function confirmProduction(
-  environment: string = 'production'
-): Promise<boolean> {
+export async function confirmProduction(environment: string = 'production'): Promise<boolean> {
   return promptConfirm({
     message: `You are about to deploy to ${environment}. Continue?`,
     default: false,
@@ -78,10 +76,7 @@ export async function confirmProduction(
 /**
  * Retry prompt after failure
  */
-export async function confirmRetry(
-  action: string,
-  error: string
-): Promise<boolean> {
+export async function confirmRetry(action: string, error: string): Promise<boolean> {
   return promptConfirm({
     message: `${action} failed: ${error}. Retry?`,
     default: true,

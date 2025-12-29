@@ -55,19 +55,19 @@ import { Flags } from '@oclif/core'
 export default class CustomCommand extends BasePluginCommand {
   static pluginName = 'cli-alpha-plugin-custom'
   static pluginVersion = '1.0.0'
-  
+
   static description = 'Custom command from plugin'
-  
+
   static flags = {
     option: Flags.string({ description: 'Custom option' }),
   }
 
   async run(): Promise<void> {
     const { flags } = await this.parse(CustomCommand)
-    
+
     // Emit plugin event
     this.emitPluginEvent('custom:executed', { flags })
-    
+
     this.log('Custom command executed!')
   }
 }
@@ -103,6 +103,7 @@ cli-{cli-name}-plugin-{feature}
 ```
 
 Examples:
+
 - `cli-alpha-plugin-jira`
 - `cli-beta-plugin-auth-oauth`
 - `cli-gamma-plugin-git-hooks`
