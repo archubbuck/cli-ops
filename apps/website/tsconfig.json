@@ -8,5 +8,7 @@
     "paths": {
       "@site/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src/**/*", "*.ts", "*.tsx"],
+  "exclude": ["node_modules", "build", ".docusaurus", "**/*.js"]
 }
