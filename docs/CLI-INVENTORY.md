@@ -9,12 +9,12 @@ This document provides a comprehensive inventory of all CLI applications in this
 
 | CLI      | Version | Commands | Performance (help/version) | Tests       | Shared Packages |
 | -------- | ------- | -------- | -------------------------- | ----------- | --------------- |
-| **clio** | 1.0.0   | 7        | ✅ 447ms / ⚠️ 429ms        | ❌ No tests | 0               |
-| **clio** | 3.0.0   | 2        | ⚠️ 582ms / ⚠️ 576ms        | ❌ No tests | 0               |
+| **clio** | 1.0.0   | 7        | ✅ 440ms / ⚠️ 425ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 2        | ⚠️ 575ms / ⚠️ 577ms        | ❌ No tests | 0               |
 | **clio** | 3.0.0   | 1        | ❌ / ❌                    | ❌ No tests | 0               |
-| **clio** | 3.0.0   | 3        | ⚠️ 579ms / ⚠️ 577ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 3        | ⚠️ 572ms / ⚠️ 572ms        | ❌ No tests | 0               |
 | **clio** | 3.0.0   | 1        | ❌ / ❌                    | ❌ No tests | 0               |
-| **clio** | 3.0.0   | 5        | ⚠️ 677ms / ⚠️ 669ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 5        | ⚠️ 674ms / ⚠️ 667ms        | ❌ No tests | 0               |
 | **clio** | 3.0.0   | 2        | ❌ / ❌                    | ❌ No tests | 0               |
 
 **Performance Budgets:**
@@ -71,8 +71,8 @@ Set up shell completions and other configuration
 
 | Command     | Duration | Budget | Status         |
 | ----------- | -------- | ------ | -------------- |
-| `--help`    | 447ms    | 500ms  | ✅ Pass        |
-| `--version` | 429ms    | 200ms  | ⚠️ Over Budget |
+| `--help`    | 440ms    | 500ms  | ✅ Pass        |
+| `--version` | 425ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -109,8 +109,8 @@ Make a POST request
 
 | Command     | Duration | Budget | Status         |
 | ----------- | -------- | ------ | -------------- |
-| `--help`    | 582ms    | 500ms  | ⚠️ Over Budget |
-| `--version` | 576ms    | 200ms  | ⚠️ Over Budget |
+| `--help`    | 575ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 577ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -183,8 +183,8 @@ List pull requests
 
 | Command     | Duration | Budget | Status         |
 | ----------- | -------- | ------ | -------------- |
-| `--help`    | 579ms    | 500ms  | ⚠️ Over Budget |
-| `--version` | 577ms    | 200ms  | ⚠️ Over Budget |
+| `--help`    | 572ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 572ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -265,8 +265,8 @@ Update a task
 
 | Command     | Duration | Budget | Status         |
 | ----------- | -------- | ------ | -------------- |
-| `--help`    | 677ms    | 500ms  | ⚠️ Over Budget |
-| `--version` | 669ms    | 200ms  | ⚠️ Over Budget |
+| `--help`    | 674ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 667ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
