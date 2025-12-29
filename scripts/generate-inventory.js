@@ -6,7 +6,7 @@
  * and generates docs/CLI-INVENTORY.md + versioned JSON snapshots
  */
 
-import { execSync } from 'node:child_process'
+import { execSync, spawnSync } from 'node:child_process'
 import { performance } from 'node:perf_hooks'
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
@@ -472,10 +472,16 @@ function main() {
   // Format generated files with Prettier
   console.log('🎨 Formatting generated files...')
   try {
-    execSync(`npx prettier --write "${mdPath}" "${versionedPath}" "${latestPath}"`, {
-      stdio: 'pipe',
+    const result = spawnSync('npx', ['prettier', '--write', mdPath, versionedPath, latestPath], {
+      stdio: 'inherit',
     })
-    console.log(`   ✅ Files formatted with Prettier`)
+    if (result.status === 0) {
+      console.log(`   ✅ Files formatted with Prettier`)
+    } else {
+      console.warn(
+        `   ⚠️  Warning: Prettier exited with code ${result.status}. Files may not be formatted.`,
+      )
+    }
   } catch (error) {
     console.warn(`   ⚠️  Warning: Failed to format files with Prettier: ${error.message}`)
   }
