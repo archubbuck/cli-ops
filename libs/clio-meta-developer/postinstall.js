@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
 const { execSync } = require('child_process')
-const { existsSync } = require('fs')
-const { resolve } = require('path')
 
 process.stdout.write('Installing clio developer plugins...\n')
 
