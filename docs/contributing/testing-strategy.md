@@ -14,7 +14,7 @@ This document outlines the testing approach for the cli-ops monorepo, including 
 ## Testing Goals
 
 1. **80%+ code coverage** for all packages
-2. **Fast feedback** (<5s for unit tests)
+2. **Fast feedback** (&lt;5s for unit tests)
 3. **Confidence** in refactoring
 4. **Documentation** via test examples
 5. **Prevent regressions**

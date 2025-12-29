@@ -18,12 +18,12 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link className="button button--secondary button--lg" to="/docs/intro">
+          <Link className="button button--secondary button--lg" to="/docs/guides/quick-start">
             Get Started - 5min ⏱️
           </Link>
           <Link
             className="button button--outline button--secondary button--lg"
-            to="/docs/plugins/getting-started"
+            to="/docs/contributing/plugin-development"
             style={{ marginLeft: '1rem' }}
           >
             Build a Plugin

@@ -18,3 +18,6 @@ CHANGELOG.md
 # Package files
 package-lock.json
 yarn.lock
+
+# Template files (contain Handlebars syntax)
+generators/templates/**

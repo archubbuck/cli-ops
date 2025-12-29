@@ -442,7 +442,7 @@ Configuration is cached in memory:
 const theme1 = await config.get('theme') // ~5ms
 
 // Subsequent calls: cached
-const theme2 = await config.get('theme') // <1ms
+const theme2 = await config.get('theme') // &lt;1ms
 ```
 
 ### Atomic Writes

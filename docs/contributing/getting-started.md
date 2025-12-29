@@ -53,7 +53,7 @@ This installs all dependencies for all packages and CLIs in the monorepo.
 pnpm build
 ```
 
-Turborepo will build packages in dependency order. First build takes ~30s, cached builds <5s.
+Turborepo will build packages in dependency order. First build takes ~30s, cached builds &lt;5s.
 
 ### 4. Verify Setup
 

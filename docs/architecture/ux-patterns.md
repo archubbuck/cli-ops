@@ -31,7 +31,7 @@ gamma projects delete project-123
 
 All operations provide clear visual feedback:
 
-- **Instant operations** (<100ms): Immediate output
+- **Instant operations** (&lt;100ms): Immediate output
 - **Quick operations** (100ms-1s): Spinner
 - **Long operations** (>1s): Progress bar
 
