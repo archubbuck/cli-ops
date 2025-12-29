@@ -469,6 +469,17 @@ function main() {
   console.log(`   ✅ Written to inventory/inventory-v${version}.json`)
   console.log(`   ✅ Written to inventory/latest.json`)
 
+  // Format generated files with Prettier
+  console.log('🎨 Formatting generated files...')
+  try {
+    execSync(`npx prettier --write "${mdPath}" "${versionedPath}" "${latestPath}"`, {
+      stdio: 'pipe',
+    })
+    console.log(`   ✅ Files formatted with Prettier`)
+  } catch (error) {
+    console.warn(`   ⚠️  Warning: Failed to format files with Prettier: ${error.message}`)
+  }
+
   console.log('\n✨ Inventory generation complete!')
   console.log(`\n📊 Summary:`)
   console.log(`   CLIs: ${inventory.clis.length}`)
