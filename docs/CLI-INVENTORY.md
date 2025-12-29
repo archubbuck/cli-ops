@@ -7,17 +7,18 @@ This document provides a comprehensive inventory of all CLI applications in this
 
 ## Overview
 
-| CLI | Version | Commands | Performance (help/version) | Tests | Shared Packages |
-|-----|---------|----------|----------------------------|-------|------------------|
-| **clio** | 1.0.0 | 7 | ⚠️ 743ms / ⚠️ 734ms | ❌ No tests | 0 |
-| **clio** | 3.0.0 | 2 | ⚠️ 592ms / ⚠️ 586ms | ❌ No tests | 0 |
-| **clio** | 3.0.0 | 1 | ❌ / ❌ | ❌ No tests | 0 |
-| **clio** | 3.0.0 | 3 | ⚠️ 580ms / ⚠️ 578ms | ❌ No tests | 0 |
-| **clio** | 3.0.0 | 1 | ❌ / ❌ | ❌ No tests | 0 |
-| **clio** | 3.0.0 | 5 | ⚠️ 681ms / ⚠️ 686ms | ❌ No tests | 0 |
-| **clio** | 3.0.0 | 2 | ❌ / ❌ | ❌ No tests | 0 |
+| CLI      | Version | Commands | Performance (help/version) | Tests       | Shared Packages |
+| -------- | ------- | -------- | -------------------------- | ----------- | --------------- |
+| **clio** | 1.0.0   | 7        | ⚠️ 743ms / ⚠️ 734ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 2        | ⚠️ 592ms / ⚠️ 586ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 1        | ❌ / ❌                    | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 3        | ⚠️ 580ms / ⚠️ 578ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 1        | ❌ / ❌                    | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 5        | ⚠️ 681ms / ⚠️ 686ms        | ❌ No tests | 0               |
+| **clio** | 3.0.0   | 2        | ❌ / ❌                    | ❌ No tests | 0               |
 
 **Performance Budgets:**
+
 - Help command: 500ms
 - Version command: 200ms
 
@@ -68,10 +69,10 @@ Set up shell completions and other configuration
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | 743ms | 500ms | ⚠️ Over Budget |
-| `--version` | 734ms | 200ms | ⚠️ Over Budget |
+| Command     | Duration | Budget | Status         |
+| ----------- | -------- | ------ | -------------- |
+| `--help`    | 743ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 734ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -106,10 +107,10 @@ Make a POST request
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | 592ms | 500ms | ⚠️ Over Budget |
-| `--version` | 586ms | 200ms | ⚠️ Over Budget |
+| Command     | Duration | Budget | Status         |
+| ----------- | -------- | ------ | -------------- |
+| `--help`    | 592ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 586ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -139,10 +140,10 @@ Authenticate using OAuth 2.0
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | -1ms | 500ms | ❌ Error |
-| `--version` | -1ms | 200ms | ❌ Error |
+| Command     | Duration | Budget | Status   |
+| ----------- | -------- | ------ | -------- |
+| `--help`    | -1ms     | 500ms  | ❌ Error |
+| `--version` | -1ms     | 200ms  | ❌ Error |
 
 ### Testing
 
@@ -180,10 +181,10 @@ List pull requests
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | 580ms | 500ms | ⚠️ Over Budget |
-| `--version` | 578ms | 200ms | ⚠️ Over Budget |
+| Command     | Duration | Budget | Status         |
+| ----------- | -------- | ------ | -------------- |
+| `--help`    | 580ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 578ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -213,10 +214,10 @@ Install Git hooks for automated checks
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | -1ms | 500ms | ❌ Error |
-| `--version` | -1ms | 200ms | ❌ Error |
+| Command     | Duration | Budget | Status   |
+| ----------- | -------- | ------ | -------- |
+| `--help`    | -1ms     | 500ms  | ❌ Error |
+| `--version` | -1ms     | 200ms  | ❌ Error |
 
 ### Testing
 
@@ -262,10 +263,10 @@ Update a task
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | 681ms | 500ms | ⚠️ Over Budget |
-| `--version` | 686ms | 200ms | ⚠️ Over Budget |
+| Command     | Duration | Budget | Status         |
+| ----------- | -------- | ------ | -------------- |
+| `--help`    | 681ms    | 500ms  | ⚠️ Over Budget |
+| `--version` | 686ms    | 200ms  | ⚠️ Over Budget |
 
 ### Testing
 
@@ -299,10 +300,10 @@ Sync tasks with Jira project
 
 ### Performance
 
-| Command | Duration | Budget | Status |
-|---------|----------|--------|--------|
-| `--help` | -1ms | 500ms | ❌ Error |
-| `--version` | -1ms | 200ms | ❌ Error |
+| Command     | Duration | Budget | Status   |
+| ----------- | -------- | ------ | -------- |
+| `--help`    | -1ms     | 500ms  | ❌ Error |
+| `--version` | -1ms     | 200ms  | ❌ Error |
 
 ### Testing
 
@@ -319,6 +320,7 @@ This inventory is automatically generated and validated:
 - **Update Architecture Docs:** `pnpm inventory:update-docs`
 
 The inventory is regenerated:
+
 - After each build via postbuild hook
 - In CI workflows to ensure accuracy
 - Before commits via pre-commit hook (validation)
@@ -326,6 +328,7 @@ The inventory is regenerated:
 ### When to Update
 
 The inventory updates automatically when:
+
 - Adding or removing CLI applications
 - Adding, removing, or modifying commands
 - Changing CLI versions or descriptions
