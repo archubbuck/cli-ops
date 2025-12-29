@@ -1,6 +1,7 @@
 {
   "name": "@cli-ops/clio",
   "version": "1.0.0",
+  "type": "module",
   "description": "Foundational plugin manager CLI for CLI Ops tools",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
