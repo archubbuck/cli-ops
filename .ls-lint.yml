@@ -10,11 +10,13 @@ ls:
   plugins/**/test/**/*.{ts,js}: kebab-case
   extensions/**/test/**/*.{ts,js}: kebab-case
 
-  # Enforce kebab-case for documentation
-  docs/**/*.md: kebab-case
-
   # Enforce kebab-case for scripts
   scripts/*.{ts,js,sh}: kebab-case
+  plugins/**/scripts/*.{ts,js,sh}: kebab-case
+  packages/**/scripts/*.{ts,js,sh}: kebab-case
+
+  # Enforce kebab-case for documentation
+  docs/**/*.md: kebab-case
 
 ignore:
   - .git
