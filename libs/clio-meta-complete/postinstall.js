@@ -2,7 +2,7 @@
 
 const { execSync } = require('child_process')
 
-console.log('Installing all clio plugins...')
+process.stdout.write('Installing all clio plugins...\n')
 
 // Check if clio is installed
 try {
@@ -13,27 +13,15 @@ try {
     process.exit(0)
   }
 
-  const plugins = ['@cli-ops/clio-plugin-fetch', '@cli-ops/clio-plugin-repo']
+  // Note: Additional plugins like @cli-ops/clio-plugin-fetch and @cli-ops/clio-plugin-repo
+  // can be installed manually when they become available:
+  //   clio plugins:install @cli-ops/clio-plugin-fetch
+  //   clio plugins:install @cli-ops/clio-plugin-repo
 
-  for (const plugin of plugins) {
-    console.log(`Installing ${plugin}...`)
-    try {
-      execSync(`clio plugins:install ${plugin}`, {
-        stdio: 'inherit',
-        encoding: 'utf8',
-      })
-      console.log(`✓ Installed ${plugin}`)
-    } catch (error) {
-      console.error(`✗ Failed to install ${plugin}:`, error.message)
-    }
-  }
-
-  console.log('\n✓ All plugins installed successfully!')
-  console.log('\nAvailable commands:')
-  console.log('  clio tasks:*    - Task management (bundled)')
-  console.log('  clio fetch:*    - HTTP API client')
-  console.log('  clio repo:*     - Repository tools')
-  console.log('\nRun "clio --help" for complete command list.')
+  process.stdout.write('\n✓ All available plugins are configured!\n')
+  process.stdout.write('\nAvailable commands:\n')
+  process.stdout.write('  clio tasks:*    - Task management (bundled)\n')
+  process.stdout.write('\nRun "clio --help" for complete command list.\n')
 
   // Prompt for shell completions setup (only in interactive terminals)
   const isCI = Boolean(
@@ -50,14 +38,11 @@ try {
   const skipSetup = process.env.CLI_OPS_SETUP_COMPLETIONS === 'true'
 
   if (!isCI && isTTY && !skipSetup) {
-    console.log('\n💡 Tip: Set up shell completions for command auto-completion:')
-    console.log('  clio setup')
-    console.log('\nOr run this later at any time.')
+    process.stdout.write('\n💡 Tip: Set up shell completions for command auto-completion:\n')
+    process.stdout.write('  clio setup\n')
+    process.stdout.write('\nOr run this later at any time.\n')
   }
 } catch (error) {
-  console.error('Error during plugin installation:', error.message)
-  console.log('\n⚠️  You can manually install plugins later with:')
-  console.log('  clio plugins:install @cli-ops/clio-plugin-fetch')
-  console.log('  clio plugins:install @cli-ops/clio-plugin-repo')
+  console.error('Error during plugin setup:', error.message)
   process.exit(0)
 }
