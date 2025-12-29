@@ -73,7 +73,7 @@ src/
 
 - Prefer simple solutions over clever ones
 - Extract complex logic into well-named functions
-- Limit function length (aim for <50 lines)
+- Limit function length (aim for &lt;50 lines)
 - One responsibility per function
 
 **Examples**:

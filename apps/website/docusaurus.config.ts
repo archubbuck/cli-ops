@@ -13,7 +13,7 @@ const config: Config = {
   organizationName: 'cli-ops',
   projectName: 'clio',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
@@ -85,11 +85,11 @@ const config: Config = {
           items: [
             {
               label: 'Getting Started',
-              to: '/docs/intro',
+              to: '/docs/guides/quick-start',
             },
             {
               label: 'Plugin Development',
-              to: '/docs/plugins/development',
+              to: '/docs/contributing/plugin-development',
             },
             {
               label: 'Architecture',

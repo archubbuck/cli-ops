@@ -15,14 +15,14 @@ Performance is a critical aspect of CLI user experience. This document outlines 
 
 ### Target Metrics
 
-| Operation Type    | Target  | Rationale                                  |
-| ----------------- | ------- | ------------------------------------------ |
-| Version command   | <200ms  | Trivial operation, must be instant         |
-| Help command      | <500ms  | Frequently used, must feel responsive      |
-| List operations   | <1000ms | User-facing reads, must feel fast          |
-| Create operations | <2000ms | Write operations, acceptable delay         |
-| Full build        | <30s    | Developer workflow, cached builds critical |
-| Cached build      | <5s     | Incremental development, must be instant   |
+| Operation Type    | Target     | Rationale                                  |
+| ----------------- | ---------- | ------------------------------------------ |
+| Version command   | &lt;200ms  | Trivial operation, must be instant         |
+| Help command      | &lt;500ms  | Frequently used, must feel responsive      |
+| List operations   | &lt;1000ms | User-facing reads, must feel fast          |
+| Create operations | &lt;2000ms | Write operations, acceptable delay         |
+| Full build        | &lt;30s    | Developer workflow, cached builds critical |
+| Cached build      | &lt;5s     | Incremental development, must be instant   |
 
 ### Monitoring
 

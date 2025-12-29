@@ -115,7 +115,7 @@ $ clio history:list
 
 ### Neutral
 
-- **Disk usage**: History database typically <1MB, even with 1000s of commands
+- **Disk usage**: History database typically &lt;1MB, even with 1000s of commands
 - **Privacy**: History contains command arguments (may include sensitive data)
   - Mitigation: Users can disable history or clear it
 

@@ -291,7 +291,7 @@ export default class DaemonCommand extends BaseCommand {
 File-based IPC has latency (100-500ms typical). Not suitable for:
 
 - High-frequency events (>10/second)
-- Time-critical coordination (<100ms latency required)
+- Time-critical coordination (&lt;100ms latency required)
 
 For these cases, consider direct IPC primitives (named pipes, domain sockets).
 

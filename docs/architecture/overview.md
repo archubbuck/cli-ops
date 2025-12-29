@@ -224,13 +224,13 @@ The architecture is designed for extensibility:
 
 Target performance metrics:
 
-| Operation        | Target  | Notes               |
-| ---------------- | ------- | ------------------- |
-| CLI startup      | <300ms  | Module loading time |
-| `--help`         | <500ms  | Most common command |
-| `--version`      | <200ms  | Trivial operation   |
-| Simple commands  | <1000ms | List, show, etc.    |
-| Complex commands | <2000ms | Add, delete, etc.   |
+| Operation        | Target     | Notes               |
+| ---------------- | ---------- | ------------------- |
+| CLI startup      | &lt;300ms  | Module loading time |
+| `--help`         | &lt;500ms  | Most common command |
+| `--version`      | &lt;200ms  | Trivial operation   |
+| Simple commands  | &lt;1000ms | List, show, etc.    |
+| Complex commands | &lt;2000ms | Add, delete, etc.   |
 
 See [performance.md](./performance.md) for optimization strategies.
 

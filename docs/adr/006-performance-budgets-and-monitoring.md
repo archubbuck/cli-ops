@@ -40,13 +40,13 @@ We will enforce **performance budgets** for all clio and plugin operations with 
 
 ### Performance Targets
 
-| Operation                      | Target  | Maximum | Rationale                                   |
-| ------------------------------ | ------- | ------- | ------------------------------------------- |
-| `--help`                       | <200ms  | <500ms  | Most common command, must be instant        |
-| `--version`                    | <100ms  | <200ms  | Trivial operation, near-instant             |
-| Simple commands (list, show)   | <500ms  | <1000ms | Should feel immediate                       |
-| Complex commands (add, delete) | <1000ms | <2000ms | Acceptable for operations with side effects |
-| CLI startup (require time)     | <300ms  | <500ms  | Impacts all commands                        |
+| Operation                      | Target     | Maximum    | Rationale                                   |
+| ------------------------------ | ---------- | ---------- | ------------------------------------------- |
+| `--help`                       | &lt;200ms  | &lt;500ms  | Most common command, must be instant        |
+| `--version`                    | &lt;100ms  | &lt;200ms  | Trivial operation, near-instant             |
+| Simple commands (list, show)   | &lt;500ms  | &lt;1000ms | Should feel immediate                       |
+| Complex commands (add, delete) | &lt;1000ms | &lt;2000ms | Acceptable for operations with side effects |
+| CLI startup (require time)     | &lt;300ms  | &lt;500ms  | Impacts all commands                        |
 
 ### Monitoring Strategy
 

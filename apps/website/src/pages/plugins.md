@@ -160,7 +160,7 @@ Have you built a plugin for Clio? Share it with the community!
 
 - Published to npm with `clio-plugin-` in the name
 - Includes README with installation and usage instructions
-- Follows [plugin development best practices](/docs/plugins/best-practices)
+- Follows [plugin development best practices](/docs/contributing/plugin-development)
 - Includes tests and CI/CD
 
 ### Submission Process
@@ -206,7 +206,7 @@ Want to build your own plugin?
         <p>Learn how to create clio plugins from scratch</p>
       </div>
       <div className="card__footer">
-        <a href="/docs/plugins/getting-started" className="button button--primary button--block">
+        <a href="/docs/guides/plugins-getting-started" className="button button--primary button--block">
           Start Building
         </a>
       </div>
