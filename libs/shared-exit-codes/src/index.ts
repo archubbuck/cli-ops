@@ -1,11 +1,11 @@
 export {
   // Success
   SUCCESS,
-  
+
   // Generic errors
   GENERIC_ERROR,
   MISUSE,
-  
+
   // BSD sysexits.h compatible (64-78)
   CONFIG_ERROR,
   DATA_ERROR,
@@ -22,7 +22,7 @@ export {
   PROTOCOL_ERROR,
   NO_PERMISSION,
   SYSTEM_CONFIG_ERROR,
-  
+
   // Custom CLI codes (100+)
   AUTH_ERROR,
   AUTHZ_ERROR,
@@ -32,7 +32,7 @@ export {
   NOT_FOUND,
   ALREADY_EXISTS,
   CANCELLED,
-  
+
   // Utilities
   EXIT_CODE_DESCRIPTIONS,
   getExitCodeDescription,

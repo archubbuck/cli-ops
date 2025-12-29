@@ -81,7 +81,7 @@ process.on('message', async (message: IPCMessage) => {
   if (message.type === 'task') {
     // Handle task
     const result = await processTask(message.payload)
-    
+
     // Send progress updates
     process.send!({
       id: Math.random().toString(36).slice(2),
@@ -94,7 +94,7 @@ process.on('message', async (message: IPCMessage) => {
   if (message.type === 'calculate') {
     // Handle request
     const result = message.payload.values.reduce((a, b) => a + b, 0)
-    
+
     // Send response
     process.send!({
       id: message.id, // Same ID for response
@@ -154,12 +154,12 @@ class LoggerPlugin implements Plugin {
     this.unsubscribers.push(
       bus.on('*', (payload) => {
         console.log('Event:', payload)
-      })
+      }),
     )
   }
 
   destroy(): void {
-    this.unsubscribers.forEach(unsub => unsub())
+    this.unsubscribers.forEach((unsub) => unsub())
   }
 }
 ```
@@ -214,7 +214,7 @@ class WorkerPool {
   }
 
   shutdown(): void {
-    this.workers.forEach(worker => worker.stop())
+    this.workers.forEach((worker) => worker.stop())
   }
 }
 
@@ -332,6 +332,7 @@ worker.start()
 ## API Reference
 
 ### EventBus
+
 - `on<T>(event, handler)` - Subscribe to event
 - `once<T>(event, handler)` - Subscribe once
 - `off<T>(event, handler)` - Unsubscribe
@@ -342,6 +343,7 @@ worker.start()
 - `eventNames()` - Get all event names
 
 ### ManagedProcess
+
 - `start()` - Start child process
 - `stop(signal?)` - Stop child process
 - `send<T>(type, payload)` - Send message
@@ -351,6 +353,7 @@ worker.start()
 - `getPid()` - Get process ID
 
 ### Events (ManagedProcess)
+
 - `start` - Process started
 - `restart` - Process restarted
 - `exit` - Process exited
@@ -360,10 +363,12 @@ worker.start()
 ## Options
 
 ### EventBusOptions
+
 - `maxListeners` - Max listeners per event (default: 10)
 - `warnOnMaxListeners` - Warn on exceeded (default: true)
 
 ### ProcessManagerOptions
+
 - `timeout` - Request timeout in ms (default: 30000)
 - `autoRestart` - Auto-restart on crash (default: false)
 - `maxRestarts` - Max restart attempts (default: 3)

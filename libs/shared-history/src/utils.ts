@@ -55,7 +55,7 @@ export function buildCommandString(entry: HistoryEntry): string {
  */
 export function formatHistoryEntry(
   entry: HistoryEntry,
-  options: { verbose?: boolean } = {}
+  options: { verbose?: boolean } = {},
 ): string {
   const { verbose = false } = options
 
@@ -82,12 +82,10 @@ export function formatHistoryEntry(
 /**
  * Group history entries by command
  */
-export function groupByCommand(
-  entries: HistoryEntry[]
-): Map<string, HistoryEntry[]> {
+export function groupByCommand(entries: HistoryEntry[]): Map<string, HistoryEntry[]> {
   const groups = new Map<string, HistoryEntry[]>()
 
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     const existing = groups.get(entry.command) || []
     existing.push(entry)
     groups.set(entry.command, existing)
@@ -99,12 +97,10 @@ export function groupByCommand(
 /**
  * Group history entries by date
  */
-export function groupByDate(
-  entries: HistoryEntry[]
-): Map<string, HistoryEntry[]> {
+export function groupByDate(entries: HistoryEntry[]): Map<string, HistoryEntry[]> {
   const groups = new Map<string, HistoryEntry[]>()
 
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     const date = new Date(entry.timestamp).toLocaleDateString()
     const existing = groups.get(date) || []
     existing.push(entry)
@@ -120,13 +116,10 @@ export function groupByDate(
 export function findSimilar(
   target: string,
   entries: HistoryEntry[],
-  threshold: number = 0.6
+  threshold: number = 0.6,
 ): HistoryEntry[] {
-  return entries.filter(entry => {
-    const similarity = calculateSimilarity(
-      target.toLowerCase(),
-      entry.command.toLowerCase()
-    )
+  return entries.filter((entry) => {
+    const similarity = calculateSimilarity(target.toLowerCase(), entry.command.toLowerCase())
     return similarity >= threshold
   })
 }
@@ -160,12 +153,10 @@ function calculateSimilarity(a: string, b: string): number {
 /**
  * Get command frequency
  */
-export function getCommandFrequency(
-  entries: HistoryEntry[]
-): Map<string, number> {
+export function getCommandFrequency(entries: HistoryEntry[]): Map<string, number> {
   const frequency = new Map<string, number>()
 
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     frequency.set(entry.command, (frequency.get(entry.command) || 0) + 1)
   })
 
@@ -176,12 +167,9 @@ export function getCommandFrequency(
  * Get success rate for commands
  */
 export function getSuccessRate(entries: HistoryEntry[]): Map<string, number> {
-  const stats = new Map<
-    string,
-    { total: number; successful: number }
-  >()
+  const stats = new Map<string, { total: number; successful: number }>()
 
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     const current = stats.get(entry.command) || { total: 0, successful: 0 }
     current.total++
     if (entry.success) {

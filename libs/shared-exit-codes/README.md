@@ -35,13 +35,16 @@ if (isRetryable(exitCode)) {
 ## Exit Code Reference
 
 ### Success (0)
+
 - `SUCCESS` (0) - Command completed successfully
 
 ### Generic Errors (1-2)
+
 - `GENERIC_ERROR` (1) - Catch-all for unspecified errors
 - `MISUSE` (2) - Invalid arguments, flags, or usage
 
 ### BSD sysexits.h Compatible (64-78)
+
 - `CONFIG_ERROR` (64) - Invalid or missing configuration
 - `DATA_ERROR` (65) - Invalid input data format
 - `NO_INPUT` (66) - Input file or resource unavailable
@@ -59,8 +62,9 @@ if (isRetryable(exitCode)) {
 - `SYSTEM_CONFIG_ERROR` (78) - System configuration problem
 
 ### Custom CLI Codes (100+)
+
 - `AUTH_ERROR` (100) - Authentication failed
-- `AUTHZ_ERROR` (101) - Authorization failed  
+- `AUTHZ_ERROR` (101) - Authorization failed
 - `NETWORK_ERROR` (102) - Network connection error
 - `API_ERROR` (103) - Remote API error
 - `VALIDATION_ERROR` (104) - Data validation failed
@@ -71,15 +75,19 @@ if (isRetryable(exitCode)) {
 ## Utility Functions
 
 ### `getExitCodeDescription(code: number): string`
+
 Returns human-readable description for any exit code.
 
 ### `isSuccess(code: number): boolean`
+
 Returns `true` if code indicates success (0).
 
 ### `isError(code: number): boolean`
+
 Returns `true` if code indicates error (non-zero).
 
 ### `isRetryable(code: number): boolean`
+
 Returns `true` if error may succeed on retry (TEMP_FAIL, NETWORK_ERROR, UNAVAILABLE).
 
 ## Best Practices
@@ -93,6 +101,7 @@ Returns `true` if error may succeed on retry (TEMP_FAIL, NETWORK_ERROR, UNAVAILA
 ## Examples
 
 ### Configuration Error
+
 ```typescript
 if (!config.isValid()) {
   console.error('Invalid configuration in config.json')
@@ -101,6 +110,7 @@ if (!config.isValid()) {
 ```
 
 ### Network Error with Retry Suggestion
+
 ```typescript
 if (isRetryable(error.exitCode)) {
   console.error(`${error.message} (temporary failure, retry may succeed)`)
@@ -109,6 +119,7 @@ if (isRetryable(error.exitCode)) {
 ```
 
 ### Permission Denied
+
 ```typescript
 if (!hasPermission) {
   console.error('Permission denied. Run with sudo or check file permissions.')

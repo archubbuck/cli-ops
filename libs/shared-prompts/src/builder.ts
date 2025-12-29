@@ -24,7 +24,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
       default?: string
       validate?: (value: string) => boolean | string | Promise<boolean | string>
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'input',
@@ -44,7 +44,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
     options: {
       default?: boolean
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'confirm',
@@ -65,7 +65,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
     options: {
       default?: V
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'list',
@@ -87,7 +87,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
     options: {
       validate?: (value: V[]) => boolean | string | Promise<boolean | string>
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'checkbox',
@@ -109,7 +109,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
       default?: number
       validate?: (value: number) => boolean | string | Promise<boolean | string>
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'number',
@@ -130,7 +130,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
       mask?: string
       validate?: (value: string) => boolean | string | Promise<boolean | string>
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'password',
@@ -151,7 +151,7 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
       default?: string
       validate?: (value: string) => boolean | string | Promise<boolean | string>
       when?: (answers: Partial<T>) => boolean | Promise<boolean>
-    } = {}
+    } = {},
   ): this {
     this.prompts.push({
       type: 'editor',
@@ -166,13 +166,15 @@ export class PromptBuilder<T extends Record<string, unknown> = Record<string, un
    * Execute all prompts and return answers
    */
   async run(): Promise<T> {
-    return await inquirer.prompt(this.prompts) as T
+    return (await inquirer.prompt(this.prompts)) as T
   }
 }
 
 /**
  * Create a new prompt builder
  */
-export function createPromptBuilder<T extends Record<string, unknown> = Record<string, unknown>>(): PromptBuilder<T> {
+export function createPromptBuilder<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>(): PromptBuilder<T> {
   return new PromptBuilder<T>()
 }

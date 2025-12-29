@@ -31,14 +31,11 @@ spinner.start()
 spinner.succeed('Done!')
 
 // Wrapper helper
-const data = await withSpinner(
-  'Fetching data',
-  async spinner => {
-    const result = await fetchData()
-    spinner.text = 'Processing...'
-    return processData(result)
-  }
-)
+const data = await withSpinner('Fetching data', async (spinner) => {
+  const result = await fetchData()
+  spinner.text = 'Processing...'
+  return processData(result)
+})
 
 // Custom messages
 await spinnerTask(
@@ -47,9 +44,9 @@ await spinnerTask(
     succeed: 'Deployed successfully!',
     fail: 'Deployment failed',
   },
-  async spinner => {
+  async (spinner) => {
     await deploy()
-  }
+  },
 )
 ```
 
@@ -67,12 +64,9 @@ for (let i = 0; i <= 100; i++) {
 bar.stop()
 
 // Process array with progress
-const results = await processWithProgress(
-  files,
-  async (file, index) => {
-    return await processFile(file)
-  }
-)
+const results = await processWithProgress(files, async (file, index) => {
+  return await processFile(file)
+})
 
 // Custom format
 const bar = createProgressBar({
@@ -115,20 +109,20 @@ await tasks.run()
 const tasks = createTaskList([
   {
     title: 'Check auth',
-    task: async ctx => {
+    task: async (ctx) => {
       ctx.isAuthed = await checkAuth()
     },
   },
   {
     title: 'Login',
-    enabled: ctx => !ctx.isAuthed,
+    enabled: (ctx) => !ctx.isAuthed,
     task: async () => {
       await login()
     },
   },
   {
     title: 'Deploy',
-    skip: ctx => !ctx.isAuthed ? 'Not authenticated' : false,
+    skip: (ctx) => (!ctx.isAuthed ? 'Not authenticated' : false),
     task: async () => {
       await deploy()
     },
@@ -181,11 +175,7 @@ console.log(`Run ${code('npm install')} to install dependencies`)
 console.log(link('Documentation', 'https://docs.example.com'))
 
 // Lists
-console.log(list([
-  'First item',
-  'Second item',
-  'Third item',
-]))
+console.log(list(['First item', 'Second item', 'Third item']))
 
 // Custom colors (colorblind-friendly)
 console.log(colors.success('✓ Success'))
@@ -211,18 +201,21 @@ This ensures **all users** can distinguish states, not just those with typical c
 All UI components automatically detect CI environments and non-TTY terminals:
 
 ### In TTY (Normal Terminal)
+
 - Animated spinners
 - Progress bars with visual updates
 - Colored output
 - Interactive task lists
 
 ### In CI/Non-TTY
+
 - Text-only output
 - Percentage logs every 10%
 - No colors (for CI logs)
 - Simple task status
 
 **Override detection:**
+
 ```typescript
 const spinner = createSpinner({
   text: 'Loading',
@@ -244,7 +237,7 @@ async function deploy() {
       task: async (ctx, task) => {
         const spinner = createSpinner({ text: 'Compiling...' })
         spinner.start()
-        
+
         try {
           await build()
           spinner.succeed('Compiled')
@@ -258,7 +251,7 @@ async function deploy() {
       title: 'Upload assets',
       task: async (ctx, task) => {
         const files = await getFiles()
-        
+
         for (const file of files) {
           task.output = `Uploading ${file.name}`
           await upload(file)
@@ -291,7 +284,7 @@ const results = await processWithProgress(
   },
   {
     format: 'Processing {bar} {percentage}% | {value}/{total} files',
-  }
+  },
 )
 
 console.log(success(`Processed ${results.length} files`))
@@ -307,30 +300,33 @@ interface Context {
   authToken?: string
 }
 
-const tasks = createTaskList<Context>([
-  {
-    title: 'Check authentication',
-    task: async ctx => {
-      ctx.needsAuth = !(await hasValidToken())
+const tasks = createTaskList<Context>(
+  [
+    {
+      title: 'Check authentication',
+      task: async (ctx) => {
+        ctx.needsAuth = !(await hasValidToken())
+      },
     },
-  },
-  {
-    title: 'Authenticate',
-    enabled: ctx => ctx.needsAuth,
-    task: async ctx => {
-      ctx.authToken = await login()
+    {
+      title: 'Authenticate',
+      enabled: (ctx) => ctx.needsAuth,
+      task: async (ctx) => {
+        ctx.authToken = await login()
+      },
     },
-  },
-  {
-    title: 'Fetch data',
-    skip: ctx => !ctx.authToken ? 'No auth token' : false,
-    task: async ctx => {
-      await fetchData(ctx.authToken)
+    {
+      title: 'Fetch data',
+      skip: (ctx) => (!ctx.authToken ? 'No auth token' : false),
+      task: async (ctx) => {
+        await fetchData(ctx.authToken)
+      },
     },
+  ],
+  {
+    context: { needsAuth: false },
   },
-], {
-  context: { needsAuth: false },
-})
+)
 
 await tasks.run()
 ```
@@ -347,6 +343,7 @@ await tasks.run()
 ## API Reference
 
 ### Spinner Methods
+
 - `start(text?)` - Start spinning
 - `stop()` - Stop and remove
 - `succeed(text?)` - Mark success with ✓
@@ -355,6 +352,7 @@ await tasks.run()
 - `info(text?)` - Mark info with ℹ
 
 ### Progress Bar Methods
+
 - `update(value, payload?)` - Set progress value
 - `increment(delta?, payload?)` - Add to progress
 - `stop()` - Remove progress bar
@@ -363,6 +361,7 @@ await tasks.run()
 - `isComplete()` - Check if at 100%
 
 ### Task List Options
+
 - `concurrent` - Run tasks in parallel
 - `exitOnError` - Stop on first error (default: true)
 - `renderer` - Force specific renderer

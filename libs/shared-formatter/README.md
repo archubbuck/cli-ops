@@ -63,16 +63,18 @@ const users = [
 console.log(formatTable(users))
 
 // Custom columns
-console.log(formatTable(users, {
-  columns: [
-    { key: 'name', label: 'Name', width: 20 },
-    { key: 'age', label: 'Age', width: 5, align: 'right' },
-    { key: 'role', label: 'Role', width: 15 },
-  ],
-  style: 'grid',
-  showRowNumbers: true,
-  sortBy: 'age',
-}))
+console.log(
+  formatTable(users, {
+    columns: [
+      { key: 'name', label: 'Name', width: 20 },
+      { key: 'age', label: 'Age', width: 5, align: 'right' },
+      { key: 'role', label: 'Role', width: 15 },
+    ],
+    style: 'grid',
+    showRowNumbers: true,
+    sortBy: 'age',
+  }),
+)
 
 // Key-value table
 const config = { host: 'localhost', port: 3000, debug: true }
@@ -210,14 +212,16 @@ class ListCommand {
         break
       case 'table':
       default:
-        console.log(formatTable(items, {
-          columns: [
-            { key: 'id', label: 'ID', width: 10 },
-            { key: 'name', label: 'Name', width: 30 },
-            { key: 'status', label: 'Status', width: 15 },
-          ],
-          sortBy: 'name',
-        }))
+        console.log(
+          formatTable(items, {
+            columns: [
+              { key: 'id', label: 'ID', width: 10 },
+              { key: 'name', label: 'Name', width: 30 },
+              { key: 'status', label: 'Status', width: 15 },
+            ],
+            sortBy: 'name',
+          }),
+        )
     }
   }
 }
@@ -242,7 +246,7 @@ function generateCommandDocs(command: Command): string {
     formatMarkdownHeading('Options', 2),
     formatMarkdownTable(command.options),
     formatMarkdownHeading('Examples', 2),
-    ...command.examples.map(ex => formatMarkdownCode(ex, 'bash')),
+    ...command.examples.map((ex) => formatMarkdownCode(ex, 'bash')),
   ]
 
   return formatMarkdownDocument(sections.join('\n\n'), {
@@ -290,18 +294,21 @@ async function exportData(data: any[], format: string, file?: string) {
 ## Output Format Best Practices
 
 ### For Humans
+
 - Use **tables** for list views
 - Use **colors** for better readability
 - Use **progress indicators** for operations
 - Keep tables under 100 characters wide
 
 ### For Machines
+
 - Use **JSON** for structured data
 - Use **CSV** for spreadsheet compatibility
 - Use **JSONL** for streaming/logging
 - Disable colors with `--no-color` flag
 
 ### For Documentation
+
 - Use **Markdown** for README files
 - Use **Markdown tables** for reference docs
 - Use **code blocks** for examples
@@ -318,16 +325,19 @@ async function exportData(data: any[], format: string, file?: string) {
 ## API Reference
 
 ### JSON
+
 - `formatJSON(data, options?)` - Format as JSON
 - `parseJSON<T>(json, options?)` - Parse JSON safely
 - `formatJSONLines(data[])` - Format as JSONL
 - `parseJSONLines<T>(jsonl)` - Parse JSONL
 
 ### Tables
+
 - `formatTable(data, options?)` - Format as table
 - `formatKeyValueTable(data, options?)` - Key-value pairs
 
 ### Markdown
+
 - `formatMarkdownTable(data, options?)` - Markdown table
 - `formatMarkdownList(items, options?)` - List
 - `formatMarkdownCode(code, lang?)` - Code block
@@ -335,11 +345,13 @@ async function exportData(data: any[], format: string, file?: string) {
 - `formatMarkdownDocument(content, options?)` - Full document
 
 ### CSV
+
 - `formatCSV(data, options?)` - Format as CSV
 - `parseCSV<T>(csv, options?)` - Parse CSV
 - `arrayToCSV(data[][], options?)` - 2D array to CSV
 
 ### YAML
+
 - `formatYAML(data, options?)` - Format as YAML
 - `parseYAML<T>(yaml)` - Parse YAML (basic)
 

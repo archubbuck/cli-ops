@@ -6,17 +6,9 @@ export {
   type JSONFormatOptions,
 } from './json.js'
 
-export {
-  formatYAML,
-  parseYAML,
-  type YAMLFormatOptions,
-} from './yaml.js'
+export { formatYAML, parseYAML, type YAMLFormatOptions } from './yaml.js'
 
-export {
-  formatTable,
-  formatKeyValueTable,
-  type TableFormatOptions,
-} from './table.js'
+export { formatTable, formatKeyValueTable, type TableFormatOptions } from './table.js'
 
 export {
   formatMarkdownTable,
@@ -31,9 +23,4 @@ export {
   type MarkdownFormatOptions,
 } from './markdown.js'
 
-export {
-  formatCSV,
-  parseCSV,
-  arrayToCSV,
-  type CSVFormatOptions,
-} from './csv.js'
+export { formatCSV, parseCSV, arrayToCSV, type CSVFormatOptions } from './csv.js'

@@ -9,4 +9,4 @@ module.exports = {
   bracketSpacing: true,
   endOfLine: 'lf',
   quoteProps: 'as-needed',
-};
+}

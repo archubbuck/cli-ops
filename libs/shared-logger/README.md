@@ -44,6 +44,7 @@ if (debug.enabled) {
 ```
 
 **Enable debug logging:**
+
 ```bash
 # All mycli logs
 DEBUG=mycli:* npm start
@@ -87,7 +88,7 @@ try {
 }
 
 // Create child logger with context
-const requestLogger = logger.child({ 
+const requestLogger = logger.child({
   requestId: '123',
   userId: '456',
 })
@@ -140,26 +141,30 @@ console.log(logger.level) // 'warn'
 The logger automatically adjusts based on environment:
 
 ### Development
+
 - Pretty printed output with colors
 - Human-readable timestamps
 - Detailed error messages
 
 ### CI/CD
+
 - JSON output for machine parsing
 - No colors or pretty printing
 - Consistent formatting
 
 ### Production
+
 - JSON output by default
 - Optimized performance
 - Structured data for log aggregation
 
 **Override detection:**
+
 ```typescript
 const logger = createStructuredLogger({
   name: 'mycli',
-  prettyPrint: true,    // Force pretty print
-  detectCI: false,      // Disable CI detection
+  prettyPrint: true, // Force pretty print
+  detectCI: false, // Disable CI detection
 })
 ```
 
@@ -172,22 +177,25 @@ import { createDebugLogger, createStructuredLogger } from '@/shared-logger'
 
 class MyCommand {
   private debug = createDebugLogger('mycli:commands:run')
-  private logger = createStructuredLogger({ 
+  private logger = createStructuredLogger({
     name: 'mycli',
     level: process.env.LOG_LEVEL ?? 'info',
   })
 
   async run() {
     this.debug('Starting command execution')
-    
+
     try {
       const result = await this.execute()
-      
-      this.logger.info({ 
-        command: 'run',
-        duration: result.duration,
-      }, 'Command completed successfully')
-      
+
+      this.logger.info(
+        {
+          command: 'run',
+          duration: result.duration,
+        },
+        'Command completed successfully',
+      )
+
       this.debug('Result: %O', result)
     } catch (error) {
       this.logger.error(error, 'Command failed')
@@ -207,13 +215,13 @@ const debug = createDebugLogger('mycli:api')
 class APIClient {
   async request(endpoint: string) {
     debug('Making request to %s', endpoint)
-    
+
     const start = Date.now()
     const response = await fetch(endpoint)
     const duration = Date.now() - start
-    
+
     debug('Response %d in %dms', response.status, duration)
-    
+
     return response
   }
 }

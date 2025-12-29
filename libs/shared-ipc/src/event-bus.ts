@@ -44,13 +44,9 @@ export class EventBus {
     handlers.add(handler as EventHandler)
 
     // Warn if too many listeners
-    if (
-      this.warnOnMaxListeners &&
-      this.maxListeners > 0 &&
-      handlers.size > this.maxListeners
-    ) {
+    if (this.warnOnMaxListeners && this.maxListeners > 0 && handlers.size > this.maxListeners) {
       console.warn(
-        `Warning: Possible memory leak. Event "${event}" has ${handlers.size} listeners.`
+        `Warning: Possible memory leak. Event "${event}" has ${handlers.size} listeners.`,
       )
     }
 
@@ -88,17 +84,13 @@ export class EventBus {
     // Regular listeners
     const handlers = this.listeners.get(event)
     if (handlers) {
-      await Promise.all(
-        Array.from(handlers).map(handler => handler(payload))
-      )
+      await Promise.all(Array.from(handlers).map((handler) => handler(payload)))
     }
 
     // Once listeners
     const onceHandlers = this.onceListeners.get(event)
     if (onceHandlers) {
-      await Promise.all(
-        Array.from(onceHandlers).map(handler => handler(payload))
-      )
+      await Promise.all(Array.from(onceHandlers).map((handler) => handler(payload)))
       // Clear once listeners after execution
       this.onceListeners.delete(event)
     }
@@ -111,13 +103,13 @@ export class EventBus {
     // Regular listeners
     const handlers = this.listeners.get(event)
     if (handlers) {
-      handlers.forEach(handler => handler(payload))
+      handlers.forEach((handler) => handler(payload))
     }
 
     // Once listeners
     const onceHandlers = this.onceListeners.get(event)
     if (onceHandlers) {
-      onceHandlers.forEach(handler => handler(payload))
+      onceHandlers.forEach((handler) => handler(payload))
       this.onceListeners.delete(event)
     }
   }

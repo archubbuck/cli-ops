@@ -33,7 +33,7 @@ const history = createHistoryManager({
 const startTime = Date.now()
 try {
   await runCommand()
-  
+
   history.add({
     command: 'deploy',
     args: ['production'],
@@ -106,7 +106,7 @@ console.log(`Failed: ${stats.failed}`)
 console.log(`Avg Duration: ${stats.avgDuration}ms`)
 
 // Most used commands
-stats.mostUsedCommands.forEach(cmd => {
+stats.mostUsedCommands.forEach((cmd) => {
   console.log(`${cmd.command}: ${cmd.count} times`)
 })
 
@@ -152,7 +152,7 @@ const byDate = groupByDate(entries)
 
 byDate.forEach((entries, date) => {
   console.log(`\n${date}`)
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     console.log(`  ${formatHistoryEntry(entry)}`)
   })
 })
@@ -187,7 +187,7 @@ const entries = history.search({ limit: 1000 })
 
 // Find commands similar to 'deploy'
 const similar = findSimilar('deploy', entries, 0.6)
-similar.forEach(entry => {
+similar.forEach((entry) => {
   console.log(entry.command) // deploy, deployer, redeploy, etc.
 })
 ```
@@ -252,7 +252,7 @@ export class HistoryCommand extends Command {
 
   async run() {
     const { flags } = await this.parse(HistoryCommand)
-    
+
     const entries = history.search({
       command: flags.command,
       success: flags.success,
@@ -265,7 +265,7 @@ export class HistoryCommand extends Command {
     }
 
     if (flags.verbose) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         this.log(formatHistoryEntry(entry, { verbose: true }))
         this.log('') // Blank line
       })
@@ -273,7 +273,7 @@ export class HistoryCommand extends Command {
       const byDate = groupByDate(entries)
       byDate.forEach((dateEntries, date) => {
         this.log(`\n${date}`)
-        dateEntries.forEach(entry => {
+        dateEntries.forEach((entry) => {
           this.log(`  ${formatHistoryEntry(entry)}`)
         })
       })
@@ -296,12 +296,14 @@ export class StatsCommand extends Command {
 
     this.log('\nOverall Statistics')
     this.log(`  Total Commands: ${stats.total}`)
-    this.log(`  Successful: ${stats.successful} (${((stats.successful / stats.total) * 100).toFixed(1)}%)`)
+    this.log(
+      `  Successful: ${stats.successful} (${((stats.successful / stats.total) * 100).toFixed(1)}%)`,
+    )
     this.log(`  Failed: ${stats.failed} (${((stats.failed / stats.total) * 100).toFixed(1)}%)`)
     this.log(`  Average Duration: ${stats.avgDuration}ms`)
 
     this.log('\nMost Used Commands')
-    const tableData = stats.mostUsedCommands.map(cmd => ({
+    const tableData = stats.mostUsedCommands.map((cmd) => ({
       command: cmd.command,
       count: cmd.count,
       percentage: `${((cmd.count / stats.total) * 100).toFixed(1)}%`,
@@ -332,6 +334,7 @@ export class StatsCommand extends Command {
 ## API Reference
 
 ### HistoryManager
+
 - `add(entry)` - Add command to history
 - `search(options)` - Search history with filters
 - `recent(limit)` - Get most recent entries
@@ -341,6 +344,7 @@ export class StatsCommand extends Command {
 - `close()` - Close database connection
 
 ### Search Options
+
 - `command` - Filter by command name
 - `exitCode` - Filter by exit code
 - `success` - Filter by success/failure
@@ -350,6 +354,7 @@ export class StatsCommand extends Command {
 - `order` - Sort order (asc/desc)
 
 ### Utilities
+
 - `buildCommandString(entry)` - Build executable command
 - `formatHistoryEntry(entry, options)` - Format for display
 - `groupByCommand(entries)` - Group by command
@@ -361,6 +366,7 @@ export class StatsCommand extends Command {
 ## Storage
 
 History is stored in SQLite database:
+
 - **Location**: `~/.config/<cliName>/history.db`
 - **Schema**: Indexed for fast queries
 - **Size**: Auto-cleanup based on maxEntries

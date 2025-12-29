@@ -50,6 +50,7 @@ console.log(result.filepath) // Path to loaded config
 Searches in this order (first match wins):
 
 **Project Config:**
+
 - `package.json` (under "mycli" key)
 - `.myclirc`
 - `.myclirc.json`
@@ -58,6 +59,7 @@ Searches in this order (first match wins):
 - `mycli.config.js`
 
 **User Config (if `mergeUserConfig: true`):**
+
 - `~/.config/mycli/.myclirc`
 - `~/.config/mycli/.myclirc.json`
 - `~/.config/mycli/config.json`
@@ -120,7 +122,7 @@ const migrated = migrateConfig({
 
 if (migrated.wasMigrated) {
   console.log('Config was upgraded:')
-  migrated.appliedMigrations.forEach(m => {
+  migrated.appliedMigrations.forEach((m) => {
     console.log(`  ${m.from} → ${m.to}: ${m.description}`)
   })
 }
@@ -133,6 +135,7 @@ if (migrated.wasMigrated) {
 Load and validate configuration from filesystem.
 
 **Options:**
+
 - `moduleName: string` - CLI name for config file search
 - `schema: ZodSchema<T>` - Zod schema for validation
 - `searchFrom?: string` - Start search directory (default: `process.cwd()`)
@@ -142,6 +145,7 @@ Load and validate configuration from filesystem.
 - `transform?: (config: unknown) => unknown` - Pre-validation transform
 
 **Returns:**
+
 ```typescript
 {
   config: T,              // Validated config
@@ -156,12 +160,14 @@ Load and validate configuration from filesystem.
 Load and validate environment variables.
 
 **Options:**
+
 - `schema: ZodObject<T>` - Zod schema for env vars
 - `prefix?: string` - Filter vars by prefix
 - `stripPrefix?: boolean` - Remove prefix from keys (default: `true`)
 - `env?: NodeJS.ProcessEnv` - Custom env object
 
 **Helpers:**
+
 - `required(message?)` - Required string env var
 - `optional(default)` - Optional with default
 - `boolean()` - Parse boolean (true/1/yes → true)
@@ -175,6 +181,7 @@ Load and validate environment variables.
 Migrate configuration through version upgrades.
 
 **Options:**
+
 - `currentVersion?: string` - Current config version
 - `latestVersion: string` - Target version
 - `migrations: Migration[]` - Array of migrations

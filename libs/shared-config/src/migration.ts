@@ -86,16 +86,8 @@ export interface MigrationResult<T> {
 /**
  * Migrate configuration through all necessary versions
  */
-export function migrateConfig<T>(
-  options: MigrationOptions<T>
-): MigrationResult<T> {
-  const {
-    currentVersion,
-    latestVersion,
-    migrations,
-    config,
-    autoMigrate = true,
-  } = options
+export function migrateConfig<T>(options: MigrationOptions<T>): MigrationResult<T> {
+  const { currentVersion, latestVersion, migrations, config, autoMigrate = true } = options
 
   // If no version or already latest, no migration needed
   if (!currentVersion || currentVersion === latestVersion) {
@@ -114,18 +106,18 @@ export function migrateConfig<T>(
       appliedMigrations: [],
       warnings: [
         `Configuration is v${currentVersion} but latest is v${latestVersion}. ` +
-        'Run with --migrate-config to update.',
+          'Run with --migrate-config to update.',
       ],
     }
   }
 
   // Find migrations that need to be applied
-  const applicableMigrations = migrations.filter(migration => {
+  const applicableMigrations = migrations.filter((migration) => {
     // Check if this migration is in the upgrade path
     if (currentVersion < migration.fromVersion) {
       return false
     }
-    
+
     if (currentVersion >= migration.toVersion) {
       return false
     }
@@ -143,9 +135,7 @@ export function migrateConfig<T>(
       config,
       wasMigrated: false,
       appliedMigrations: [],
-      warnings: [
-        `No migration path found from v${currentVersion} to v${latestVersion}`,
-      ],
+      warnings: [`No migration path found from v${currentVersion} to v${latestVersion}`],
     }
   }
 
@@ -166,7 +156,7 @@ export function migrateConfig<T>(
       warnings.push(
         `Failed to apply migration ${migration.fromVersion} → ${migration.toVersion}: ${
           error instanceof Error ? error.message : String(error)
-        }`
+        }`,
       )
     }
   }
@@ -183,7 +173,7 @@ export function migrateConfig<T>(
  * Helper to create a migration
  */
 export function createMigration<TOld, TNew>(
-  migration: Migration<TOld, TNew>
+  migration: Migration<TOld, TNew>,
 ): Migration<TOld, TNew> {
   return migration
 }
