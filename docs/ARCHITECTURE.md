@@ -258,8 +258,6 @@ Meta-Packages → Plugins → clio Core → Commands → Core → UI/Formatting 
 ### Plugin Dependencies
 
 All plugins (`@cli-ops/clio-plugin-*`) have:
-
-- **peerDependencies**: `@cli-ops/clio` (ensures core CLI is installed)
 ### CLI Application Inventory
 
 > **Auto-generated from inventory.** Last updated: December 30, 2025
@@ -363,12 +361,12 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 | CLI | Version | Commands | Shared Packages |
 |-----|---------|----------|------------------|
 | clio | 1.0.0 | 7 | 0 |
-| clio | 3.0.0 | 2 | 0 |
-| clio | 3.0.0 | 1 | 0 |
-| clio | 3.0.0 | 3 | 0 |
-| clio | 3.0.0 | 1 | 0 |
-| clio | 3.0.0 | 5 | 0 |
-| clio | 3.0.0 | 2 | 0 |
+| clio-plugin-fetch | 3.0.0 | 2 | 0 |
+| clio-plugin-fetch-oauth | 3.0.0 | 1 | 0 |
+| clio-plugin-repo | 3.0.0 | 3 | 0 |
+| clio-plugin-repo-hooks | 3.0.0 | 1 | 0 |
+| clio-plugin-tasks | 3.0.0 | 5 | 0 |
+| clio-plugin-tasks-jira | 3.0.0 | 2 | 0 |
 
 For detailed command information, see [CLI-INVENTORY.md](CLI-INVENTORY.md).
 
