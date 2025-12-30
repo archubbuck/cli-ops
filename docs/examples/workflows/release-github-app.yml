@@ -1,0 +1,107 @@
+# Example Release Workflow Using GitHub App
+#
+# This workflow uses a GitHub App for authentication, which is ideal for
+# organizations with multiple repositories or teams.
+#
+# Setup Requirements:
+# 1. Create a GitHub App with permissions:
+#    - Repository permissions: contents (read+write), pull_requests (read+write)
+# 2. Install the app on the repository
+# 3. Add app credentials as secrets:
+#    - APP_ID: The GitHub App ID
+#    - APP_PRIVATE_KEY: The GitHub App private key
+# 4. Replace this file with .github/workflows/release.yml
+#
+# Pros:
+# - Not tied to individual user accounts
+# - No token expiration concerns
+# - Better audit logging
+# - More granular permissions
+#
+# Cons:
+# - Requires GitHub App creation and installation
+# - More complex initial setup
+# - May be overkill for smaller projects
+#
+# See: docs/RELEASE-PROCESS.md for detailed instructions
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      # Generate token from GitHub App
+      - name: Generate token
+        id: generate-token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      # Checkout with app token
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - uses: ./.github/actions/setup-workspace
+        with:
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build
+        run: pnpm build
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm changeset:publish
+          version: pnpm changeset:version
+          commit: 'chore: Version packages'
+          title: 'chore: Version packages'
+        env:
+          # Use GitHub App token
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish provenance
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "Packages published with provenance:"
+          echo "${{ steps.changesets.outputs.publishedPackages }}"
+
+# GitHub App Creation Steps:
+#
+# 1. Go to GitHub Settings → Developer settings → GitHub Apps
+# 2. Click "New GitHub App"
+# 3. Configure:
+#    - Name: cli-ops-release-bot
+#    - Homepage URL: https://github.com/archubbuck/cli-ops
+#    - Webhook: Uncheck "Active"
+#    - Repository permissions:
+#      - Contents: Read and write
+#      - Pull requests: Read and write
+#    - Where can this GitHub App be installed: Only on this account
+# 4. Create app and note the App ID
+# 5. Generate a private key and download it
+# 6. Install the app on the repository
+# 7. Add secrets to repository:
+#    - APP_ID: The App ID from step 4
+#    - APP_PRIVATE_KEY: The contents of the private key file

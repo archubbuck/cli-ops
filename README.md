@@ -197,10 +197,11 @@ See [`docs/`](./docs/) for detailed documentation:
 - [Architecture Overview](./docs/ARCHITECTURE.md)
 - [Contributing Guide](./docs/CONTRIBUTING.md)
 - [Plugin Development](./docs/contributing/plugin-development.md)
+- [Release Process](./docs/RELEASE-PROCESS.md)
 
 ## Publishing
 
-Automated via GitHub Actions and Changesets:
+Automated via GitHub Actions and Changesets. See [Release Process](./docs/RELEASE-PROCESS.md) for detailed documentation on handling GitHub Actions restrictions and release workflows.
 
 ```bash
 # Create a changeset
@@ -212,6 +213,8 @@ pnpm changeset:version
 # Publish to npm (in CI)
 pnpm changeset:publish
 ```
+
+**Note**: Due to GitHub Actions restrictions on PR creation, the release workflow may require a Personal Access Token (PAT). See the [Release Process documentation](./docs/RELEASE-PROCESS.md) for setup instructions and alternative approaches.
 
 ## Version History
 

@@ -485,6 +485,8 @@ Email: security@example.com
 
 ## Releases
 
+The CLI Ops project uses an automated release process with Changesets and GitHub Actions. For detailed information about the release process, including handling GitHub Actions restrictions, see the [Release Process documentation](./RELEASE-PROCESS.md).
+
 ### Changesets
 
 ```bash
@@ -504,9 +506,15 @@ git commit -m "chore: add changeset"
 Automated via GitHub Actions:
 
 1. PR merged to main
-2. Changesets creates version PR
+2. Changesets creates version PR (may require PAT - see [Release Process](./RELEASE-PROCESS.md))
 3. Merge version PR
 4. Automated publish to npm
+
+**Important**: Due to GitHub Actions restrictions, PR creation may require a Personal Access Token. See the [Release Process documentation](./RELEASE-PROCESS.md) for:
+- PAT setup instructions
+- Alternative release approaches
+- Security best practices
+- Troubleshooting guide
 
 ## Getting Help
 
