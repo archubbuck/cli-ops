@@ -250,7 +250,6 @@ This allows:
 - Historical tracking of CLI evolution
 - Version comparison
 - Rollback reference
-- CI artifact archival
 
 ## Best Practices
 
