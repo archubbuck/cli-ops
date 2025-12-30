@@ -321,9 +321,7 @@ This inventory is automatically generated and validated:
 
 The inventory is regenerated:
 
-- After each build via postbuild hook
-- In CI workflows to ensure accuracy
-- Before commits via pre-commit hook (validation)
+- Before commits via pre-commit hook (validation and regeneration if outdated)
 
 ### When to Update
 
