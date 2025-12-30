@@ -156,9 +156,9 @@ For the CLI Ops project, we recommend **Option 1 (PAT)** initially, with migrati
 2. Go to GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens
 3. Click "Generate new token"
 4. Configure:
-   - **Name**: `cli-ops-release-token`
+   - **Name**: `release-token` (or any descriptive name)
    - **Expiration**: 90 days or 1 year (set calendar reminder)
-   - **Repository access**: Only select repositories → `archubbuck/cli-ops`
+   - **Repository access**: Only select repositories → Select your repository
    - **Permissions**:
      - Repository permissions:
        - Contents: Read and write
