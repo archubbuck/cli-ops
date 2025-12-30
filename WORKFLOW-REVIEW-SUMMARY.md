@@ -7,39 +7,44 @@ I've completed a comprehensive review and simplification of all GitHub Actions w
 ## 🎯 Key Achievements
 
 ### 1. Eliminated Duplicate Workflows ✅
+
 **Problem:** Both `publish.yml` and `release.yml` were doing the same thing - both triggered on push to main and both used changesets to publish packages. This caused potential race conditions and wasted CI minutes.
 
 **Solution:** Consolidated into a single, enhanced `release.yml` that combines the best features of both workflows.
 
 ### 2. Fixed Critical Path Bug ✅
+
 **Problem:** `plugin-verification.yml` was monitoring `packages/clio-plugin-**/**` but plugins are actually in `plugins/` directory. This meant plugin verification never triggered automatically.
 
 **Solution:** Fixed path filter to `plugins/clio-plugin-**/**`.
 
 ### 3. Eliminated Code Duplication ✅
+
 **Problem:** Every workflow job repeated the same 15-20 lines of setup code (checkout, pnpm setup, node setup, install dependencies).
 
 **Solution:** Created a reusable composite action (`.github/actions/setup-workspace`) that encapsulates all setup steps. All workflows now use this action.
 
 ### 4. Standardized Installation ✅
+
 **Problem:** Some workflows used `pnpm install` while others used `pnpm install --frozen-lockfile`, causing potential inconsistencies.
 
 **Solution:** All workflows now consistently use `--frozen-lockfile` via the composite action.
 
 ## 📊 Impact Metrics
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **Active Workflows** | 4 | 3 | -25% (1 duplicate removed) |
-| **Duplicate Workflows** | 2 | 0 | -100% |
-| **Total Workflow Lines** | 334 | 201 | -40% |
-| **Setup Code Duplication** | ~125 lines | 0 lines | -100% |
-| **Known Bugs** | 2 | 0 | All fixed |
-| **Maintenance Points** | 8 places | 1 place | -87.5% |
+| Metric                     | Before     | After   | Improvement                |
+| -------------------------- | ---------- | ------- | -------------------------- |
+| **Active Workflows**       | 4          | 3       | -25% (1 duplicate removed) |
+| **Duplicate Workflows**    | 2          | 0       | -100%                      |
+| **Total Workflow Lines**   | 334        | 201     | -40%                       |
+| **Setup Code Duplication** | ~125 lines | 0 lines | -100%                      |
+| **Known Bugs**             | 2          | 0       | All fixed                  |
+| **Maintenance Points**     | 8 places   | 1 place | -87.5%                     |
 
 ## 📁 Files Changed
 
 ### Added
+
 - `.github/actions/setup-workspace/action.yml` - Reusable composite action
 - `.github/actions/setup-workspace/README.md` - Documentation
 - `docs/WORKFLOW-ANALYSIS.md` - Comprehensive analysis (12KB)
@@ -47,16 +52,19 @@ I've completed a comprehensive review and simplification of all GitHub Actions w
 - `docs/WORKFLOW-COMPARISON.md` - Visual before/after (6.5KB)
 
 ### Modified
+
 - `.github/workflows/ci.yml` - Now uses composite action (154 → 103 lines)
 - `.github/workflows/plugin-verification.yml` - Fixed path + composite action (57 → 46 lines)
 - `.github/workflows/release.yml` - Enhanced consolidation (54 → 55 lines)
 
 ### Deprecated
+
 - `.github/workflows/publish.yml.deprecated` - Kept with explanatory notice
 
 ## 🔧 What Changed
 
 ### Before: Repetitive Setup (15-20 lines per job)
+
 ```yaml
 steps:
   - uses: actions/checkout@v4
@@ -72,6 +80,7 @@ steps:
 ```
 
 ### After: Simple Composite Action (2 lines)
+
 ```yaml
 steps:
   - uses: actions/checkout@v4
@@ -117,6 +126,7 @@ See [WORKFLOW-ANALYSIS.md](docs/WORKFLOW-ANALYSIS.md) for full details.
 ## ⚠️ Breaking Changes
 
 **None.** All changes are backwards compatible:
+
 - Existing functionality preserved
 - All jobs still run
 - All checks still pass

@@ -7,11 +7,13 @@ This document provides a comprehensive analysis of the existing GitHub Actions w
 ## Current Workflows
 
 ### 1. ci.yml - Main CI Pipeline
+
 **Purpose:** Runs comprehensive checks on PRs and pushes to main/develop branches  
 **Triggers:** Push to main/develop, Pull requests to main/develop  
 **Jobs:** lint, typecheck, build, test, perf (5 jobs)
 
 **Analysis:**
+
 - ✅ Well-structured with clear job separation
 - ✅ Uses concurrency control to cancel outdated runs
 - ✅ Properly configured with Turbo cache tokens
@@ -20,20 +22,24 @@ This document provides a comprehensive analysis of the existing GitHub Actions w
 - ✅ Performance job correctly depends on build job and downloads artifacts
 
 **Strengths:**
+
 - Clear job separation for different validation types
 - Artifact upload/download for build reuse
 - Code coverage reporting integration
 
 **Redundancies:**
+
 - Setup steps repeated 5 times across jobs (25 lines of duplicated configuration)
 - Could benefit from a reusable setup action or composite action
 
 ### 2. plugin-verification.yml - Plugin Quality Checks
+
 **Purpose:** Verifies plugin quality and security standards  
 **Triggers:** PRs affecting plugin files, Manual workflow dispatch  
 **Jobs:** verify (1 job)
 
 **Analysis:**
+
 - ✅ Specialized workflow for plugin validation
 - ✅ Includes security audit and secret scanning
 - ✅ PR commenting for feedback
@@ -43,17 +49,20 @@ This document provides a comprehensive analysis of the existing GitHub Actions w
 - ❓ Question: Should this run on all PRs or only plugin-specific PRs?
 
 **Recommendations:**
+
 - Fix path pattern from `packages/` to `plugins/`
 - Add `--frozen-lockfile` for consistency
 - Consider integrating security checks into main CI workflow
 - Optimize to build only affected plugins
 
 ### 3. publish.yml - Package Publishing
+
 **Purpose:** Publishes packages to npm using changesets  
 **Triggers:** Push to main branch  
 **Jobs:** publish (1 job)
 
 **Analysis:**
+
 - ✅ Uses changesets for automated versioning and publishing
 - ✅ Proper permissions for publishing
 - ✅ Provenance publishing support
@@ -62,11 +71,13 @@ This document provides a comprehensive analysis of the existing GitHub Actions w
 - ℹ️ Note: Nearly identical to release.yml
 
 ### 4. release.yml - Release Management
+
 **Purpose:** Creates release PRs or publishes packages using changesets  
 **Triggers:** Push to main branch  
 **Jobs:** release (1 job)
 
 **Analysis:**
+
 - ✅ Uses changesets for version management
 - ✅ Includes Turbo cache tokens
 - ⚠️ **Critical Issue:** Duplicate of publish.yml - both do the same thing!
@@ -74,6 +85,7 @@ This document provides a comprehensive analysis of the existing GitHub Actions w
 - ⚠️ **Issue:** No coordination between the two workflows
 
 **Comparison with publish.yml:**
+
 - Both trigger on push to main
 - Both use changesets/action@v1 with identical configuration
 - Both publish to npm with same scripts
@@ -84,7 +96,9 @@ This document provides a comprehensive analysis of the existing GitHub Actions w
 ## Key Issues Identified
 
 ### 1. **CRITICAL: Duplicate Release Workflows** 🚨
+
 Both `publish.yml` and `release.yml` perform the same function - they both:
+
 - Trigger on push to main
 - Use changesets to create version PRs or publish
 - Run identical changeset commands
@@ -95,6 +109,7 @@ Both `publish.yml` and `release.yml` perform the same function - they both:
 **Recommendation:** Consolidate into a single workflow
 
 ### 2. **Bug: Incorrect Plugin Path Filter** 🐛
+
 `plugin-verification.yml` monitors `packages/clio-plugin-**/**` but plugins are in `plugins/clio-plugin-**/**`
 
 **Impact:** Plugin verification never triggers automatically on PR changes
@@ -102,7 +117,9 @@ Both `publish.yml` and `release.yml` perform the same function - they both:
 **Recommendation:** Fix path from `packages/` to `plugins/`
 
 ### 3. **Repetitive Setup Code** ♻️
+
 Every CI job repeats the same 4 setup steps:
+
 ```yaml
 - uses: actions/checkout@v4
 - uses: pnpm/action-setup@v4
@@ -115,6 +132,7 @@ Every CI job repeats the same 4 setup steps:
 **Recommendation:** Create a composite action or reusable workflow
 
 ### 4. **Inconsistent Installation Commands**
+
 - CI jobs: `pnpm install --frozen-lockfile` ✅
 - Plugin verification: `pnpm install` ❌
 - Publish: `pnpm install --frozen-lockfile` ✅
@@ -125,6 +143,7 @@ Every CI job repeats the same 4 setup steps:
 **Recommendation:** Use `--frozen-lockfile` everywhere
 
 ### 5. **Manual Cache Management**
+
 `publish.yml` manually manages pnpm cache with custom steps, while other workflows rely on `cache: 'pnpm'` in setup-node
 
 **Impact:** Inconsistent caching strategy, potential cache misses
@@ -136,15 +155,18 @@ Every CI job repeats the same 4 setup steps:
 ### Priority 1: Critical Fixes (Immediate)
 
 #### 1.1 Consolidate Duplicate Workflows
+
 **Action:** Merge `publish.yml` and `release.yml` into a single `release.yml`
 
 **Benefits:**
+
 - Eliminates duplicate workflow runs
 - Prevents race conditions
 - Reduces maintenance burden
 - Saves CI minutes
 
 **Implementation:**
+
 ```yaml
 name: Release
 
@@ -209,31 +231,37 @@ jobs:
 ```
 
 #### 1.2 Fix Plugin Verification Path
+
 **Action:** Update path filter in `plugin-verification.yml`
 
 **Change:**
+
 ```yaml
 on:
   pull_request:
     paths:
-      - 'plugins/clio-plugin-**/**'  # Fixed from packages/
+      - 'plugins/clio-plugin-**/**' # Fixed from packages/
 ```
 
 ### Priority 2: Quality Improvements (High Priority)
 
 #### 2.1 Fix Plugin Verification Installation
+
 **Action:** Add `--frozen-lockfile` to plugin verification
 
 **Change:**
+
 ```yaml
 - name: Install dependencies
   run: pnpm install --frozen-lockfile
 ```
 
 #### 2.2 Optimize Plugin Verification Build
+
 **Action:** Build only the affected plugin instead of everything
 
 **Implementation:**
+
 ```yaml
 - name: Build plugin
   run: |
@@ -247,14 +275,17 @@ on:
 ### Priority 3: Maintainability Enhancements (Medium Priority)
 
 #### 3.1 Create Composite Setup Action
+
 **Action:** Create `.github/actions/setup-workspace/action.yml`
 
 **Benefits:**
+
 - DRY principle
 - Single source of truth for setup
 - Easier to update Node/pnpm versions
 
 **Implementation:**
+
 ```yaml
 # .github/actions/setup-workspace/action.yml
 name: 'Setup Workspace'
@@ -288,18 +319,22 @@ runs:
 ```
 
 Then update workflows:
+
 ```yaml
 - uses: actions/checkout@v4
 - uses: ./.github/actions/setup-workspace
 ```
 
 #### 3.2 Standardize Cache Strategy
+
 **Action:** Remove manual cache management from `release.yml`, rely on `cache: 'pnpm'`
 
 ### Priority 4: Optional Enhancements (Low Priority)
 
 #### 4.1 Add Node.js Version Matrix Testing
+
 Consider testing against multiple Node versions:
+
 ```yaml
 strategy:
   matrix:
@@ -307,7 +342,9 @@ strategy:
 ```
 
 #### 4.2 Consolidate Security Checks
+
 Move security audit and secret scanning from plugin-verification to main CI:
+
 ```yaml
 security:
   name: Security Checks
@@ -326,22 +363,26 @@ security:
 ```
 
 #### 4.3 Add Workflow Status Checks
+
 Consider adding a final "all checks passed" job that depends on all others for required status checks.
 
 ## Implementation Plan
 
 ### Phase 1: Critical Fixes (Week 1)
+
 1. ✅ Create this analysis document
 2. Consolidate publish.yml and release.yml
 3. Fix plugin-verification.yml path filter
 4. Add --frozen-lockfile to plugin verification
 
 ### Phase 2: Quality & Optimization (Week 2)
+
 5. Create composite setup action
 6. Update all workflows to use composite action
 7. Optimize plugin verification to build only affected plugins
 
 ### Phase 3: Enhancements (Week 3)
+
 8. Add security checks to main CI
 9. Consider Node version matrix
 10. Add comprehensive workflow documentation
@@ -349,12 +390,14 @@ Consider adding a final "all checks passed" job that depends on all others for r
 ## Metrics
 
 ### Before Optimization
+
 - **Workflows:** 4 (2 duplicates)
 - **Lines of setup code:** ~125 (25 lines × 5 jobs)
 - **Known bugs:** 2 (path filter, installation command)
 - **CI time:** Unknown (baseline to be measured)
 
 ### After Optimization (Projected)
+
 - **Workflows:** 3 (no duplicates)
 - **Lines of setup code:** ~15 (composite action)
 - **Known bugs:** 0
@@ -364,16 +407,19 @@ Consider adding a final "all checks passed" job that depends on all others for r
 ## Risk Assessment
 
 ### Low Risk Changes
+
 - Fixing path filter in plugin-verification.yml
 - Adding --frozen-lockfile flag
 - Creating composite action (optional, non-breaking)
 
 ### Medium Risk Changes
+
 - Consolidating publish.yml and release.yml
   - **Mitigation:** Test on a feature branch first
   - **Rollback:** Keep original workflows commented out for one release cycle
 
 ### Testing Strategy
+
 1. Create PR with changes
 2. Test on feature branch
 3. Monitor first deployment closely
@@ -401,4 +447,4 @@ These changes will make the CI/CD pipeline more maintainable, reduce bugs, and i
 
 **Document Version:** 1.0  
 **Date:** December 30, 2024  
-**Author:** Copilot Workflow Analysis  
+**Author:** Copilot Workflow Analysis
