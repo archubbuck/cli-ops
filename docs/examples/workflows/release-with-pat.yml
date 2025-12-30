@@ -5,7 +5,7 @@
 #
 # Setup Requirements:
 # 1. Create a fine-grained Personal Access Token with:
-#    - Repository access: archubbuck/cli-ops
+#    - Repository access: your-org/your-repo (or select specific repositories)
 #    - Permissions: contents (read+write), pull_requests (read+write)
 # 2. Add token as repository secret: RELEASE_TOKEN
 # 3. Replace this file with .github/workflows/release.yml
