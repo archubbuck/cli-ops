@@ -18,6 +18,10 @@
 # - Requires manual PR creation
 # - Slower release cycle
 #
+# Note: For more robust triggering, consider using GitHub releases or
+# checking for specific file changes (e.g., package.json version bumps)
+# instead of relying on commit messages.
+#
 # See: docs/RELEASE-PROCESS.md for detailed instructions
 
 name: Release
@@ -30,6 +34,8 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
+  # Optional: Turborepo remote caching tokens
+  # Remove these if not using Turborepo
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -38,9 +44,10 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     # Only publish if version PR has been merged
-    # Check for version commit message or [release] tag
+    # Options: Check for version commit message or [release] tag
+    # Alternative: Use workflow_dispatch or check for version changes in package.json
     if: |
-      github.event.head_commit.message == 'chore: Version packages' ||
+      contains(github.event.head_commit.message, 'chore: Version packages') ||
       contains(github.event.head_commit.message, '[release]')
     permissions:
       contents: write

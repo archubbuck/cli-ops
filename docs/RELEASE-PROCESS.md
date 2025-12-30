@@ -173,6 +173,17 @@ For the CLI Ops project, we recommend **Option 1 (PAT)** initially, with migrati
 4. Value: Paste the generated token
 5. Click "Add secret"
 
+**Important**: The secret must either be set with a valid token value or not set at all. An empty secret will cause the fallback mechanism to use an empty value instead of falling back to `GITHUB_TOKEN`.
+
+#### Step 2.1: Optional Environment Variables
+
+The example workflows include optional environment variables for Turborepo remote caching:
+
+- `TURBO_TOKEN`: Token for Turborepo remote caching
+- `TURBO_TEAM`: Team identifier for Turborepo
+
+If you're not using Turborepo, you can safely remove these environment variables from the workflow or leave them unset.
+
 #### Step 3: Update Workflow
 
 Update `.github/workflows/release.yml` to use the new token (see Workflow Examples below).
@@ -276,6 +287,8 @@ jobs:
 
       - name: Create Release Pull Request or Publish
         id: changesets
+        # Security Note: For production, consider pinning to specific commit SHA
+        # e.g., uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7
         uses: changesets/action@v1
         with:
           publish: pnpm changeset:publish
@@ -396,7 +409,9 @@ jobs:
       # Generate token from GitHub App
       - name: Generate token
         id: generate-token
-        uses: tibdex/github-app-token@v1
+        # Security Note: For production, consider pinning to specific commit SHA
+        # e.g., uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
@@ -462,7 +477,7 @@ Maintain branch protection rules even with automation:
 
 ### Workflow Security
 
-1. **Pin Actions** (Optional but Recommended): Use commit SHAs instead of tags for maximum security
+1. **Pin Actions** (Strongly Recommended for Production): Use commit SHAs instead of tags for maximum security
 
    ```yaml
    # Most secure (pinned to specific commit)
@@ -475,7 +490,9 @@ Maintain branch protection rules even with automation:
    - uses: actions/checkout@latest
    ```
 
-   **Note**: The example workflows in this repository use version tags (e.g., `@v4`) for readability and ease of maintenance. For production environments with strict security requirements, consider pinning to specific commit SHAs and using Dependabot to keep them updated.
+   **Critical for Third-Party Actions**: Actions like `changesets/action` and `tibdex/github-app-token` handle sensitive credentials (PATs, GitHub App tokens, NPM tokens). Pinning these to specific commit SHAs prevents supply-chain attacks where compromised actions could exfiltrate secrets or publish malicious packages. Use Dependabot or similar tools to keep pinned versions updated.
+
+   **Note**: The example workflows in this repository use version tags (e.g., `@v1`, `@v2`) for readability and ease of maintenance. For production environments with strict security requirements, **always pin to specific commit SHAs**, especially for actions that handle tokens and publishing.
 
 2. **Limit Permissions**: Use minimum required permissions
 
@@ -652,10 +669,10 @@ As the project grows, consider:
 
 ### Related Files
 
-- [Release Workflow](../.github/workflows/release.yml)
-- [Contributing Guide](./CONTRIBUTING.md)
-- [Changeset Config](../.changeset/config.json)
-- [Package.json Scripts](../package.json)
+- [Release Workflow](../../.github/workflows/release.yml)
+- [Contributing Guide](../CONTRIBUTING.md)
+- [Changeset Config](../../.changeset/config.json)
+- [Package.json Scripts](../../package.json)
 
 ### Support
 
