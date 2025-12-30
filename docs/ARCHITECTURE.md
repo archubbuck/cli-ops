@@ -257,8 +257,6 @@ Meta-Packages → Plugins → clio Core → Commands → Core → UI/Formatting 
 
 ### Plugin Dependencies
 
-All plugins (`@cli-ops/clio-plugin-*`) have:
-
 ### CLI Application Inventory
 
 > **Auto-generated from inventory.** Last updated: December 30, 2025
