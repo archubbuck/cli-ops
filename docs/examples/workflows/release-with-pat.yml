@@ -1,3 +1,17 @@
+# Example Release Workflow Using Personal Access Token (PAT)
+#
+# This workflow demonstrates the recommended approach for handling
+# GitHub Actions PR creation restrictions.
+#
+# Setup Requirements:
+# 1. Create a fine-grained Personal Access Token with:
+#    - Repository access: archubbuck/cli-ops
+#    - Permissions: contents (read+write), pull_requests (read+write)
+# 2. Add token as repository secret: RELEASE_TOKEN
+# 3. Replace this file with .github/workflows/release.yml
+#
+# See: docs/RELEASE-PROCESS.md for detailed instructions
+
 name: Release
 
 on:
@@ -23,10 +37,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use RELEASE_TOKEN (PAT) if available, fallback to GITHUB_TOKEN
-          # Note: GITHUB_TOKEN may fail with "GitHub Actions is not permitted to create or approve pull requests"
-          # See docs/RELEASE-PROCESS.md for setup instructions
-          token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          # Use PAT for PR creation
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - uses: ./.github/actions/setup-workspace
         with:
@@ -44,8 +56,8 @@ jobs:
           commit: 'chore: Version packages'
           title: 'chore: Version packages'
         env:
-          # Use RELEASE_TOKEN (PAT) if available, fallback to GITHUB_TOKEN
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          # Use PAT for PR creation
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
