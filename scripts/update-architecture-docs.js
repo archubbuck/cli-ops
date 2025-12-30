@@ -27,7 +27,9 @@ function generateDependencyTree(inventory) {
 
   for (const cli of inventory.clis) {
     const { metadata, commands } = cli
-    tree += `#### ${metadata.bin}\n\n`
+    // Use cli.name for headers to distinguish plugins, fallback to bin for core CLI
+    const headerName = cli.name || metadata.bin
+    tree += `#### ${headerName}\n\n`
     tree += `**${metadata.description}**\n\n`
     tree += `\`\`\`\n`
     tree += `${metadata.name}@${metadata.version}\n`

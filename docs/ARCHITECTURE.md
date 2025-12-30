@@ -260,11 +260,9 @@ Meta-Packages → Plugins → clio Core → Commands → Core → UI/Formatting 
 All plugins (`@cli-ops/clio-plugin-*`) have:
 
 - **peerDependencies**: `@cli-ops/clio` (ensures core CLI is installed)
-- **dependencies**: Shared packages (`@cli-ops/shared-*`)
-
 ### CLI Application Inventory
 
-> **Auto-generated from inventory.** Last updated: December 29, 2025
+> **Auto-generated from inventory.** Last updated: December 30, 2025
 
 #### clio
 
@@ -284,7 +282,7 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 └── Shared Dependencies: 0 packages
 ```
 
-#### clio
+#### clio-plugin-fetch
 
 **HTTP API client plugin for clio**
 
@@ -296,7 +294,7 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 └── Shared Dependencies: 0 packages
 ```
 
-#### clio
+#### clio-plugin-fetch-oauth
 
 **OAuth 2.0 authentication plugin for clio fetch**
 
@@ -308,7 +306,7 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 └── Shared Dependencies: 0 packages
 ```
 
-#### clio
+#### clio-plugin-repo
 
 **Developer tools plugin for clio with Git and GitHub integration**
 
@@ -320,7 +318,7 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 └── Shared Dependencies: 0 packages
 ```
 
-#### clio
+#### clio-plugin-repo-hooks
 
 **Git hooks automation plugin for clio repo**
 
@@ -332,7 +330,7 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 └── Shared Dependencies: 0 packages
 ```
 
-#### clio
+#### clio-plugin-tasks
 
 **Task management plugin for clio**
 
@@ -348,7 +346,7 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 └── Shared Dependencies: 0 packages
 ```
 
-#### clio
+#### clio-plugin-tasks-jira
 
 **Jira integration plugin for clio tasks**
 
@@ -362,15 +360,15 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 
 **Summary:**
 
-| CLI  | Version | Commands | Shared Packages |
-| ---- | ------- | -------- | --------------- |
-| clio | 1.0.0   | 7        | 0               |
-| clio | 3.0.0   | 2        | 0               |
-| clio | 3.0.0   | 1        | 0               |
-| clio | 3.0.0   | 3        | 0               |
-| clio | 3.0.0   | 1        | 0               |
-| clio | 3.0.0   | 5        | 0               |
-| clio | 3.0.0   | 2        | 0               |
+| CLI | Version | Commands | Shared Packages |
+|-----|---------|----------|------------------|
+| clio | 1.0.0 | 7 | 0 |
+| clio | 3.0.0 | 2 | 0 |
+| clio | 3.0.0 | 1 | 0 |
+| clio | 3.0.0 | 3 | 0 |
+| clio | 3.0.0 | 1 | 0 |
+| clio | 3.0.0 | 5 | 0 |
+| clio | 3.0.0 | 2 | 0 |
 
 For detailed command information, see [CLI-INVENTORY.md](CLI-INVENTORY.md).
 
