@@ -20,7 +20,7 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
    - Compares current CLI state with committed inventory
    - Generates hashes to detect changes
    - Exits with error code if outdated
-   - Used in pre-commit hooks and CI
+   - Used in pre-commit hooks
 
 3. **`scripts/update-architecture-docs.js`** - Documentation updater
    - Reads inventory JSON
