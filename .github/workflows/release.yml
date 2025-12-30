@@ -26,9 +26,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: ./.github/actions/setup-workspace
-
-      - name: Setup npm registry
-        uses: actions/setup-node@v4
         with:
           registry-url: 'https://registry.npmjs.org'
 

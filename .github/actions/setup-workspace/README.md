@@ -19,6 +19,7 @@ steps:
     with:
       node-version: '20'
       frozen-lockfile: 'true'
+      registry-url: 'https://registry.npmjs.org'  # For npm publishing
 ```
 
 ## Inputs
@@ -27,6 +28,7 @@ steps:
 |-------|-------------|----------|---------|
 | `node-version` | Node.js version to use | No | `20` |
 | `frozen-lockfile` | Use `--frozen-lockfile` flag for pnpm install | No | `true` |
+| `registry-url` | Optional registry URL for npm authentication | No | `''` (empty) |
 
 ## What It Does
 
