@@ -1,6 +1,6 @@
 {
   "name": "@cli-ops/shared-hooks",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Lifecycle hooks for CLI applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
