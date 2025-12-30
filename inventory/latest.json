@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-29T23:55:20.772Z",
+  "generated": "2025-12-30T18:47:12.915Z",
   "clis": [
     {
       "name": "clio",
@@ -65,12 +65,12 @@
       ],
       "performance": {
         "help": {
-          "duration": 421,
+          "duration": 437,
           "budget": 500,
           "status": "pass"
         },
         "version": {
-          "duration": 420,
+          "duration": 408,
           "budget": 200,
           "status": "fail"
         }
@@ -115,12 +115,12 @@
       ],
       "performance": {
         "help": {
-          "duration": 566,
+          "duration": 558,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 563,
+          "duration": 556,
           "budget": 200,
           "status": "fail"
         }
@@ -209,12 +209,12 @@
       ],
       "performance": {
         "help": {
-          "duration": 565,
+          "duration": 563,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 563,
+          "duration": 553,
           "budget": 200,
           "status": "fail"
         }
@@ -315,12 +315,12 @@
       ],
       "performance": {
         "help": {
-          "duration": 651,
+          "duration": 653,
           "budget": 500,
           "status": "fail"
         },
         "version": {
-          "duration": 658,
+          "duration": 648,
           "budget": 200,
           "status": "fail"
         }
