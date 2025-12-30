@@ -93,8 +93,8 @@ jobs:
 # 1. Go to GitHub Settings → Developer settings → GitHub Apps
 # 2. Click "New GitHub App"
 # 3. Configure:
-#    - Name: cli-ops-release-bot
-#    - Homepage URL: https://github.com/archubbuck/cli-ops
+#    - Name: your-repo-release-bot (choose any descriptive name)
+#    - Homepage URL: https://github.com/your-org/your-repo
 #    - Webhook: Uncheck "Active"
 #    - Repository permissions:
 #      - Contents: Read and write
