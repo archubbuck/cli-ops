@@ -511,6 +511,7 @@ Automated via GitHub Actions:
 4. Automated publish to npm
 
 **Important**: Due to GitHub Actions restrictions, PR creation may require a Personal Access Token. See the [Release Process documentation](./RELEASE-PROCESS.md) for:
+
 - PAT setup instructions
 - Alternative release approaches
 - Security best practices

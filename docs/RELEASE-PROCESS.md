@@ -39,6 +39,7 @@ GitHub has implemented restrictions to prevent GitHub Actions from creating or a
 - Trigger other workflows via PR events
 
 **Error Message:**
+
 ```
 GitHub Actions is not permitted to create or approve pull requests
 ```
@@ -46,6 +47,7 @@ GitHub Actions is not permitted to create or approve pull requests
 ### Why This Restriction Exists
 
 This is a security measure to prevent:
+
 - Workflow loops where PRs trigger workflows that create more PRs
 - Bypassing required reviews and branch protection rules
 - Potential security vulnerabilities in automated approval chains
@@ -61,17 +63,20 @@ The current release workflow uses `changesets/action@v1` which creates a "Versio
 Use a Personal Access Token with appropriate permissions to create PRs.
 
 **Pros:**
+
 - Full automation maintained
 - Works with branch protection rules
 - Can trigger subsequent workflows
 - Clear audit trail
 
 **Cons:**
+
 - Requires token management
 - Token expires (use fine-grained tokens for longer expiry)
 - Associated with a specific user account
 
 **Implementation:**
+
 1. Create a machine user account or use a maintainer account
 2. Generate a fine-grained PAT with `contents: write` and `pull_requests: write`
 3. Add token as `RELEASE_TOKEN` repository secret
@@ -82,17 +87,20 @@ Use a Personal Access Token with appropriate permissions to create PRs.
 Use a GitHub App for authentication.
 
 **Pros:**
+
 - Not tied to individual user
 - More granular permissions
 - Better audit logging
 - No expiration concerns with proper setup
 
 **Cons:**
+
 - Requires GitHub App creation and installation
 - More complex initial setup
 - Overkill for smaller projects
 
 **Implementation:**
+
 1. Create GitHub App with appropriate permissions
 2. Install app on repository
 3. Use actions like `tibdex/github-app-token@v1` to generate tokens
@@ -103,16 +111,19 @@ Use a GitHub App for authentication.
 Remove automation for PR creation, keep automation for publishing.
 
 **Pros:**
+
 - No special tokens required
 - Works in any repository configuration
 - Manual review ensures intentional releases
 
 **Cons:**
+
 - Requires manual intervention
 - Slower release cycle
 - Human error potential
 
 **Implementation:**
+
 1. Developer runs `pnpm changeset:version` locally
 2. Developer creates PR with version changes
 3. After PR approval and merge, automated publishing runs
@@ -122,11 +133,13 @@ Remove automation for PR creation, keep automation for publishing.
 Separate version bumping from PR creation.
 
 **Pros:**
+
 - Keeps most automation
 - Uses default tokens
 - Clear separation of concerns
 
 **Cons:**
+
 - More complex workflow
 - Requires workflow dispatch or other triggers
 - Less seamless than full automation
@@ -200,7 +213,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}  # ⚠️ May fail to create PRs
+          token: ${{ secrets.GITHUB_TOKEN }} # ⚠️ May fail to create PRs
 
       - uses: ./.github/actions/setup-workspace
         with:
@@ -449,24 +462,32 @@ Maintain branch protection rules even with automation:
 
 ### Workflow Security
 
-1. **Pin Actions**: Use commit SHAs instead of tags
+1. **Pin Actions** (Optional but Recommended): Use commit SHAs instead of tags for maximum security
+
    ```yaml
-   # Good
+   # Most secure (pinned to specific commit)
    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v4.1.1
-   
-   # Avoid
+
+   # Good (pinned to major version)
    - uses: actions/checkout@v4
+
+   # Avoid (unpinned)
+   - uses: actions/checkout@latest
    ```
 
+   **Note**: The example workflows in this repository use version tags (e.g., `@v4`) for readability and ease of maintenance. For production environments with strict security requirements, consider pinning to specific commit SHAs and using Dependabot to keep them updated.
+
 2. **Limit Permissions**: Use minimum required permissions
+
    ```yaml
    permissions:
      contents: write
      pull-requests: write
-     id-token: write  # For provenance only
+     id-token: write # For provenance only
    ```
 
 3. **Environment Secrets**: Use environment-specific secrets for production
+
    ```yaml
    environment:
      name: production
@@ -486,12 +507,14 @@ Maintain branch protection rules even with automation:
 ### Version PR Not Created
 
 **Check:**
+
 1. Token has `pull_requests: write` permission
 2. Token is not expired
 3. Changesets exist in `.changeset/` directory
 4. Branch protection allows PR creation
 
 **Debug:**
+
 ```bash
 # Check for changesets
 ls -la .changeset/*.md
@@ -503,12 +526,14 @@ pnpm changeset:version
 ### Publishing Fails
 
 **Check:**
+
 1. NPM_TOKEN is valid and not expired
 2. User has publish access to @cli-ops scope
 3. Package names don't conflict with existing packages
 4. 2FA is configured correctly for automation
 
 **Debug:**
+
 ```bash
 # Test publish locally
 npm login
@@ -519,12 +544,14 @@ pnpm changeset:publish --dry-run
 ### Workflow Doesn't Trigger
 
 **Check:**
+
 1. Workflow is on main branch
 2. `.changeset/` files are committed
 3. Workflow file syntax is valid
 4. Repository actions are enabled
 
 **Debug:**
+
 ```bash
 # Validate workflow
 gh workflow view release
@@ -536,11 +563,13 @@ gh run list --workflow=release.yml
 ### Token Expired
 
 **Solution:**
+
 1. Generate new token following Step 1 above
 2. Update `RELEASE_TOKEN` secret
 3. Trigger workflow manually or push new commit
 
 **Prevention:**
+
 - Use longer expiration period
 - Set calendar reminders
 - Consider GitHub App for no-expiration solution
@@ -548,11 +577,13 @@ gh run list --workflow=release.yml
 ### Provenance Attestation Fails
 
 **Check:**
+
 1. `id-token: write` permission is set
 2. Publishing to public registry
 3. npm version supports provenance (>= v9.5.0)
 
 **Debug:**
+
 ```bash
 # Check npm version
 npm --version
