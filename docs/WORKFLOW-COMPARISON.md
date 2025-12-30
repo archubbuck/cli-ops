@@ -5,6 +5,7 @@
 ### Workflow Count
 
 **Before:**
+
 ```
 ├── ci.yml (153 lines)
 ├── plugin-verification.yml (56 lines)
@@ -14,6 +15,7 @@ Total: 4 workflows, 334 lines
 ```
 
 **After:**
+
 ```
 ├── ci.yml (103 lines) ✅ -33%
 ├── plugin-verification.yml (46 lines) ✅ -18%
@@ -27,6 +29,7 @@ Total: 3 active workflows, 201 lines
 ### Setup Code Duplication
 
 **Before:** Each job repeated 15-20 lines of setup
+
 ```yaml
 # REPEATED 5 TIMES in ci.yml alone!
 - uses: actions/checkout@v4
@@ -40,19 +43,23 @@ Total: 3 active workflows, 201 lines
 - name: Install dependencies
   run: pnpm install --frozen-lockfile
 ```
+
 **Total duplication:** ~125 lines across all workflows
 
 **After:** Single composite action
+
 ```yaml
 # USED EVERYWHERE - 2 lines!
 - uses: actions/checkout@v4
 - uses: ./.github/actions/setup-workspace
 ```
+
 **Total duplication:** 0 lines
 
 ### Specific Job Comparison - CI Lint Job
 
 **Before (21 lines):**
+
 ```yaml
 lint:
   name: Lint
@@ -80,6 +87,7 @@ lint:
 ```
 
 **After (14 lines):**
+
 ```yaml
 lint:
   name: Lint
@@ -103,6 +111,7 @@ lint:
 **Before: Two separate workflows doing the same thing**
 
 `publish.yml` (73 lines):
+
 ```yaml
 name: Publish Packages
 on:
@@ -115,6 +124,7 @@ jobs:
 ```
 
 `release.yml` (54 lines):
+
 ```yaml
 name: Release
 on:
@@ -131,6 +141,7 @@ jobs:
 **After: Single consolidated workflow**
 
 `release.yml` (55 lines):
+
 ```yaml
 name: Release
 on:
@@ -144,11 +155,11 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      id-token: write  # For provenance
+      id-token: write # For provenance
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # For changesets
+          fetch-depth: 0 # For changesets
       - uses: ./.github/actions/setup-workspace
       - name: Setup npm registry
         uses: actions/setup-node@v4
@@ -161,6 +172,7 @@ jobs:
 ```
 
 ✅ **Benefits:**
+
 - No duplicate runs
 - No race conditions
 - Best features from both workflows
@@ -169,32 +181,38 @@ jobs:
 ### Plugin Verification Bug Fix
 
 **Before (BROKEN):**
+
 ```yaml
 on:
   pull_request:
     paths:
-      - 'packages/clio-plugin-**/**'  # ❌ WRONG PATH!
+      - 'packages/clio-plugin-**/**' # ❌ WRONG PATH!
 ```
+
 Plugins are in `plugins/`, not `packages/` → Never triggers!
 
 **After (FIXED):**
+
 ```yaml
 on:
   pull_request:
     paths:
-      - 'plugins/clio-plugin-**/**'  # ✅ CORRECT!
+      - 'plugins/clio-plugin-**/**' # ✅ CORRECT!
 ```
+
 Now triggers correctly when plugin files change.
 
 ### Dependency Installation Consistency
 
 **Before:**
+
 - ✅ ci.yml: `pnpm install --frozen-lockfile`
 - ❌ plugin-verification.yml: `pnpm install` (no flag)
 - ✅ publish.yml: `pnpm install --frozen-lockfile`
 - ✅ release.yml: `pnpm install --frozen-lockfile`
 
 **After:**
+
 - ✅ All workflows: `pnpm install --frozen-lockfile` (via composite action)
 
 ## Maintenance Impact
@@ -202,6 +220,7 @@ Now triggers correctly when plugin files change.
 ### Updating Node.js Version
 
 **Before:**
+
 ```bash
 # Edit in 8 different places across 4 files!
 .github/workflows/ci.yml (5 jobs × node-version)
@@ -211,6 +230,7 @@ Now triggers correctly when plugin files change.
 ```
 
 **After:**
+
 ```bash
 # Edit in 1 place!
 .github/actions/setup-workspace/action.yml
@@ -224,6 +244,7 @@ Now triggers correctly when plugin files change.
 ## File Structure
 
 **Before:**
+
 ```
 .github/
 └── workflows/
@@ -234,6 +255,7 @@ Now triggers correctly when plugin files change.
 ```
 
 **After:**
+
 ```
 .github/
 ├── actions/
@@ -249,21 +271,22 @@ Now triggers correctly when plugin files change.
 
 ## Summary Statistics
 
-| Aspect | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **Active Workflows** | 4 | 3 | -25% |
-| **Duplicate Workflows** | 2 | 0 | -100% |
-| **Total Lines** | 334 | 201 | -40% |
-| **Setup Code Lines** | ~125 | 0 | -100% |
-| **Bugs Fixed** | - | 2 | Path filter, lockfile |
-| **Composite Actions** | 0 | 1 | Reusable setup |
-| **Places to Update Node** | 8 | 1 | -87.5% |
-| **Places to Update pnpm** | 8 | 1 | -87.5% |
-| **CI Minutes Wasted** | ~2× | 1× | No duplicate runs |
+| Aspect                    | Before | After | Improvement           |
+| ------------------------- | ------ | ----- | --------------------- |
+| **Active Workflows**      | 4      | 3     | -25%                  |
+| **Duplicate Workflows**   | 2      | 0     | -100%                 |
+| **Total Lines**           | 334    | 201   | -40%                  |
+| **Setup Code Lines**      | ~125   | 0     | -100%                 |
+| **Bugs Fixed**            | -      | 2     | Path filter, lockfile |
+| **Composite Actions**     | 0      | 1     | Reusable setup        |
+| **Places to Update Node** | 8      | 1     | -87.5%                |
+| **Places to Update pnpm** | 8      | 1     | -87.5%                |
+| **CI Minutes Wasted**     | ~2×    | 1×    | No duplicate runs     |
 
 ## Developer Experience
 
 ### Before
+
 ```bash
 # Developer wants to update Node.js version
 $ grep -r "node-version: 20" .github/workflows/
@@ -271,6 +294,7 @@ $ grep -r "node-version: 20" .github/workflows/
 ```
 
 ### After
+
 ```bash
 # Developer wants to update Node.js version
 $ vim .github/actions/setup-workspace/action.yml
@@ -284,9 +308,10 @@ $ vim .github/actions/setup-workspace/action.yml
 ✅ **100% elimination of code duplication**  
 ✅ **2 critical bugs fixed**  
 ✅ **87.5% reduction in maintenance burden**  
-✅ **Zero functionality lost**  
+✅ **Zero functionality lost**
 
 The workflows are now:
+
 - **Simpler** - Less code to maintain
 - **More maintainable** - Single source of truth
 - **More reliable** - No duplicate runs, bugs fixed
@@ -296,6 +321,7 @@ The workflows are now:
 ---
 
 **See Also:**
+
 - [WORKFLOW-ANALYSIS.md](./WORKFLOW-ANALYSIS.md) - Detailed analysis
 - [WORKFLOW-CHANGES.md](./WORKFLOW-CHANGES.md) - Implementation details
 - [.github/actions/setup-workspace/README.md](../.github/actions/setup-workspace/README.md) - Composite action docs

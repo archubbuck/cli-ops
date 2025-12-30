@@ -10,7 +10,8 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 
 **Issue:** Both `publish.yml` and `release.yml` performed identical operations on push to main, causing potential race conditions and wasted CI minutes.
 
-**Solution:** 
+**Solution:**
+
 - Merged both workflows into a single, enhanced `release.yml`
 - Deprecated `publish.yml` (renamed to `publish.yml.deprecated` with explanatory header)
 - The consolidated workflow includes:
@@ -26,6 +27,7 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 **Issue:** `plugin-verification.yml` monitored `packages/clio-plugin-**/**` but plugins are located in `plugins/` directory, causing the workflow to never trigger automatically.
 
 **Solution:**
+
 - Changed path filter from `packages/clio-plugin-**/**` to `plugins/clio-plugin-**/**`
 
 **Impact:** Plugin verification will now trigger correctly on PR changes to plugin files
@@ -35,6 +37,7 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 **Issue:** `plugin-verification.yml` used `pnpm install` without `--frozen-lockfile`, inconsistent with other workflows.
 
 **Solution:**
+
 - Updated to use `pnpm install --frozen-lockfile` via composite action
 
 **Impact:** Ensures consistent dependency versions across all CI runs
@@ -44,6 +47,7 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 **Issue:** All workflows repeated identical setup steps (checkout, pnpm setup, node setup, install), leading to ~125 lines of duplicated configuration.
 
 **Solution:**
+
 - Created `.github/actions/setup-workspace/action.yml` composite action
 - Updated all workflows to use the composite action
 - Action encapsulates:
@@ -52,7 +56,8 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
   - Dependency installation
   - Configurable inputs for flexibility
 
-**Impact:** 
+**Impact:**
+
 - Reduced workflow configuration by 148 lines (130 lines → -18 lines net)
 - Single source of truth for workspace setup
 - Easier to update Node.js/pnpm versions
@@ -60,6 +65,7 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 ### 5. ✅ Improved Release Workflow
 
 **Enhancements made to consolidated `release.yml`:**
+
 - Added `fetch-depth: 0` for full git history (required for changesets)
 - Included `id-token: write` permission for npm provenance
 - Added Turbo cache environment variables
@@ -68,35 +74,39 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 
 ## Metrics
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Active workflows | 4 | 3 | -1 |
-| Deprecated workflows | 0 | 1 | +1 |
-| Duplicate workflows | 2 | 0 | -2 |
-| Total workflow lines | 334 | 201 | -133 (-40%) |
-| Setup code repetition | 5× | 0× | Eliminated |
-| Known bugs | 2 | 0 | Fixed |
-| Composite actions | 0 | 1 | +1 |
+| Metric                | Before | After | Change      |
+| --------------------- | ------ | ----- | ----------- |
+| Active workflows      | 4      | 3     | -1          |
+| Deprecated workflows  | 0      | 1     | +1          |
+| Duplicate workflows   | 2      | 0     | -2          |
+| Total workflow lines  | 334    | 201   | -133 (-40%) |
+| Setup code repetition | 5×     | 0×    | Eliminated  |
+| Known bugs            | 2      | 0     | Fixed       |
+| Composite actions     | 0      | 1     | +1          |
 
 ## Files Changed
 
 ### New Files
+
 - `.github/actions/setup-workspace/action.yml` - Composite setup action
 - `.github/actions/setup-workspace/README.md` - Documentation
 - `docs/WORKFLOW-ANALYSIS.md` - Comprehensive analysis document
 - `docs/WORKFLOW-CHANGES.md` - This file
 
 ### Modified Files
+
 - `.github/workflows/ci.yml` - Use composite action (reduced from 154 to 103 lines)
 - `.github/workflows/plugin-verification.yml` - Fix path, use composite action (reduced from 57 to 46 lines)
 - `.github/workflows/release.yml` - Enhanced with best practices from both workflows
 
 ### Deprecated Files
+
 - `.github/workflows/publish.yml.deprecated` - Duplicate workflow with deprecation notice
 
 ## Validation
 
 All changes follow these principles:
+
 - ✅ No change to workflow functionality
 - ✅ Backwards compatible (all existing features preserved)
 - ✅ Improved maintainability
@@ -134,6 +144,7 @@ See [WORKFLOW-ANALYSIS.md](./WORKFLOW-ANALYSIS.md) for full details on potential
 If issues arise:
 
 1. Revert the composite action usage:
+
    ```yaml
    - uses: pnpm/action-setup@v4
      with:
@@ -159,21 +170,19 @@ If issues arise:
 
 From the analysis document:
 
-1. **Should security checks move to main CI?** 
+1. **Should security checks move to main CI?**
    - Deferred - kept in plugin verification for now
-   
-2. **Test multiple Node.js versions?** 
+2. **Test multiple Node.js versions?**
    - Deferred - can be added later if needed
-   
-3. **Should plugin verification run on all PRs?** 
+3. **Should plugin verification run on all PRs?**
    - No - maintained path-based triggering, now correctly configured
-   
-4. **Preferred caching approach?** 
+4. **Preferred caching approach?**
    - Standardized on `cache: 'pnpm'` in setup-node
 
 ## Conclusion
 
 Successfully simplified the GitHub Actions workflows by:
+
 - Eliminating duplicate workflows
 - Fixing critical bugs
 - Reducing code duplication by 42%
