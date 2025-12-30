@@ -7,8 +7,8 @@
  */
 
 import { execSync } from 'node:child_process'
-import { readFileSync, existsSync } from 'node:fs'
-import { join, dirname } from 'node:path'
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
+import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createHash } from 'node:crypto'
 
@@ -19,70 +19,130 @@ const INVENTORY_PATH = join(ROOT_DIR, 'inventory', 'latest.json')
 const MD_PATH = join(ROOT_DIR, 'docs', 'CLI-INVENTORY.md')
 
 /**
+ * Discover all CLI applications and plugins (same as generate-inventory.js)
+ */
+function discoverCLIs() {
+  const clis = []
+
+  // Add core clio CLI
+  const clioPath = join(ROOT_DIR, 'apps', 'clio')
+  if (existsSync(clioPath)) {
+    clis.push({
+      name: 'clio',
+      path: clioPath,
+      type: 'core',
+    })
+  }
+
+  // Add plugins from plugins/
+  const pluginsDir = join(ROOT_DIR, 'plugins')
+  if (existsSync(pluginsDir)) {
+    readdirSync(pluginsDir)
+      .filter((name) => {
+        const path = join(pluginsDir, name)
+        return statSync(path).isDirectory() && name.startsWith('clio-plugin-')
+      })
+      .forEach((name) => {
+        clis.push({
+          name,
+          path: join(pluginsDir, name),
+          type: 'plugin',
+        })
+      })
+  }
+
+  return clis
+}
+
+/**
+ * Discover commands from a CLI (same as generate-inventory.js)
+ */
+function discoverCommands(cliPath) {
+  const commandsDir = join(cliPath, 'src', 'commands')
+  const commands = []
+
+  if (!existsSync(commandsDir)) {
+    return commands
+  }
+
+  function traverse(dir, prefix = '') {
+    const entries = readdirSync(dir, { withFileTypes: true })
+
+    for (const entry of entries) {
+      const fullPath = join(dir, entry.name)
+
+      if (entry.isDirectory()) {
+        traverse(fullPath, prefix + entry.name + ':')
+      } else if (entry.name.endsWith('.ts') && !entry.name.endsWith('.test.ts')) {
+        const cmdName = entry.name.replace('.ts', '')
+        const commandId = prefix + cmdName
+
+        // Extract description via regex
+        try {
+          const content = readFileSync(fullPath, 'utf-8')
+          const descMatch = /static\s+(?:override\s+)?description\s*=\s*['"`]([^'"`]+)['"`]/s.exec(
+            content,
+          )
+
+          commands.push({
+            id: commandId,
+            description: descMatch ? descMatch[1].trim() : '',
+          })
+        } catch (error) {
+          commands.push({
+            id: commandId,
+            description: '',
+          })
+        }
+      }
+    }
+  }
+
+  traverse(commandsDir)
+  return commands.sort((a, b) => a.id.localeCompare(b.id))
+}
+
+/**
  * Generate a hash of the current CLI state
  */
 function generateCurrentStateHash() {
   const hash = createHash('sha256')
 
-  // Hash all package.json files in apps/
-  try {
-    const appsDir = join(ROOT_DIR, 'apps')
-    const result = execSync('find apps/cli-* -name "package.json" | sort', {
-      cwd: ROOT_DIR,
-      encoding: 'utf-8',
-    })
+  // Discover CLIs using the same logic as generate-inventory.js
+  const clis = discoverCLIs()
 
-    const packageFiles = result.trim().split('\n').filter(Boolean)
+  for (const cli of clis) {
+    const pkgPath = join(cli.path, 'package.json')
 
-    for (const file of packageFiles) {
-      const content = readFileSync(join(ROOT_DIR, file), 'utf-8')
-      const pkg = JSON.parse(content)
+    if (!existsSync(pkgPath)) {
+      continue
+    }
 
-      // Hash relevant fields
+    try {
+      const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+
+      // Extract shared package dependencies
+      const sharedDeps = Object.keys(pkg.dependencies || {})
+        .filter((dep) => dep.startsWith('shared-'))
+        .sort()
+
+      // Hash metadata (same fields as inventory)
       hash.update(pkg.name || '')
       hash.update(pkg.version || '')
       hash.update(pkg.description || '')
-      hash.update(JSON.stringify(pkg.oclif || {}))
-      hash.update(
-        JSON.stringify(
-          Object.keys(pkg.dependencies || {})
-            .filter((d) => d.startsWith('shared-'))
-            .sort(),
-        ),
-      )
-    }
-  } catch (error) {
-    console.error(`❌ Error reading package files: ${error.message}`)
-    process.exit(1)
-  }
+      hash.update(JSON.stringify(pkg.oclif?.topics || {}))
+      hash.update(JSON.stringify(sharedDeps))
 
-  // Hash all command files
-  try {
-    const result = execSync(
-      'find plugins/cli-*/src/commands -name "*.ts" ! -name "*.test.ts" | sort',
-      {
-        cwd: ROOT_DIR,
-        encoding: 'utf-8',
-      },
-    )
-
-    const commandFiles = result.trim().split('\n').filter(Boolean)
-
-    for (const file of commandFiles) {
-      const content = readFileSync(join(ROOT_DIR, file), 'utf-8')
-
-      // Hash file path and description
-      hash.update(file)
-      const descMatch = /static\s+(?:override\s+)?description\s*=\s*['"`]([^'"`]+)['"`]/s.exec(
-        content,
-      )
-      if (descMatch) {
-        hash.update(descMatch[1])
+      // Discover and hash commands
+      const commands = discoverCommands(cli.path)
+      for (const cmd of commands) {
+        hash.update(cmd.id || '')
+        hash.update(cmd.description || '')
       }
+    } catch (error) {
+      console.error(`❌ Error processing ${cli.name}: ${error.message}`)
+      process.exit(1)
     }
-  } catch (error) {
-    // No commands found or error - hash empty string
-    hash.update('')
   }
 
   return hash.digest('hex')

@@ -262,6 +262,118 @@ All plugins (`@cli-ops/clio-plugin-*`) have:
 - **peerDependencies**: `@cli-ops/clio` (ensures core CLI is installed)
 - **dependencies**: Shared packages (`@cli-ops/shared-*`)
 
+### CLI Application Inventory
+
+> **Auto-generated from inventory.** Last updated: December 29, 2025
+
+#### clio
+
+**Foundational plugin manager CLI for CLI Ops tools**
+
+```
+@cli-ops/clio@1.0.0
+├── Commands: 7
+│   ├── config:get
+│   ├── config:list
+│   ├── config:set
+│   ├── doctor
+│   ├── history:list
+│   ├── plugins:extensions
+│   └── setup
+│
+└── Shared Dependencies: 0 packages
+```
+
+#### clio
+
+**HTTP API client plugin for clio**
+
+```
+@cli-ops/clio-plugin-fetch@3.0.0
+├── Commands: 2
+│   [request:get, request:post]
+│
+└── Shared Dependencies: 0 packages
+```
+
+#### clio
+
+**OAuth 2.0 authentication plugin for clio fetch**
+
+```
+@cli-ops/clio-plugin-fetch-oauth@3.0.0
+├── Commands: 1
+│   [oauth:login]
+│
+└── Shared Dependencies: 0 packages
+```
+
+#### clio
+
+**Developer tools plugin for clio with Git and GitHub integration**
+
+```
+@cli-ops/clio-plugin-repo@3.0.0
+├── Commands: 3
+│   [git:log, git:status, pr:list]
+│
+└── Shared Dependencies: 0 packages
+```
+
+#### clio
+
+**Git hooks automation plugin for clio repo**
+
+```
+@cli-ops/clio-plugin-repo-hooks@3.0.0
+├── Commands: 1
+│   [hooks:install]
+│
+└── Shared Dependencies: 0 packages
+```
+
+#### clio
+
+**Task management plugin for clio**
+
+```
+@cli-ops/clio-plugin-tasks@3.0.0
+├── Commands: 5
+│   ├── tasks:create
+│   ├── tasks:delete
+│   ├── tasks:list
+│   ├── tasks:show
+│   └── tasks:update
+│
+└── Shared Dependencies: 0 packages
+```
+
+#### clio
+
+**Jira integration plugin for clio tasks**
+
+```
+@cli-ops/clio-plugin-tasks-jira@3.0.0
+├── Commands: 2
+│   [jira:link, jira:sync]
+│
+└── Shared Dependencies: 0 packages
+```
+
+**Summary:**
+
+| CLI  | Version | Commands | Shared Packages |
+| ---- | ------- | -------- | --------------- |
+| clio | 1.0.0   | 7        | 0               |
+| clio | 3.0.0   | 2        | 0               |
+| clio | 3.0.0   | 1        | 0               |
+| clio | 3.0.0   | 3        | 0               |
+| clio | 3.0.0   | 1        | 0               |
+| clio | 3.0.0   | 5        | 0               |
+| clio | 3.0.0   | 2        | 0               |
+
+For detailed command information, see [CLI-INVENTORY.md](CLI-INVENTORY.md).
+
 ## Build Pipeline
 
 ### Turborepo Configuration
