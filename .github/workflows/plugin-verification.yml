@@ -2,7 +2,7 @@ name: Plugin Verification
 on:
   pull_request:
     paths:
-      - 'packages/clio-plugin-**/**'
+      - 'plugins/clio-plugin-**/**'
   workflow_dispatch:
     inputs:
       plugin_name:
@@ -15,17 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
+      - uses: ./.github/actions/setup-workspace
 
       - name: Build plugin
         run: pnpm build

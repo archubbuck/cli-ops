@@ -1,3 +1,14 @@
+# DEPRECATED: This workflow has been consolidated into release.yml
+# This file is kept temporarily for reference and will be removed in a future release.
+# 
+# Reason for deprecation: publish.yml and release.yml were duplicates that both:
+# - Triggered on push to main
+# - Used changesets to manage versions and publishing
+# - Ran identical operations, causing potential race conditions
+# 
+# The consolidated release.yml now handles all publishing operations.
+# See docs/WORKFLOW-ANALYSIS.md for full details.
+
 name: Publish Packages
 
 on:
