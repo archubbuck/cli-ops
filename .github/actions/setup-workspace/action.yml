@@ -15,13 +15,11 @@ runs:
     - uses: pnpm/action-setup@v4
       with:
         version: 9.15.0
-      shell: bash
 
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'pnpm'
-      shell: bash
 
     - name: Install dependencies
       run: pnpm install ${{ inputs.frozen-lockfile == 'true' && '--frozen-lockfile' || '' }}
