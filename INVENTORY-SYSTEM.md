@@ -68,7 +68,9 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 
 The inventory is automatically maintained through:
 
-#### 1. CI Workflow (`.github/workflows/ci.yml`)
+#### 1. CI Workflows
+
+##### CI Pipeline (`.github/workflows/ci.yml`)
 
 After successful build in CI:
 
@@ -77,19 +79,30 @@ After successful build in CI:
 - Uploads inventory artifacts
 - Ensures committed inventory matches reality
 
+##### Release & Publish Pipelines (`.github/workflows/release.yml`, `.github/workflows/publish.yml`)
+
+After successful build and before version/publish operations:
+
+- Regenerates inventory from built artifacts
+- Commits inventory changes if detected
+- Prevents pre-commit hook failures during changeset operations
+
 #### 2. Pre-Commit Hook (`.husky/pre-commit`)
 
-Before each commit:
+Before each commit (in local development only):
 
 - Validates inventory is current
 - Auto-regenerates if outdated
 - Stages updated files
+- **Skipped in CI** to avoid conflicts with workflow-managed inventory
 
 ```bash
-pnpm inventory:validate || {
-  pnpm inventory:generate
-  git add docs/CLI-INVENTORY.md inventory/
-}
+if [ -z "$CI" ] && [ -z "$GITHUB_ACTIONS" ]; then
+  pnpm inventory:validate || {
+    pnpm inventory:generate
+    git add docs/CLI-INVENTORY.md inventory/
+  }
+fi
 ```
 
 The inventory is primarily regenerated in CI workflows to ensure accuracy with built artifacts. For local development, run `pnpm inventory:generate` manually after building.
