@@ -73,7 +73,7 @@ This document summarizes the changes made to simplify and consolidate GitHub Act
 | Active workflows | 4 | 3 | -1 |
 | Deprecated workflows | 0 | 1 | +1 |
 | Duplicate workflows | 2 | 0 | -2 |
-| Total workflow lines | 352 | 204 | -148 (-42%) |
+| Total workflow lines | 334 | 201 | -133 (-40%) |
 | Setup code repetition | 5× | 0× | Eliminated |
 | Known bugs | 2 | 0 | Fixed |
 | Composite actions | 0 | 1 | +1 |

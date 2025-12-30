@@ -32,7 +32,7 @@ I've completed a comprehensive review and simplification of all GitHub Actions w
 |--------|--------|-------|-------------|
 | **Active Workflows** | 4 | 3 | -25% (1 duplicate removed) |
 | **Duplicate Workflows** | 2 | 0 | -100% |
-| **Total Workflow Lines** | 338 | 204 | -40% |
+| **Total Workflow Lines** | 334 | 201 | -40% |
 | **Setup Code Duplication** | ~125 lines | 0 lines | -100% |
 | **Known Bugs** | 2 | 0 | All fixed |
 | **Maintenance Points** | 8 places | 1 place | -87.5% |
