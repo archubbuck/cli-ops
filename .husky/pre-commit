@@ -7,17 +7,13 @@ npx ls-lint
 # Type check
 pnpm typecheck
 
-# Validate inventory (skip in CI - workflows handle inventory generation)
-if [ -z "$CI" ] && [ -z "$GITHUB_ACTIONS" ]; then
-  echo "📦 Validating inventory..."
-  pnpm inventory:validate || {
-    echo "⚠️  Inventory outdated, regenerating..."
-    pnpm inventory:generate
-    git add docs/CLI-INVENTORY.md inventory/
-  }
-else
-  echo "📦 Skipping inventory validation (running in CI)"
-fi
+# Validate inventory - ensure it's up-to-date before committing
+echo "📦 Validating inventory..."
+pnpm inventory:validate || {
+  echo "⚠️  Inventory outdated, regenerating..."
+  pnpm inventory:generate
+  git add docs/CLI-INVENTORY.md inventory/
+}
 
 # Spell check staged files
 git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|js|md)$' | xargs npx cspell --no-progress --no-summary || true
