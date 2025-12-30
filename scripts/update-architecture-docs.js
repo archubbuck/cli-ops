@@ -77,7 +77,8 @@ function generateDependencyTree(inventory) {
   tree += `|-----|---------|----------|------------------|\n`
 
   for (const cli of inventory.clis) {
-    tree += `| ${cli.metadata.bin} | ${cli.metadata.version} | ${cli.commands.length} | ${cli.metadata.packageCount} |\n`
+    const headerName = cli.name || cli.metadata.bin
+    tree += `| ${headerName} | ${cli.metadata.version} | ${cli.commands.length} | ${cli.metadata.packageCount} |\n`
   }
 
   tree += `\n`
