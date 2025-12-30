@@ -19,8 +19,11 @@ pnpm inventory:validate || {
 git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|js|md)$' | xargs npx cspell --no-progress --no-summary || true
 
 # Check for console.log statements (except in shared-logger and scripts)
-if git diff --cached --name-only | grep -E '\.(ts|js)$' | grep -v 'shared-logger' | grep -v '^scripts/' | xargs -r grep -n 'console\.\(log\|debug\|info\)' 2>/dev/null; then
-  echo "❌ Error: console.log/debug/info found. Use shared-logger instead."
+CONSOLE_LOG_FOUND=$(git diff --cached --name-only | grep -E '\.(ts|js)$' | grep -v 'shared-logger' | grep -v '^scripts/' | xargs -r grep -l 'console\.\(log\|debug\|info\)' 2>/dev/null || true)
+if [ -n "$CONSOLE_LOG_FOUND" ]; then
+  echo "❌ Error: console.log/debug/info found in:"
+  echo "$CONSOLE_LOG_FOUND"
+  echo "Use shared-logger instead."
   exit 1
 fi
 
