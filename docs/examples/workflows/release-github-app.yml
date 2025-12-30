@@ -10,7 +10,8 @@
 # 3. Add app credentials as secrets:
 #    - APP_ID: The GitHub App ID
 #    - APP_PRIVATE_KEY: The GitHub App private key
-# 4. Replace this file with .github/workflows/release.yml
+# 4. (Optional) For Turborepo caching, add TURBO_TOKEN and TURBO_TEAM secrets
+# 5. Replace this file with .github/workflows/release.yml
 #
 # Pros:
 # - Not tied to individual user accounts
@@ -35,6 +36,8 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
+  # Optional: Turborepo remote caching tokens
+  # Remove these if not using Turborepo
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -50,7 +53,9 @@ jobs:
       # Generate token from GitHub App
       - name: Generate token
         id: generate-token
-        uses: tibdex/github-app-token@v1
+        # Security: Consider pinning to a specific commit SHA for production
+        # e.g., uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
@@ -70,6 +75,8 @@ jobs:
 
       - name: Create Release Pull Request or Publish
         id: changesets
+        # Security: Consider pinning to a specific commit SHA for production
+        # e.g., uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7
         uses: changesets/action@v1
         with:
           publish: pnpm changeset:publish

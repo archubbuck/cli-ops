@@ -25,6 +25,7 @@ jobs:
           fetch-depth: 0
           # Use RELEASE_TOKEN (PAT) if available, fallback to GITHUB_TOKEN
           # Note: GITHUB_TOKEN may fail with "GitHub Actions is not permitted to create or approve pull requests"
+          # Important: If RELEASE_TOKEN is set but empty, it will use the empty value. Either set it with a value or don't set it at all.
           # See docs/RELEASE-PROCESS.md for setup instructions
           token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
 

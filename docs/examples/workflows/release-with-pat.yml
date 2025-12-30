@@ -8,7 +8,8 @@
 #    - Repository access: your-org/your-repo (or select specific repositories)
 #    - Permissions: contents (read+write), pull_requests (read+write)
 # 2. Add token as repository secret: RELEASE_TOKEN
-# 3. Replace this file with .github/workflows/release.yml
+# 3. (Optional) For Turborepo caching, add TURBO_TOKEN and TURBO_TEAM secrets
+# 4. Replace this file with .github/workflows/release.yml
 #
 # See: docs/RELEASE-PROCESS.md for detailed instructions
 
@@ -22,6 +23,8 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
+  # Optional: Turborepo remote caching tokens
+  # Remove these if not using Turborepo
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -49,6 +52,8 @@ jobs:
 
       - name: Create Release Pull Request or Publish
         id: changesets
+        # Security: Consider pinning to a specific commit SHA for production
+        # e.g., uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7
         uses: changesets/action@v1
         with:
           publish: pnpm changeset:publish

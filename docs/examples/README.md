@@ -53,7 +53,7 @@ Uses GitHub App for authentication.
 
 1. Choose the approach that fits your needs
 2. Follow the setup instructions in the file comments
-3. Review the [Release Process documentation](../../RELEASE-PROCESS.md)
+3. Review the [Release Process documentation](../RELEASE-PROCESS.md)
 4. Copy the example to `.github/workflows/release.yml` (or update existing file)
 5. Test with a changeset commit
 
@@ -67,11 +67,11 @@ Uses GitHub App for authentication.
 
 ## Additional Resources
 
-- [Full Release Process Documentation](../../RELEASE-PROCESS.md)
-- [Contributing Guide](../../CONTRIBUTING.md)
+- [Full Release Process Documentation](../RELEASE-PROCESS.md)
+- [Contributing Guide](../CONTRIBUTING.md)
 - [Changesets Documentation](https://github.com/changesets/changesets)
 - [GitHub Actions Security](https://docs.github.com/en/actions/security-guides)
 
 ## Need Help?
 
-See the [Troubleshooting section](../../RELEASE-PROCESS.md#troubleshooting) in the Release Process documentation.
+See the [Troubleshooting section](../RELEASE-PROCESS.md#troubleshooting) in the Release Process documentation.
