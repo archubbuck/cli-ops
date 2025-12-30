@@ -6,20 +6,20 @@
 
 **Before:**
 ```
-├── ci.yml (154 lines)
-├── plugin-verification.yml (57 lines)
-├── publish.yml (73 lines) ⚠️ DUPLICATE
-└── release.yml (54 lines) ⚠️ DUPLICATE
-Total: 4 workflows, 338 lines
+├── ci.yml (153 lines)
+├── plugin-verification.yml (56 lines)
+├── publish.yml (72 lines) ⚠️ DUPLICATE
+└── release.yml (53 lines) ⚠️ DUPLICATE
+Total: 4 workflows, 334 lines
 ```
 
 **After:**
 ```
 ├── ci.yml (103 lines) ✅ -33%
-├── plugin-verification.yml (46 lines) ✅ -19%
-├── release.yml (55 lines) ✅ CONSOLIDATED
+├── plugin-verification.yml (46 lines) ✅ -18%
+├── release.yml (52 lines) ✅ CONSOLIDATED
 └── publish.yml.deprecated (with notice)
-Total: 3 active workflows, 204 lines
+Total: 3 active workflows, 201 lines
 
 + New: .github/actions/setup-workspace (composite action)
 ```
@@ -253,7 +253,7 @@ Now triggers correctly when plugin files change.
 |--------|--------|-------|-------------|
 | **Active Workflows** | 4 | 3 | -25% |
 | **Duplicate Workflows** | 2 | 0 | -100% |
-| **Total Lines** | 338 | 204 | -40% |
+| **Total Lines** | 334 | 201 | -40% |
 | **Setup Code Lines** | ~125 | 0 | -100% |
 | **Bugs Fixed** | - | 2 | Path filter, lockfile |
 | **Composite Actions** | 0 | 1 | Reusable setup |

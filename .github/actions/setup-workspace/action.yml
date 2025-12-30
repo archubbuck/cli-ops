@@ -21,6 +21,13 @@ runs:
         version: 9.15.0
 
     - uses: actions/setup-node@v4
+      if: ${{ inputs.registry-url == '' }}
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+
+    - uses: actions/setup-node@v4
+      if: ${{ inputs.registry-url != '' }}
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'pnpm'
