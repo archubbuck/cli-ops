@@ -84,7 +84,7 @@ After successful build in CI:
 After successful build and before version/publish operations:
 
 - Regenerates inventory from built artifacts
-- Commits inventory changes if detected
+- Commits inventory changes and pushes them to the repository if detected
 - Prevents pre-commit hook failures during changeset operations
 
 #### 2. Pre-Commit Hook (`.husky/pre-commit`)
