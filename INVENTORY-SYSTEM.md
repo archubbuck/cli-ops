@@ -68,44 +68,25 @@ The CLI Inventory System is an automated solution for discovering, documenting, 
 
 The inventory is automatically maintained through:
 
-#### 1. CI Workflows
+#### Pre-Commit Hook (`.husky/pre-commit`)
 
-##### CI Pipeline (`.github/workflows/ci.yml`)
-
-After successful build in CI:
-
-- Regenerates inventory from built artifacts
-- Updates architecture documentation
-- Uploads inventory artifacts
-- Ensures committed inventory matches reality
-
-##### Release & Publish Pipelines (`.github/workflows/release.yml`, `.github/workflows/publish.yml`)
-
-After successful build and before version/publish operations:
-
-- Regenerates inventory from built artifacts
-- Commits inventory changes and pushes them to the repository if detected
-- Prevents pre-commit hook failures during changeset operations
-
-#### 2. Pre-Commit Hook (`.husky/pre-commit`)
-
-Before each commit (in local development only):
+Before each commit:
 
 - Validates inventory is current
 - Auto-regenerates if outdated
 - Stages updated files
-- **Skipped in CI** to avoid conflicts with workflow-managed inventory
+- Ensures committed inventory always matches code
 
 ```bash
-if [ -z "$CI" ] && [ -z "$GITHUB_ACTIONS" ]; then
-  pnpm inventory:validate || {
-    pnpm inventory:generate
-    git add docs/CLI-INVENTORY.md inventory/
-  }
-fi
+echo "📦 Validating inventory..."
+pnpm inventory:validate || {
+  echo "⚠️  Inventory outdated, regenerating..."
+  pnpm inventory:generate
+  git add docs/CLI-INVENTORY.md inventory/
+}
 ```
 
-The inventory is primarily regenerated in CI workflows to ensure accuracy with built artifacts. For local development, run `pnpm inventory:generate` manually after building.
+The inventory is always generated locally before commits to ensure accuracy. Developers must build CLIs before committing changes that affect the inventory.
 
 ### Integration Points
 
@@ -217,7 +198,7 @@ The inventory regenerates automatically when:
 ✅ Changing CLI versions or descriptions  
 ✅ Updating package.json oclif configuration  
 ✅ Changing shared package dependencies  
-✅ In CI workflows after successful build
+✅ Via pre-commit hook before any commit
 
 ### Manual Regeneration
 
@@ -286,8 +267,8 @@ This allows:
 
 3. **Let automation handle updates**
    - Don't manually edit `CLI-INVENTORY.md`
-   - Rely on CI workflows for generation
-   - Trust pre-commit validation
+   - Pre-commit hook handles generation
+   - Always build before committing inventory changes
 
 4. **Review inventory in PRs**
    - Check for expected command additions
