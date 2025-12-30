@@ -127,6 +127,10 @@ function generateCurrentStateHash() {
         .sort()
 
       // Hash metadata (same fields as inventory)
+      // Only hash fields that are stored in the inventory JSON structure:
+      // - name, version, description: basic package metadata
+      // - oclif.topics: command topics/categories (other oclif fields like hooks, plugins aren't in inventory)
+      // - sharedPackages: filtered list of shared dependencies
       hash.update(pkg.name || '')
       hash.update(pkg.version || '')
       hash.update(pkg.description || '')
