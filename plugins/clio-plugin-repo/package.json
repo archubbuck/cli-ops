@@ -1,6 +1,6 @@
 {
   "name": "@cli-ops/clio-plugin-repo",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Developer tools plugin for clio with Git and GitHub integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,7 +39,7 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "@cli-ops/clio": "^1.0.0"
+    "@cli-ops/clio": "^2.0.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

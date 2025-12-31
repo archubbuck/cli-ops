@@ -1,6 +1,6 @@
 {
   "name": "@cli-ops/shared-ipc",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "IPC for plugin communication and event bus",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

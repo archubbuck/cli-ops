@@ -1,6 +1,6 @@
 {
   "name": "@cli-ops/shared-commands",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Base command classes with enhanced functionality",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
