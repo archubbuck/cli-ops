@@ -21,14 +21,13 @@ jobs:
       id-token: write
     steps:
       - name: Validate RELEASE_TOKEN
+        if: secrets.RELEASE_TOKEN == ''
         run: |
-          if [[ -z "${{ secrets.RELEASE_TOKEN || '' }}" ]]; then
-            echo "::error::RELEASE_TOKEN secret is required for the release workflow"
-            echo "::error::The default GITHUB_TOKEN cannot create pull requests"
-            echo "::error::Please follow the setup instructions in docs/RELEASE-PROCESS.md"
-            echo "::error::https://github.com/${{ github.repository }}/blob/main/docs/RELEASE-PROCESS.md"
-            exit 1
-          fi
+          echo "::error::RELEASE_TOKEN secret is required for the release workflow"
+          echo "::error::The default GITHUB_TOKEN cannot create pull requests"
+          echo "::error::Please follow the setup instructions in docs/RELEASE-PROCESS.md"
+          echo "::error::See https://github.com/${{ github.repository }}/blob/${{ github.event.repository.default_branch }}/docs/RELEASE-PROCESS.md"
+          exit 1
 
       - uses: actions/checkout@v4
         with:
