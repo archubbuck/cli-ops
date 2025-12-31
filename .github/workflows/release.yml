@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Validate RELEASE_TOKEN
         run: |
-          if [ -z "${{ secrets.RELEASE_TOKEN }}" ]; then
+          if [[ -z "${{ secrets.RELEASE_TOKEN || '' }}" ]]; then
             echo "::error::RELEASE_TOKEN secret is required for the release workflow"
             echo "::error::The default GITHUB_TOKEN cannot create pull requests"
             echo "::error::Please follow the setup instructions in docs/RELEASE-PROCESS.md"
