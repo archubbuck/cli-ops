@@ -218,7 +218,7 @@ pnpm changeset:publish
 
 ## Version History
 
-### v3.0.0 (2025-12-28) - Extension Plugin Formalization
+### v4.0.0 (Plugins) / v2.0.0 (Core) - Extension Plugin Formalization
 
 **BREAKING CHANGES**: Extension plugins refactored to top-level architecture
 
@@ -235,20 +235,25 @@ pnpm changeset:publish
 
 **Affected Packages**:
 
-- `@cli-ops/shared-plugins@3.0.0`
-- `@cli-ops/clio-plugin-tasks@3.0.0`
-- `@cli-ops/clio-plugin-fetch@3.0.0`
-- `@cli-ops/clio-plugin-repo@3.0.0`
-- `@cli-ops/clio-plugin-tasks-jira@3.0.0`
-- `@cli-ops/clio-plugin-fetch-oauth@3.0.0`
-- `@cli-ops/clio-plugin-repo-hooks@3.0.0`
+- `@cli-ops/shared-plugins@4.0.0`
+- `@cli-ops/clio-plugin-tasks@4.0.0`
+- `@cli-ops/clio-plugin-fetch@4.0.0`
+- `@cli-ops/clio-plugin-repo@4.0.0`
+- `@cli-ops/clio-plugin-tasks-jira@4.0.0`
+- `@cli-ops/clio-plugin-fetch-oauth@4.0.0`
+- `@cli-ops/clio-plugin-repo-hooks@4.0.0`
 
-### v2.0.0 - Plugin System Foundation
+### v2.0.0 (Core) - Initial Release
 
-- Initial plugin-first architecture
-- oclif v4 with plugin management
-- Event-based inter-plugin communication
-- Nested extension support
+**Note**: This is the initial stable release of all packages, incorporating the extension plugin formalization work.
+
+- 🚀 Plugin-first architecture with clio as the foundational manager
+- 📦 oclif v4 with plugin management
+- 📝 Command history with undo/redo support
+- ⚙️ Unified configuration management
+- 🔧 Built-in task management (bundled with clio)
+- 🔌 Event-based inter-plugin communication
+- 📚 Comprehensive documentation and testing utilities
 
 ## License
 
