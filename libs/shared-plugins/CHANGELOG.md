@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-- 156f244: **BREAKING CHANGE**: Extension plugins refactored to top-level architecture (v3.0.0)
+- 156f244: **BREAKING CHANGE**: Extension plugins refactored to top-level architecture
 
   ## Major Changes
 
@@ -36,7 +36,7 @@
     }
   }
 
-  // After (v3.0.0)
+  // After (v4.0.0)
   import { BaseExtensionPlugin } from '@cli-ops/shared-plugins'
 
   export class JiraPlugin extends BaseExtensionPlugin {
@@ -88,14 +88,14 @@
 
   ### Migration Path
   1. Uninstall existing extension plugins
-  2. Update to v3.0.0 of base plugins and `@cli-ops/shared-plugins`
+  2. Update to v4.0.0 of base plugins and `@cli-ops/shared-plugins`
   3. Reinstall extension plugins (now from top-level npm packages)
   4. Extension plugins will automatically use new architecture
 
   ### Backward Compatibility
   - Event-based communication still works (kept for compatibility)
   - Existing extensions will receive deprecation warnings
-  - Full removal of legacy event system planned for v4.0.0
+  - Full removal of legacy event system planned for v5.0.0
 
 - 0ec5ca1: # 🎉 Initial Release - Plugin-First Architecture
 
