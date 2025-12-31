@@ -20,14 +20,20 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
+      - name: Validate RELEASE_TOKEN
+        run: |
+          if [ -z "${{ secrets.RELEASE_TOKEN }}" ]; then
+            echo "::error::RELEASE_TOKEN secret is required for the release workflow"
+            echo "::error::The default GITHUB_TOKEN cannot create pull requests"
+            echo "::error::Please follow the setup instructions in docs/RELEASE-PROCESS.md"
+            echo "::error::https://github.com/${{ github.repository }}/blob/main/docs/RELEASE-PROCESS.md"
+            exit 1
+          fi
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use RELEASE_TOKEN (PAT) if available, fallback to GITHUB_TOKEN
-          # Note: GITHUB_TOKEN may fail with "GitHub Actions is not permitted to create or approve pull requests"
-          # Important: If RELEASE_TOKEN is set but empty, it will use the empty value. Either set it with a value or don't set it at all.
-          # See docs/RELEASE-PROCESS.md for setup instructions
-          token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - uses: ./.github/actions/setup-workspace
         with:
@@ -45,8 +51,7 @@ jobs:
           commit: 'chore: Version packages'
           title: 'chore: Version packages'
         env:
-          # Use RELEASE_TOKEN (PAT) if available, fallback to GITHUB_TOKEN
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
