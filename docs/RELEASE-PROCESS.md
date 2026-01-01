@@ -12,6 +12,7 @@ This document describes the release process for the CLI Ops monorepo, including 
 ## Table of Contents
 
 - [Overview](#overview)
+- [NPM Publishing Methods](#npm-publishing-methods)
 - [GitHub Actions Restrictions](#github-actions-restrictions)
 - [Release Process Options](#release-process-options)
 - [Recommended Approach](#recommended-approach)
@@ -27,6 +28,49 @@ CLI Ops uses [Changesets](https://github.com/changesets/changesets) for versioni
 2. **Version PR**: Automated PR that bumps package versions and updates changelogs
 3. **Publishing**: Automated publish to npm when version PR is merged
 4. **Provenance**: Supply chain security attestations for published packages
+
+## NPM Publishing Methods
+
+The CLI Ops release workflow supports two npm authentication methods:
+
+### 1. Trusted Publishing with OIDC (Recommended)
+
+**Modern, secure approach using OpenID Connect:**
+
+- ✅ No long-lived npm tokens to manage
+- ✅ Automatic provenance attestation for all packages
+- ✅ No token expiration or rotation concerns
+- ✅ Enhanced supply chain security
+- ✅ Industry standard approach (2024+)
+
+**Setup**: Configure trusted publishers on npmjs.com for each package. See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md) for detailed instructions.
+
+**Requirements**:
+- npm CLI v9.5.0+ (in workflow)
+- Public GitHub repository
+- `id-token: write` permission (already configured)
+- Trusted publisher configured on npmjs.com
+
+### 2. Token-Based Publishing (Traditional)
+
+**Classic approach using npm access tokens:**
+
+- ⚠️ Requires managing `NPM_TOKEN` secret
+- ⚠️ Token must be rotated periodically
+- ⚠️ Risk of token leakage or theft
+- ⚠️ Manual `--provenance` flag needed for attestation
+- ✅ Simpler initial setup
+- ✅ Works with private repositories
+
+**Setup**: Create npm access token and add as `NPM_TOKEN` repository secret.
+
+### Migration Path
+
+The workflow automatically detects which method to use:
+- If `NPM_TOKEN` secret exists → uses token-based authentication
+- If `NPM_TOKEN` secret absent → uses OIDC trusted publishing
+
+This allows safe migration from token-based to trusted publishing. See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md) for migration instructions.
 
 ## GitHub Actions Restrictions
 
@@ -470,10 +514,23 @@ Maintain branch protection rules even with automation:
 
 ### Publishing Security
 
-1. **Provenance**: Use npm provenance for supply chain security
-2. **2FA**: Enable 2FA on npm account
-3. **Token Scope**: Use granular npm tokens (publish-only)
-4. **Audit Logs**: Review npm publish logs regularly
+1. **Use Trusted Publishing (Recommended)**: Eliminate long-lived tokens with OIDC
+   - See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md)
+   - Automatic provenance attestation
+   - No token management required
+   - Enhanced supply chain security
+
+2. **If Using Token-Based Publishing**:
+   - Enable 2FA on npm account
+   - Use granular npm tokens (publish-only scope)
+   - Rotate tokens regularly (set expiration)
+   - Monitor npm audit logs
+
+3. **Provenance Attestation**:
+   - Automatic with trusted publishing (OIDC)
+   - Manual with `--provenance` flag for token-based
+   - Verifies package authenticity and build environment
+   - Required npm CLI v9.5.0+
 
 ### Workflow Security
 
@@ -662,9 +719,11 @@ As the project grows, consider:
 
 ### Documentation
 
+- [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md) - Secure OIDC-based publishing setup
 - [Changesets Documentation](https://github.com/changesets/changesets)
 - [GitHub Actions Security](https://docs.github.com/en/actions/security-guides)
 - [npm Provenance](https://docs.npmjs.com/generating-provenance-statements)
+- [npm Trusted Publishers](https://docs.npmjs.com/trusted-publishers)
 - [Fine-grained PATs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token)
 
 ### Related Files
