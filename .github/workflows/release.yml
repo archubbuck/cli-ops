@@ -1,4 +1,16 @@
 name: Release
+# This workflow supports two npm authentication methods:
+# 1. Trusted Publishing (OIDC) - Recommended: Token-less, secure, automatic provenance
+#    - Requires: Trusted publishers configured on npmjs.com for each package
+#    - Requires: id-token: write permission (already configured below)
+#    - See: docs/NPM-TRUSTED-PUBLISHING.md
+# 2. Token-Based - Traditional: Uses NPM_TOKEN secret
+#    - Requires: NPM_TOKEN secret in repository settings
+#    - See: docs/RELEASE-PROCESS.md
+#
+# The workflow automatically uses the appropriate method:
+# - If NPM_TOKEN is set → uses token-based authentication
+# - If NPM_TOKEN is absent → uses OIDC trusted publishing
 
 on:
   push:
@@ -53,6 +65,8 @@ jobs:
           title: 'chore: Version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          # NPM_TOKEN is optional when using trusted publishing with OIDC
+          # If NPM_TOKEN is not set, npm will use OIDC authentication via id-token permission
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -61,3 +75,6 @@ jobs:
         run: |
           echo "Packages published with provenance:"
           echo "${{ steps.changesets.outputs.publishedPackages }}"
+          echo ""
+          echo "Publishing method: ${{ secrets.NPM_TOKEN && 'Token-based (traditional)' || 'OIDC Trusted Publishing' }}"
+          echo "Provenance is automatically included with npm v9.5.0+ when using OIDC or --provenance flag"

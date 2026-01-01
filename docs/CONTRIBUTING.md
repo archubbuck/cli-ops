@@ -503,19 +503,20 @@ git commit -m "chore: add changeset"
 
 ### Publishing
 
-Automated via GitHub Actions:
+Automated via GitHub Actions with support for npm trusted publishing:
 
 1. PR merged to main
-2. Changesets creates version PR (may require PAT - see [Release Process](./RELEASE-PROCESS.md))
+2. Changesets creates version PR (requires PAT for PR creation - see [Release Process](./RELEASE-PROCESS.md))
 3. Merge version PR
-4. Automated publish to npm
+4. Automated publish to npm using OIDC or token authentication
 
-**Important**: Due to GitHub Actions restrictions, PR creation may require a Personal Access Token. See the [Release Process documentation](./RELEASE-PROCESS.md) for:
+**Publishing Methods**:
+- **Trusted Publishing (Recommended)**: OIDC-based, secure, token-less publishing
+  - See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md)
+- **Token-Based**: Traditional npm token authentication
+  - See [Release Process](./RELEASE-PROCESS.md)
 
-- PAT setup instructions
-- Alternative release approaches
-- Security best practices
-- Troubleshooting guide
+**Important**: Due to GitHub Actions restrictions, PR creation requires a Personal Access Token. See the [Release Process documentation](./RELEASE-PROCESS.md) for setup instructions and security best practices.
 
 ## Getting Help
 

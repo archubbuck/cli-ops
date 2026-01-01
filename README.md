@@ -201,7 +201,7 @@ See [`docs/`](./docs/) for detailed documentation:
 
 ## Publishing
 
-Automated via GitHub Actions and Changesets. See [Release Process](./docs/RELEASE-PROCESS.md) for detailed documentation on handling GitHub Actions restrictions and release workflows.
+Automated via GitHub Actions and Changesets with support for modern npm trusted publishing.
 
 ```bash
 # Create a changeset
@@ -214,7 +214,20 @@ pnpm changeset:version
 pnpm changeset:publish
 ```
 
-**Note**: Due to GitHub Actions restrictions on PR creation, the release workflow may require a Personal Access Token (PAT). See the [Release Process documentation](./docs/RELEASE-PROCESS.md) for setup instructions and alternative approaches.
+### Publishing Methods
+
+The release workflow supports two authentication methods:
+
+- **Trusted Publishing (OIDC)**: Secure, token-less publishing with automatic provenance
+  - See [NPM Trusted Publishing Guide](./docs/NPM-TRUSTED-PUBLISHING.md)
+  - Recommended for production use
+  - No npm token management required
+
+- **Token-Based**: Traditional npm token authentication
+  - See [Release Process](./docs/RELEASE-PROCESS.md)
+  - Supports gradual migration to trusted publishing
+
+**Note**: Due to GitHub Actions restrictions on PR creation, the release workflow requires a Personal Access Token (PAT) for creating version PRs. See the [Release Process documentation](./docs/RELEASE-PROCESS.md) for setup instructions.
 
 ## Version History
 
