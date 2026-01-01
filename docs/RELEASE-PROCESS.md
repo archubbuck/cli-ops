@@ -46,6 +46,7 @@ The CLI Ops release workflow supports two npm authentication methods:
 **Setup**: Configure trusted publishers on npmjs.com for each package. See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md) for detailed instructions.
 
 **Requirements**:
+
 - npm CLI v9.5.0+ (in workflow)
 - Public GitHub repository
 - `id-token: write` permission (already configured)
@@ -67,6 +68,7 @@ The CLI Ops release workflow supports two npm authentication methods:
 ### Migration Path
 
 The workflow automatically detects which method to use:
+
 - If `NPM_TOKEN` secret exists → uses token-based authentication
 - If `NPM_TOKEN` secret absent → uses OIDC trusted publishing
 
