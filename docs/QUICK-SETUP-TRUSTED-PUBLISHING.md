@@ -68,7 +68,15 @@ For **each package** in the monorepo:
 - `@cli-ops/clio-meta-developer`
 - `@cli-ops/clio-meta-complete`
 
-### 4. Test Publishing
+### 4. Ensure NPM_TOKEN is Not Set
+
+The workflow uses OIDC authentication only:
+
+1. Go to repository **Settings** → **Secrets and variables** → **Actions**
+2. Verify `NPM_TOKEN` is **not** in the repository secrets
+3. If present, delete it before testing
+
+### 5. Test Publishing
 
 1. Create a test changeset:
 
@@ -89,14 +97,6 @@ For **each package** in the monorepo:
 4. After version PR is merged, check npm package pages for:
    - **"Built and signed on GitHub Actions"** badge
    - **View Provenance** link with attestation details
-
-### 5. Remove NPM_TOKEN (Optional)
-
-After verifying trusted publishing works:
-
-1. Go to repository **Settings** → **Secrets and variables** → **Actions**
-2. Delete `NPM_TOKEN` secret
-3. Future publishes will use OIDC automatically
 
 ## Verification
 
@@ -126,7 +126,7 @@ Look for:
 
 - Wait 5-10 minutes for npm cache update
 - Verify npm CLI version in workflow is 9.5.0+
-- Check that OIDC was used (not NPM_TOKEN)
+- Check workflow logs for OIDC authentication
 
 **Some Packages Fail:**
 

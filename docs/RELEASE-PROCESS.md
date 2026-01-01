@@ -31,9 +31,9 @@ CLI Ops uses [Changesets](https://github.com/changesets/changesets) for versioni
 
 ## NPM Publishing Methods
 
-The CLI Ops release workflow supports two npm authentication methods:
+The CLI Ops release workflow uses npm Trusted Publishing with OIDC for secure, token-less authentication:
 
-### 1. Trusted Publishing with OIDC (Recommended)
+### Trusted Publishing with OIDC
 
 **Modern, secure approach using OpenID Connect:**
 
@@ -51,28 +51,7 @@ The CLI Ops release workflow supports two npm authentication methods:
 - Public GitHub repository
 - `id-token: write` permission (already configured)
 - Trusted publisher configured on npmjs.com
-
-### 2. Token-Based Publishing (Traditional)
-
-**Classic approach using npm access tokens:**
-
-- ⚠️ Requires managing `NPM_TOKEN` secret
-- ⚠️ Token must be rotated periodically
-- ⚠️ Risk of token leakage or theft
-- ⚠️ Manual `--provenance` flag needed for attestation
-- ✅ Simpler initial setup
-- ✅ Works with private repositories
-
-**Setup**: Create npm access token and add as `NPM_TOKEN` repository secret.
-
-### Migration Path
-
-The workflow automatically detects which method to use:
-
-- If `NPM_TOKEN` secret exists → uses token-based authentication
-- If `NPM_TOKEN` secret absent → uses OIDC trusted publishing
-
-This allows safe migration from token-based to trusted publishing. See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md) for migration instructions.
+- No `NPM_TOKEN` secret required
 
 ## GitHub Actions Restrictions
 
@@ -516,23 +495,23 @@ Maintain branch protection rules even with automation:
 
 ### Publishing Security
 
-1. **Use Trusted Publishing (Recommended)**: Eliminate long-lived tokens with OIDC
+1. **Trusted Publishing with OIDC**: CLI Ops uses OIDC for secure, token-less publishing
    - See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md)
    - Automatic provenance attestation
    - No token management required
    - Enhanced supply chain security
+   - Eliminates risk of token leakage
 
-2. **If Using Token-Based Publishing**:
+2. **npm Account Security**:
    - Enable 2FA on npm account
-   - Use granular npm tokens (publish-only scope)
-   - Rotate tokens regularly (set expiration)
-   - Monitor npm audit logs
+   - Review package access permissions regularly
+   - Monitor npm audit logs for publish activity
 
 3. **Provenance Attestation**:
-   - Automatic with trusted publishing (OIDC)
-   - Manual with `--provenance` flag for token-based
+   - Automatic with OIDC trusted publishing
    - Verifies package authenticity and build environment
-   - Required npm CLI v9.5.0+
+   - Cryptographic proof of source and build process
+   - Requires npm CLI v9.5.0+
 
 ### Workflow Security
 

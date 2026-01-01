@@ -163,18 +163,16 @@ Repeat the process for each package in the monorepo:
 - Workflow filename: `release.yml`
 - Environment name: (leave blank)
 
-### Step 3: Remove NPM_TOKEN Secret (Optional)
+### Step 3: Ensure NPM_TOKEN Secret is Not Set
 
-Once all packages are configured with trusted publishers, you can optionally remove the `NPM_TOKEN` secret from GitHub:
-
-**Important**: Only remove the token after verifying that trusted publishing works correctly for all packages.
+The release workflow uses OIDC authentication only. Ensure that `NPM_TOKEN` is not configured in GitHub Secrets:
 
 1. Go to your repository: https://github.com/archubbuck/cli-ops
 2. Click **Settings** → **Secrets and variables** → **Actions**
-3. Find `NPM_TOKEN` in the repository secrets
-4. Click the **Delete** button (after successful verification)
+3. Verify `NPM_TOKEN` is **not** in the repository secrets
+4. If present, delete it before testing the workflow
 
-**Note**: The release workflow supports both authentication methods. If `NPM_TOKEN` is present, it will be used (token-based). If absent, OIDC will be used (trusted publishing). This allows for gradual migration.
+**Note**: The release workflow now exclusively uses OIDC trusted publishing for enhanced security.
 
 ### Step 4: Verify Workflow Configuration
 
@@ -259,57 +257,45 @@ Publishing to npm using OIDC authentication...
 Successfully published with provenance
 ```
 
-You should NOT see any references to `NPM_TOKEN` if using trusted publishing.
+The workflow exclusively uses OIDC trusted publishing.
 
 ## Migration from Token-Based Publishing
 
-### Gradual Migration Approach
+### Setup for OIDC-Only Publishing
 
-The release workflow supports both authentication methods simultaneously, allowing for safe migration:
+The CLI Ops release workflow now exclusively uses OIDC trusted publishing. If you're migrating from token-based authentication:
 
-#### Phase 1: Parallel Operation (Recommended)
+#### Step 1: Configure Trusted Publishers
 
-1. Keep existing `NPM_TOKEN` secret in place
-2. Configure trusted publishers on npm for all packages
-3. Test publishing with both methods available
-4. Verify provenance is generated correctly
+1. Configure trusted publishers on npm for all packages (see Step 2 above)
+2. Verify each package has the correct configuration:
+   - Repository owner: `archubbuck`
+   - Repository name: `cli-ops`
+   - Workflow: `release.yml`
 
-**Current State**: Workflow will use `NPM_TOKEN` if present
+#### Step 2: Remove NPM_TOKEN
 
-#### Phase 2: Validation
+1. Go to repository **Settings** → **Secrets and variables** → **Actions**
+2. Delete `NPM_TOKEN` secret if it exists
+3. This ensures the workflow uses OIDC authentication only
 
-1. Monitor several release cycles
-2. Verify all packages publish successfully
-3. Check provenance badges on npm package pages
-4. Confirm no publishing errors in workflow logs
+#### Step 3: Test Publishing
 
-#### Phase 3: Complete Migration
-
-1. Remove `NPM_TOKEN` from GitHub Secrets
-2. All future publishes will use OIDC authentication
-3. Verify next release uses trusted publishing
-
-**New State**: Workflow will use OIDC authentication
-
-### Rollback Plan
-
-If you encounter issues with trusted publishing:
-
-1. **Immediate Rollback**: Re-add `NPM_TOKEN` secret in GitHub Settings
-2. **Next Publish**: Workflow will automatically use token-based authentication
-3. **Debug**: Investigate trusted publisher configuration on npm
-4. **Retry**: Fix issues and attempt trusted publishing again
+1. Create a test changeset for a low-impact package
+2. Commit and push to main to trigger the workflow
+3. Monitor the release workflow in GitHub Actions
+4. Verify successful publishing via OIDC
+5. Check for provenance badges on npm package pages
 
 ### Migration Checklist
 
 - [ ] Verify npm CLI version (v9.5.0+)
 - [ ] Configure trusted publishers for all packages on npmjs.com
-- [ ] Test publishing with both authentication methods available
+- [ ] Remove `NPM_TOKEN` secret from GitHub
+- [ ] Test publishing with OIDC authentication
 - [ ] Verify provenance badges appear on npm
-- [ ] Monitor multiple release cycles for stability
-- [ ] Document any package-specific configuration
-- [ ] Remove `NPM_TOKEN` secret after successful validation
-- [ ] Update team documentation about new publishing process
+- [ ] Monitor release cycle for any issues
+- [ ] Update team documentation about OIDC publishing
 
 ## Troubleshooting
 
@@ -353,7 +339,7 @@ npm ERR! 401 Unauthorized - PUT https://registry.npmjs.org/@cli-ops/clio
 
 2. **Verify OIDC Authentication Was Used**:
    - Check workflow logs for OIDC-related messages
-   - Confirm `NPM_TOKEN` secret was not used
+   - Verify workflow completed successfully
 
 3. **Repository Visibility**:
    - Provenance only works with public repositories
