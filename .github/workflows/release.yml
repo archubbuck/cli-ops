@@ -21,7 +21,7 @@ jobs:
       id-token: write
     steps:
       - name: Validate RELEASE_TOKEN
-        if: ${{ env.RELEASE_TOKEN == '' }}
+        if: ${{ !env.RELEASE_TOKEN }}
         env:
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
