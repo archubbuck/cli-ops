@@ -511,6 +511,7 @@ Automated via GitHub Actions with support for npm trusted publishing:
 4. Automated publish to npm using OIDC or token authentication
 
 **Publishing Methods**:
+
 - **Trusted Publishing (Recommended)**: OIDC-based, secure, token-less publishing
   - See [NPM Trusted Publishing Guide](./NPM-TRUSTED-PUBLISHING.md)
 - **Token-Based**: Traditional npm token authentication

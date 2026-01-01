@@ -33,14 +33,14 @@ This guide explains how to configure npm trusted publishing with OpenID Connect 
 
 ### Key Differences from Token-Based Publishing
 
-| Aspect | Token-Based (Traditional) | Trusted Publishing (OIDC) |
-|--------|---------------------------|---------------------------|
-| Authentication | Long-lived `NPM_TOKEN` secret | Short-lived OIDC token |
-| Security Risk | Token can be leaked/stolen | Token expires after workflow |
-| Setup Location | GitHub Secrets | npm package settings |
-| Provenance | Manual `--provenance` flag | Automatic |
-| Token Management | Manual rotation required | No management needed |
-| Supply Chain Security | Limited | Enhanced with cryptographic proof |
+| Aspect                | Token-Based (Traditional)     | Trusted Publishing (OIDC)         |
+| --------------------- | ----------------------------- | --------------------------------- |
+| Authentication        | Long-lived `NPM_TOKEN` secret | Short-lived OIDC token            |
+| Security Risk         | Token can be leaked/stolen    | Token expires after workflow      |
+| Setup Location        | GitHub Secrets                | npm package settings              |
+| Provenance            | Manual `--provenance` flag    | Automatic                         |
+| Token Management      | Manual rotation required      | No management needed              |
+| Supply Chain Security | Limited                       | Enhanced with cryptographic proof |
 
 ## Benefits
 
@@ -128,6 +128,7 @@ For **each package** you want to publish, configure a trusted publisher on npmjs
 Repeat the process for each package in the monorepo:
 
 **Plugins:**
+
 - `@cli-ops/clio-plugin-tasks`
 - `@cli-ops/clio-plugin-fetch`
 - `@cli-ops/clio-plugin-repo`
@@ -136,6 +137,7 @@ Repeat the process for each package in the monorepo:
 - `@cli-ops/clio-plugin-repo-hooks`
 
 **Shared Libraries:**
+
 - `@cli-ops/shared-commands`
 - `@cli-ops/shared-config`
 - `@cli-ops/shared-core`
@@ -150,10 +152,12 @@ Repeat the process for each package in the monorepo:
 - `@cli-ops/shared-ui`
 
 **Meta Packages (if applicable):**
+
 - `@cli-ops/clio-meta-developer`
 - `@cli-ops/clio-meta-complete`
 
 **Configuration for all packages:**
+
 - GitHub repository owner: `archubbuck`
 - Repository name: `cli-ops`
 - Workflow filename: `release.yml`
@@ -180,7 +184,7 @@ The release workflow (`.github/workflows/release.yml`) is already configured wit
 permissions:
   contents: write
   pull-requests: write
-  id-token: write  # Required for OIDC authentication
+  id-token: write # Required for OIDC authentication
 ```
 
 The `id-token: write` permission allows GitHub Actions to generate OIDC tokens for authentication with npm.
@@ -190,12 +194,14 @@ The `id-token: write` permission allows GitHub Actions to generate OIDC tokens f
 To test the trusted publishing configuration:
 
 1. **Create a test changeset**:
+
    ```bash
    pnpm changeset
    # Select a minor change for a low-impact package (e.g., update README)
    ```
 
 2. **Commit and push to main**:
+
    ```bash
    git add .changeset
    git commit -m "chore: test trusted publishing setup"
@@ -309,7 +315,8 @@ If you encounter issues with trusted publishing:
 
 ### Publishing Fails with "Unauthorized" Error
 
-**Symptoms**: 
+**Symptoms**:
+
 ```
 npm ERR! code E401
 npm ERR! 401 Unauthorized - PUT https://registry.npmjs.org/@cli-ops/clio
@@ -339,6 +346,7 @@ npm ERR! 401 Unauthorized - PUT https://registry.npmjs.org/@cli-ops/clio
 **Solutions**:
 
 1. **Check npm CLI Version**:
+
    ```bash
    npm --version  # Should be 9.5.0 or higher
    ```
@@ -376,6 +384,7 @@ npm ERR! 401 Unauthorized - PUT https://registry.npmjs.org/@cli-ops/clio
 ### Workflow Permission Denied
 
 **Symptoms**:
+
 ```
 Error: Resource not accessible by integration
 ```
@@ -383,11 +392,12 @@ Error: Resource not accessible by integration
 **Solutions**:
 
 1. **Check Workflow Permissions**:
+
    ```yaml
    permissions:
      contents: write
      pull-requests: write
-     id-token: write  # Must be present
+     id-token: write # Must be present
    ```
 
 2. **Repository Settings**:
@@ -398,6 +408,7 @@ Error: Resource not accessible by integration
 ### OIDC Token Generation Fails
 
 **Symptoms**:
+
 ```
 Error: Unable to get OIDC token
 ```
@@ -449,11 +460,12 @@ npm Trusted Publishing with OIDC provides:
 ✅ **Automatic Provenance**: Supply chain attestation for all packages  
 ✅ **Simplified Operations**: No token rotation or expiration management  
 ✅ **Industry Standard**: Modern, recommended approach for npm publishing  
-✅ **Backward Compatible**: Can coexist with token-based publishing during migration  
+✅ **Backward Compatible**: Can coexist with token-based publishing during migration
 
 ### Quick Reference: Configuration Checklist
 
 For each package:
+
 - [ ] npm version 9.5.0+
 - [ ] Public GitHub repository
 - [ ] `id-token: write` in workflow

@@ -36,9 +36,11 @@ For **each package** in the monorepo:
 ### 3. Packages to Configure
 
 **Core:**
+
 - `@cli-ops/clio`
 
 **Plugins:**
+
 - `@cli-ops/clio-plugin-tasks`
 - `@cli-ops/clio-plugin-fetch`
 - `@cli-ops/clio-plugin-repo`
@@ -47,6 +49,7 @@ For **each package** in the monorepo:
 - `@cli-ops/clio-plugin-repo-hooks`
 
 **Shared Libraries:**
+
 - `@cli-ops/shared-commands`
 - `@cli-ops/shared-config`
 - `@cli-ops/shared-core`
@@ -61,17 +64,20 @@ For **each package** in the monorepo:
 - `@cli-ops/shared-ui`
 
 **Meta Packages (if publishing):**
+
 - `@cli-ops/clio-meta-developer`
 - `@cli-ops/clio-meta-complete`
 
 ### 4. Test Publishing
 
 1. Create a test changeset:
+
    ```bash
    pnpm changeset
    ```
 
 2. Commit and push to trigger workflow:
+
    ```bash
    git add .changeset
    git commit -m "chore: test trusted publishing"
@@ -101,6 +107,7 @@ https://www.npmjs.com/package/@cli-ops/<package-name>
 ```
 
 Look for:
+
 - ✅ "Built and signed on GitHub Actions" badge
 - ✅ "View Provenance" link
 - ✅ Source repository and commit information
@@ -110,16 +117,19 @@ Look for:
 ### Common Issues
 
 **401 Unauthorized Error:**
+
 - Double-check trusted publisher configuration
 - Verify repository owner/name spelling
 - Ensure workflow filename is exactly `release.yml`
 
 **No Provenance Badge:**
+
 - Wait 5-10 minutes for npm cache update
 - Verify npm CLI version in workflow is 9.5.0+
 - Check that OIDC was used (not NPM_TOKEN)
 
 **Some Packages Fail:**
+
 - Each package needs individual trusted publisher configuration
 - Cannot bulk configure or use wildcards
 
@@ -134,7 +144,7 @@ Look for:
 ✅ More secure than tokens  
 ✅ Automatic provenance  
 ✅ No token management  
-✅ Industry standard  
+✅ Industry standard
 
 **Time to complete**: ~15-30 minutes for all packages
 
