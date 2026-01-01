@@ -431,7 +431,7 @@ Error: Unable to get OIDC token
 
 - [Release Process](./RELEASE-PROCESS.md) - Overall release workflow and process
 - [Contributing Guide](./CONTRIBUTING.md) - Development and contribution guidelines
-- [CI Workflow](./.github/workflows/ci.yml) - Continuous integration setup
+- [CI Workflow](../.github/workflows/ci.yml) - Continuous integration setup
 
 ### Community Resources
 
@@ -446,7 +446,7 @@ npm Trusted Publishing with OIDC provides:
 ✅ **Automatic Provenance**: Supply chain attestation for all packages  
 ✅ **Simplified Operations**: No token rotation or expiration management  
 ✅ **Industry Standard**: Modern, recommended approach for npm publishing  
-✅ **Backward Compatible**: Can coexist with token-based publishing during migration
+✅ **OIDC-Only Authentication**: Replaces token-based publishing; no npm tokens are required or supported
 
 ### Quick Reference: Configuration Checklist
 
